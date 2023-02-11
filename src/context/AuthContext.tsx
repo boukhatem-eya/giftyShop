@@ -73,16 +73,22 @@ const AuthProvider = ({ children }: Props) => {
   }, [])
 
   const handleLogin = (params: LoginParams, errorCallback?: ErrCallbackType) => {
-    axios
-      .post(authConfig.loginEndpoint, params)
+    var config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: 'http://testapi.giftyshop.pro/ui/login',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      data: params
+    }
+    axios(config)
       .then(async response => {
-        params.rememberMe
-          ? window.localStorage.setItem(authConfig.storageTokenKeyName, response.data.accessToken)
-          : null
+        window.localStorage.setItem(authConfig.storageTokenKeyName, response.data.token)
         const returnUrl = router.query.returnUrl
 
-        setUser({ ...response.data.userData })
-        params.rememberMe ? window.localStorage.setItem('userData', JSON.stringify(response.data.userData)) : null
+        setUser({ ...response.data.data })
+        window.localStorage.setItem('userData', JSON.stringify(response.data.data))
 
         const redirectURL = returnUrl && returnUrl !== '/' ? returnUrl : '/'
 
@@ -93,7 +99,7 @@ const AuthProvider = ({ children }: Props) => {
         if (errorCallback) errorCallback(err)
       })
   }
-
+  console.log(user)
   const handleLogout = () => {
     setUser(null)
     window.localStorage.removeItem('userData')
@@ -102,8 +108,16 @@ const AuthProvider = ({ children }: Props) => {
   }
 
   const handleRegister = (params: RegisterParams, errorCallback?: ErrCallbackType) => {
-    axios
-      .post(authConfig.registerEndpoint, params)
+    var config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: 'http://testapi.giftyshop.pro/ui/create/',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      data: params
+    }
+    axios(config)
       .then(res => {
         if (res.data.error) {
           if (errorCallback) errorCallback(res.data.error)

@@ -101,8 +101,8 @@ const schema = yup.object().shape({
 })
 
 const defaultValues = {
-  password: 'admin',
-  email: 'admin@materialize.com'
+  password: 'pass@lucky',
+  email: 'admin@lucky.com'
 }
 
 interface FormData {
@@ -137,7 +137,7 @@ const LoginPage = () => {
 
   const onSubmit = (data: FormData) => {
     const { email, password } = data
-    auth.login({ email, password, rememberMe }, () => {
+    auth.login({ email, password }, () => {
       setError('email', {
         type: 'manual',
         message: 'Email or Password is invalid'
@@ -152,8 +152,7 @@ const LoginPage = () => {
       <Card sx={{ zIndex: 1 }}>
         <CardContent sx={{ p: theme => `${theme.spacing(13, 7, 6.5)} !important` }}>
           <Box sx={{ mb: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <img src='/images/Groupe 1192.png' width='150px'></img>
-           
+            <img src='/images/Groupe 1192.png' width='150px'></img>
           </Box>
           <Box sx={{ mb: 6 }}>
             <Typography variant='h5' sx={{ mb: 1.5, fontWeight: 600, letterSpacing: '0.18px' }}>

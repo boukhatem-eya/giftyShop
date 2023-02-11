@@ -158,7 +158,7 @@ const Register = () => {
 
   return (
     <Box className='content-center'>
-      <Card sx={{ zIndex: 1 }}>
+      <Card sx={{ zIndex: 1 , width : '600px'}} >
         <CardContent sx={{ p: theme => `${theme.spacing(13, 7, 6.5)} !important` }}>
           <Box sx={{ mb: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <img src='/images/Groupe 1192.png' width='150px'></img>
