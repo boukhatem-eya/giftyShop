@@ -11,67 +11,72 @@ import IconButton from '@mui/material/IconButton'
 import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
-import { useState } from 'react'
+import { ReactNode, useState } from 'react'
 // ** Icon Imports
 import Icon from 'src/@core/components/icon'
+import BlankLayoutWithAppBar from 'src/@core/layouts/BlankLayoutWithAppBar'
 const Home = () => {
-    // ** State
-    const [open, setOpen] = useState<boolean>(false)
+  // ** State
+  const [open, setOpen] = useState<boolean>(false)
 
-    const handleClickOpen = () => setOpen(true)
-  
-    const handleClose = () => setOpen(false)
+  const handleClickOpen = () => setOpen(true)
+
+  const handleClose = () => setOpen(false)
   return (
     <>
-      <Box>
-        <Typography sx={{ mb: 2 }}>All the best for your new project.</Typography>
-        <Typography>
+      <Typography sx={{ mb: 2 }}>All the best for your new project.</Typography>
+        <Typography sx={{ mb: 2 }}>
           Please make sure to read our Template Documentation to understand where to go from here and how to use our
           template.
         </Typography>
-      </Box>
-      <Grid container spacing={6}>
-        <Grid item xs={3}>
+      <Box sx={{ display :"flex" , justifyContent : 'center' , alignItem : "center"}}>
+       
+      
+
+      <Grid container spacing={6}  sx={{ width : { xs: "90%", md: "50%", lg: "50%" }, }}>
+       
+        <Grid item xs={4}>
           <Card>
-            <CardContent sx={{ width : '100%' }}>
-              <img src='/images/Gifty game.png' width='150px' height='200px'></img>
+            <CardContent sx={{ width: '100%' }}>
+              <img src='/images/Gifty game.png' width='100%'></img>
               <Typography sx={{ p: 2 }}>All the best .</Typography>
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={4}>
           <Card>
             <CardContent>
-              <img src='/images/Gifty Call.png' width='150px' height='200px'></img>
+              <img src='/images/Gifty Call.png' width='100%'></img>
               <Typography sx={{ p: 2 }}>All the best .</Typography>
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={4}>
           <Card>
             <CardContent>
-              <img src='/images/Gifty Feeds.png' width='150px' height='200px'></img>
+              <img src='/images/Gifty Feeds.png' width='100%'></img>
               <Typography sx={{ p: 2 }}>All the best .</Typography>
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={4}>
           <Card>
             <CardContent>
-              <img src='/images/Gifty sms.png' width='100px' height='200px'></img>
+              <img src='/images/Gifty sms.png' width='100%'></img>
               <Typography sx={{ p: 2 }}>All the best </Typography>
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={4}>
           <Card>
             <CardContent>
-              <img src='/images/Gifty Stat.png' width='100px' height='200px'></img>
+              <img src='/images/Gifty Stat.png' width='100%'></img>
               <Typography sx={{ p: 2 }}>All the best </Typography>
             </CardContent>
           </Card>
         </Grid>
       </Grid>
+      </Box>
       <Button variant='outlined' onClick={handleClickOpen}>
         Open dialog
       </Button>
@@ -110,5 +115,5 @@ const Home = () => {
     </>
   )
 }
-
+Home.getLayout = (page: ReactNode) => <BlankLayoutWithAppBar>{page}</BlankLayoutWithAppBar>
 export default Home

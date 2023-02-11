@@ -44,6 +44,7 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 // ** Demo Imports
 import FooterIllustrationsV2 from 'src/views/pages/auth/FooterIllustrationsV2'
 import { Card, CardContent } from '@mui/material'
+import BlankLayoutWithAppBar from 'src/@core/layouts/BlankLayoutWithAppBar'
 
 // ** Styled Components
 const LoginIllustrationWrapper = styled(Box)<BoxProps>(({ theme }) => ({
@@ -293,7 +294,7 @@ const LoginPage = () => {
   )
 }
 
-LoginPage.getLayout = (page: ReactNode) => <BlankLayout>{page}</BlankLayout>
+LoginPage.getLayout = (page: ReactNode) => <BlankLayoutWithAppBar>{page}</BlankLayoutWithAppBar>
 
 LoginPage.guestGuard = true
 
