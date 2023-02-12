@@ -73,6 +73,7 @@ const AuthProvider = ({ children }: Props) => {
   }, [])
 
   const handleLogin = (params: LoginParams, errorCallback?: ErrCallbackType) => {
+    console.log(params)
     var config = {
       method: 'post',
       maxBodyLength: Infinity,
@@ -108,10 +109,11 @@ const AuthProvider = ({ children }: Props) => {
   }
 
   const handleRegister = (params: RegisterParams, errorCallback?: ErrCallbackType) => {
+    console.log(params)
     var config = {
       method: 'post',
       maxBodyLength: Infinity,
-      url: 'http://testapi.giftyshop.pro/ui/create/',
+      url: 'http://testapi.giftyshop.pro/ui/create',
       headers: {
         'Content-Type': 'application/json'
       },

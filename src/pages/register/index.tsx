@@ -45,14 +45,16 @@ import { Card, CardContent } from '@mui/material'
 
 const defaultValues = {
   email: '',
-  username: '',
+  name: '',
+  familyname: '',
   password: '',
   terms: false
 }
 interface FormData {
   email: string
   terms: boolean
-  username: string
+  name: string
+  familyname: string
   password: string
 }
 
@@ -120,7 +122,8 @@ const Register = () => {
   const { skin } = settings
   const schema = yup.object().shape({
     password: yup.string().min(5).required(),
-    username: yup.string().min(3).required(),
+    name: yup.string().min(3).required(),
+    familyname: yup.string().min(3).required(),
     email: yup.string().email().required(),
     terms: yup.bool().oneOf([true], 'You must accept the privacy policy & terms')
   })
@@ -137,18 +140,18 @@ const Register = () => {
   })
 
   const onSubmit = (data: FormData) => {
-    const { email, username, password } = data
-    register({ email, username, password }, err => {
+    const { email, name, familyname, password } = data
+    register({ email, name , familyname, password }, err => {
       if (err.email) {
         setError('email', {
           type: 'manual',
           message: err.email
         })
       }
-      if (err.username) {
-        setError('username', {
+      if (err.name) {
+        setError('name', {
           type: 'manual',
-          message: err.username
+          message: err.name
         })
       }
     })
@@ -158,11 +161,10 @@ const Register = () => {
 
   return (
     <Box className='content-center'>
-      <Card sx={{ zIndex: 1 , width : '600px'}} >
+      <Card sx={{ zIndex: 1, width: '600px' }}>
         <CardContent sx={{ p: theme => `${theme.spacing(13, 7, 6.5)} !important` }}>
           <Box sx={{ mb: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <img src='/images/Groupe 1192.png' width='150px'></img>
-            
+            <img src='/images/Groupe 1192.png' width='150px'></img>
           </Box>
           <Box sx={{ mb: 6 }}>
             <Typography variant='h5' sx={{ mb: 1.5, fontWeight: 600, letterSpacing: '0.18px' }}>
@@ -173,7 +175,7 @@ const Register = () => {
           <form noValidate autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
             <FormControl fullWidth sx={{ mb: 4 }}>
               <Controller
-                name='username'
+                name='name'
                 control={control}
                 rules={{ required: true }}
                 render={({ field: { value, onChange, onBlur } }) => (
@@ -181,15 +183,34 @@ const Register = () => {
                     autoFocus
                     value={value}
                     onBlur={onBlur}
-                    label='Username'
+                    label='name'
                     onChange={onChange}
-                    placeholder='johndoe'
-                    error={Boolean(errors.username)}
+                    placeholder='name'
+                    error={Boolean(errors.name)}
                   />
                 )}
               />
-              {errors.username && (
-                <FormHelperText sx={{ color: 'error.main' }}>{errors.username.message}</FormHelperText>
+              {errors.name && <FormHelperText sx={{ color: 'error.main' }}>{errors.name.message}</FormHelperText>}
+            </FormControl>
+            <FormControl fullWidth sx={{ mb: 4 }}>
+              <Controller
+                name='familyname'
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { value, onChange, onBlur } }) => (
+                  <TextField
+                    autoFocus
+                    value={value}
+                    onBlur={onBlur}
+                    label='familyname'
+                    onChange={onChange}
+                    placeholder='familyname'
+                    error={Boolean(errors.familyname)}
+                  />
+                )}
+              />
+              {errors.familyname && (
+                <FormHelperText sx={{ color: 'error.main' }}>{errors.familyname.message}</FormHelperText>
               )}
             </FormControl>
             <FormControl fullWidth sx={{ mb: 4 }}>

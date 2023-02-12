@@ -8,7 +8,8 @@ export type LoginParams = {
 
 export type RegisterParams = {
   email: string
-  username: string
+  name: string
+  familyname: string
   password: string
 }
 
