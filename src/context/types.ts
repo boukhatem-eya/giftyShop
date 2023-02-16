@@ -21,6 +21,7 @@ export type UserDataType = {
   fullName: string
   username: string
   password: string
+  first_connection : boolean 
   avatar?: string | null
 }
 

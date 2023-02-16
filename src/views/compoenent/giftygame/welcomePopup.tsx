@@ -20,32 +20,18 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useRouter } from 'next/router'
 import Grid from '@mui/material/Grid'
 
-import WelcomePopup from 'src/@core/components/giftyGame/welcomePopup'
-// ** Hook Imports
-import { useAuth } from 'src/hooks/useAuth'
-const Home = () => {
+interface props {
+open : boolean
+
+}
+const welcomePopup = (props:props) => {
   // ** State
   const router = useRouter()
-  const auth = useAuth()
+  const [open, setOpen] = useState<boolean>(true)
 
-  const aaa = () => {
-    if (auth.user && auth.user.first_connection == true) {
-      return true
-    }
-    return true
-  }
+  const handleClickOpen = () => setOpen(true)
 
-  const [open, setOpen] = useState<boolean>(aaa)
-
-  const [openGiftySGame, setOpenGiftyShop] = useState<boolean>(false)
-
-  const handleClickOpenGiftyShop = () => setOpenGiftyShop(true)
-  const handleCloseGiftyGame = () => setOpenGiftyShop(false)
-
-  const handleClose = () => {
-    
-    setOpen(false)
-  }
+  const handleClose = () => setOpen(false)
 
   const [openConfigPopup, setOpenConfigPopup] = useState<boolean>(false)
 
@@ -71,93 +57,9 @@ const Home = () => {
 
   return (
     <>
-      <Box>
-        <Typography
-          variant='h4'
-          component='span'
-          sx={{ display: 'flex', justifyContent: 'center', alignItem: 'center', p: 4 }}
-        >
-          Quelle module disireé vous effectuez ?
-        </Typography>
-        <Typography sx={{ display: 'flex', justifyContent: 'center', alignItem: 'center', pb: 6 }}>
-          Please make sure to read our Template Documentation to understand wher
-        </Typography>
-      </Box>
 
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItem: 'center' }}>
-        <Grid container spacing={6} sx={{ width: { xs: '90%', md: '50%', lg: '50%' } }}>
-          <Grid item xs={4}>
-            <Card>
-              <Button
-                variant='outlined'
-                onClick={handleClickOpenGiftyShop}
-                sx={{
-                  border: 'none',
-                  '&.MuiButtonBase-root:hover': {
-                    bgcolor: 'transparent',
-                    focus: 'none'
-                  }
-                }}
-              >
-                <CardContent sx={{ width: '100%' }}>
-                  <img src='/images/Gifty game.png' width='100%'></img>
-                  <Typography sx={{ p: 2, color: 'black' }} variant='h5'>
-                    Gifty Game
-                  </Typography>
-                </CardContent>
-              </Button>
-            </Card>
-          </Grid>
-          <Grid item xs={4}>
-            <Card>
-              <Button variant='outlined' onClick={handleClickOpenGiftyShop} sx={{ border: 'none' }}>
-                <CardContent>
-                  <img src='/images/Gifty Call.png' width='100%'></img>
-                  <Typography sx={{ p: 2, color: 'black' }} variant='h5'>
-                    gifty call
-                  </Typography>
-                </CardContent>
-              </Button>
-            </Card>
-          </Grid>
-          <Grid item xs={4}>
-            <Card>
-              <Button variant='outlined' onClick={handleClickOpenGiftyShop} sx={{ border: 'none' }}>
-                <CardContent>
-                  <img src='/images/Gifty Feeds.png' width='100%'></img>
-                  <Typography sx={{ p: 2, color: 'black' }} variant='h5'>
-                    Gifty feeds .
-                  </Typography>
-                </CardContent>
-              </Button>
-            </Card>
-          </Grid>
-          <Grid item xs={4}>
-            <Card>
-              <Button variant='outlined' onClick={handleClickOpenGiftyShop} sx={{ border: 'none' }}>
-                <CardContent>
-                  <img src='/images/Gifty sms.png' width='100%'></img>
-                  <Typography sx={{ p: 2, color: 'black' }} variant='h5'>
-                    Gifty SMS
-                  </Typography>
-                </CardContent>
-              </Button>
-            </Card>
-          </Grid>
-          <Grid item xs={4}>
-            <Card>
-              <Button variant='outlined' onClick={handleClickOpenGiftyShop} sx={{ border: 'none' }}>
-                <CardContent>
-                  <img src='/images/Gifty Stat.png' width='100%'></img>
-                  <Typography sx={{ p: 2, color: 'black' }} variant='h5'>
-                    STatristique{' '}
-                  </Typography>
-                </CardContent>
-              </Button>
-            </Card>
-          </Grid>
-        </Grid>
-      </Box>
+
+  
       {/* <Button variant='outlined' onClick={handleClickOpen}>
         Open dialog
       </Button> */}
@@ -287,9 +189,8 @@ const Home = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      <WelcomePopup open={openGiftySGame} handleClose={handleCloseGiftyGame} />
     </>
   )
 }
-Home.getLayout = (page: ReactNode) => <BlankLayoutWithAppBar>{page}</BlankLayoutWithAppBar>
-export default Home
+
+export default welcomePopup
