@@ -294,7 +294,7 @@ const LoginPage = () => {
   )
 }
 
-LoginPage.getLayout = (page: ReactNode) => <BlankLayoutWithAppBar>{page}</BlankLayoutWithAppBar>
+LoginPage.getLayout = (page: ReactNode) => <BlankLayout>{page}</BlankLayout>
 
 LoginPage.guestGuard = true
 

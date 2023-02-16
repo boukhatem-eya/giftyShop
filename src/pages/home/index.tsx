@@ -53,11 +53,17 @@ const Home = () => {
 
   return (
     <>
-      <Box >
-        <Typography variant='h4' component='span' sx={{ display: 'flex', justifyContent: 'center', alignItem: 'center' , p :4 }}>
+      <Box>
+        <Typography
+          variant='h4'
+          component='span'
+          sx={{ display: 'flex', justifyContent: 'center', alignItem: 'center', p: 4 }}
+        >
           Quelle module disireé vous effectuez ?
         </Typography>
-        <Typography sx={{ display: 'flex', justifyContent: 'center', alignItem: 'center' , pb :6 }} >Please make sure to read our Template Documentation to understand wher</Typography>
+        <Typography sx={{ display: 'flex', justifyContent: 'center', alignItem: 'center', pb: 6 }}>
+          Please make sure to read our Template Documentation to understand wher
+        </Typography>
       </Box>
 
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItem: 'center' }}>
@@ -114,11 +120,11 @@ const Home = () => {
           </Grid>
         </Grid>
       </Box>
-      <Button variant='outlined' onClick={handleClickOpen}>
+      {/* <Button variant='outlined' onClick={handleClickOpen}>
         Open dialog
-      </Button>
+      </Button> */}
       <Dialog
-        PaperProps={{ sx: { height: '60%' } }}
+        PaperProps={{ sx: { height: '80%' } }}
         maxWidth='md'
         onClose={handleClose}
         aria-labelledby='customized-dialog-title'
@@ -129,7 +135,7 @@ const Home = () => {
           id='customized-dialog-title'
           sx={{ p: 4, display: 'flex', alignItems: 'center', flexDirection: 'column', justifyContent: 'center' }}
         >
-          <img src='/images/giftishop.png' width='250px'></img>
+          <img src='/images/giftishop.png' width='200px'></img>
           <Typography variant='h6' component='span'></Typography>
           <IconButton
             aria-label='close'
@@ -143,7 +149,7 @@ const Home = () => {
           <Typography variant='h4' component='span' sx={{ p: 4 }}>
             Bienvenue dans giftyshop
           </Typography>
-          <Typography sx={{ p: 10 }}>
+          <Typography sx={{ p: 5 }}>
             Please sign-in to your account and start the adventure Please sign-in to your account and start the
             adventurePlease sign-in to your account and start the adventurePlease sign-in to your account and start the
             adventurePlease sign-in to your account and start the adventure Please sign-in to your account and start the
@@ -161,21 +167,21 @@ const Home = () => {
             justifyContent: 'center'
           }}
         >
-          <Button onClick={handleCloseAndOpen} variant='contained' sx={{ height: 60, padding: 4, margin: 2 }}>
+          <Button onClick={handleCloseAndOpen} variant='contained' sx={{ height: 50, padding: 4, margin: 2 }}>
             Configurer mon compte
           </Button>
         </DialogActions>
       </Dialog>
 
       <Dialog
-        PaperProps={{ sx: { height: '60%' } }}
+        PaperProps={{ sx: { height: '90%' } }}
         maxWidth='md'
         onClose={handleConfigClose}
         aria-labelledby='customized-dialog-title'
         open={openConfigPopup}
         sx={{ width: '100%' }}
       >
-        <DialogTitle id='customized-dialog-title' sx={{ p: 4 }}>
+        <DialogTitle id='customized-dialog-title' sx={{ p: 2 }}>
           <Typography variant='h4' component='span'>
             Nouvelle boutique
           </Typography>

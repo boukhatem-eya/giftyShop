@@ -41,13 +41,14 @@ import { useSettings } from 'src/@core/hooks/useSettings'
 
 // ** Demo Imports
 import FooterIllustrationsV2 from 'src/views/pages/auth/FooterIllustrationsV2'
-import { Card, CardContent } from '@mui/material'
+import { Card, CardContent, Grid } from '@mui/material'
 
 const defaultValues = {
   email: '',
   name: '',
   familyname: '',
   password: '',
+  telephone: '',
   terms: false
 }
 interface FormData {
@@ -55,6 +56,7 @@ interface FormData {
   terms: boolean
   name: string
   familyname: string
+  telephone: string
   password: string
 }
 
@@ -125,6 +127,7 @@ const Register = () => {
     name: yup.string().min(3).required(),
     familyname: yup.string().min(3).required(),
     email: yup.string().email().required(),
+    telephone: yup.string().required(),
     terms: yup.bool().oneOf([true], 'You must accept the privacy policy & terms')
   })
 
@@ -140,8 +143,8 @@ const Register = () => {
   })
 
   const onSubmit = (data: FormData) => {
-    const { email, name, familyname, password } = data
-    register({ email, name , familyname, password }, err => {
+    const { email, name, familyname, telephone, password } = data
+    register({ email, name, familyname, telephone, password }, err => {
       if (err.email) {
         setError('email', {
           type: 'manual',
@@ -173,44 +176,72 @@ const Register = () => {
             <Typography variant='body2'>Please sign-in to your account and start the adventure</Typography>
           </Box>
           <form noValidate autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
+            <Grid container spacing={5}>
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth sx={{ mb: 4 }}>
+                  <Controller
+                    name='name'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange, onBlur } }) => (
+                      <TextField
+                        autoFocus
+                        value={value}
+                        onBlur={onBlur}
+                        label='name'
+                        onChange={onChange}
+                        placeholder='name'
+                        error={Boolean(errors.name)}
+                      />
+                    )}
+                  />
+                  {errors.name && <FormHelperText sx={{ color: 'error.main' }}>{errors.name.message}</FormHelperText>}
+                </FormControl>
+              </Grid>
+
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth sx={{ mb: 4 }}>
+                  <Controller
+                    name='familyname'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange, onBlur } }) => (
+                      <TextField
+                        autoFocus
+                        value={value}
+                        onBlur={onBlur}
+                        label='familyname'
+                        onChange={onChange}
+                        placeholder='familyname'
+                        error={Boolean(errors.familyname)}
+                      />
+                    )}
+                  />
+                  {errors.familyname && (
+                    <FormHelperText sx={{ color: 'error.main' }}>{errors.familyname.message}</FormHelperText>
+                  )}
+                </FormControl>
+              </Grid>
+            </Grid>
+
             <FormControl fullWidth sx={{ mb: 4 }}>
               <Controller
-                name='name'
+                name='telephone'
                 control={control}
                 rules={{ required: true }}
                 render={({ field: { value, onChange, onBlur } }) => (
                   <TextField
-                    autoFocus
                     value={value}
+                    label='telephone'
                     onBlur={onBlur}
-                    label='name'
                     onChange={onChange}
-                    placeholder='name'
-                    error={Boolean(errors.name)}
+                    error={Boolean(errors.telephone)}
+                    placeholder='dddddd'
                   />
                 )}
               />
-              {errors.name && <FormHelperText sx={{ color: 'error.main' }}>{errors.name.message}</FormHelperText>}
-            </FormControl>
-            <FormControl fullWidth sx={{ mb: 4 }}>
-              <Controller
-                name='familyname'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange, onBlur } }) => (
-                  <TextField
-                    autoFocus
-                    value={value}
-                    onBlur={onBlur}
-                    label='familyname'
-                    onChange={onChange}
-                    placeholder='familyname'
-                    error={Boolean(errors.familyname)}
-                  />
-                )}
-              />
-              {errors.familyname && (
-                <FormHelperText sx={{ color: 'error.main' }}>{errors.familyname.message}</FormHelperText>
+              {errors.telephone && (
+                <FormHelperText sx={{ color: 'error.main' }}>{errors.telephone.message}</FormHelperText>
               )}
             </FormControl>
             <FormControl fullWidth sx={{ mb: 4 }}>
@@ -231,6 +262,7 @@ const Register = () => {
               />
               {errors.email && <FormHelperText sx={{ color: 'error.main' }}>{errors.email.message}</FormHelperText>}
             </FormControl>
+
             <FormControl fullWidth>
               <InputLabel htmlFor='auth-login-v2-password' error={Boolean(errors.password)}>
                 Password

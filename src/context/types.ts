@@ -10,6 +10,7 @@ export type RegisterParams = {
   email: string
   name: string
   familyname: string
+  telephone: string
   password: string
 }
 
