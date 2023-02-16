@@ -1,55 +1,76 @@
-// ** MUI Imports
-import Card from '@mui/material/Card'
-import Typography from '@mui/material/Typography'
-import CardHeader from '@mui/material/CardHeader'
-import CardContent from '@mui/material/CardContent'
+import { useState } from 'react'
+import { loadStripe } from '@stripe/stripe-js'
+import { CardElement, Elements, useElements } from '@stripe/react-stripe-js'
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography, IconButton } from '@mui/material'
 import { Box } from '@mui/system'
-import Button from '@mui/material/Button'
-import Dialog from '@mui/material/Dialog'
-import IconButton from '@mui/material/IconButton'
-import DialogTitle from '@mui/material/DialogTitle'
-import DialogContent from '@mui/material/DialogContent'
-import DialogActions from '@mui/material/DialogActions'
-import { ReactNode, useState } from 'react'
-// ** Icon Imports
-import Icon from 'src/@core/components/icon'
-import { useRouter } from 'next/router'
-import Grid from '@mui/material/Grid'
-import { DataGrid } from '@mui/x-data-grid'
+import Icon from '../../components/icon'
 
+const stripePromise = loadStripe('YOUR_STRIPE_PUBLIC_KEY')
 type props = {
   open: boolean
-  handleClose: () => void
+  onClose: () => void
+  amount: string
 }
+const PaymentDialog = (props: props) => {
+  const { open, onClose, amount } = props
+  const [paymentStatus, setPaymentStatus] = useState('idle')
 
-const Stripe = (props: props) => {
-  // ** State
-  const router = useRouter()
-  const { open, handleClose } = props
-  const [selectionModel, setSelectionModel] = useState([])
+  //   const elements = useElements()
 
-  const handleSelectionModelChange = (newSelection: any) => {
-    setSelectionModel(newSelection.selectionModel)
+  const handlePayment = async (event: any) => {
+    // Prevent the default form submit behavior
+    event.preventDefault()
+
+    setPaymentStatus('processing')
+
+    // Get the Stripe instance and create a payment method
+    const stripe = (await stripePromise) as any
+
+    const result = await stripe.createPaymentMethod({
+      type: 'card'
+      // card: elements.getElement(CardElement)
+    })
+    // Handle the payment method result
+    if (result.error) {
+      setPaymentStatus('error')
+    } else {
+      // Submit the payment to your server
+      const response = await fetch('/api/pay', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amount: amount, paymentMethodId: result.paymentMethod.id })
+      })
+
+      // Handle the server response
+      if (response.ok) {
+        setPaymentStatus('success')
+      } else {
+        setPaymentStatus('error')
+      }
+    }
+  }
+
+  const handleClose = () => {
+    if (paymentStatus === 'success') {
+      onClose()
+    } else {
+      onClose()
+    }
   }
 
   return (
-    <>
-      {/* <Button variant='outlined' onClick={handleClickOpen}>
-        Open dialog
-      </Button> */}
-      <Dialog
-        PaperProps={{ sx: { height: '70%' } }}
-        maxWidth='md'
-        onClose={handleClose}
-        aria-labelledby='customized-dialog-title'
-        open={open}
-        sx={{ width: '100%' }}
-      >
-        <DialogTitle
+    <Dialog
+      PaperProps={{ sx: { height: '80%' } }}
+      maxWidth='md'
+      sx={{ width: '100%' }}
+      open={open}
+      onClose={handleClose}
+    >
+     <DialogTitle
           id='customized-dialog-title'
           sx={{ p: 4, display: 'flex', alignItems: 'center', flexDirection: 'column', justifyContent: 'center' }}
         >
-          <img src='/images/giftyGameLogoMOdule.png' width='200px'></img>
+          <img src='/images/stripe.png' width='150px'></img>
           <Typography variant='h6' component='span'></Typography>
           <IconButton
             aria-label='close'
@@ -59,26 +80,26 @@ const Stripe = (props: props) => {
             <Icon icon='mdi:close' />
           </IconButton>
         </DialogTitle>
-        <DialogContent
-          dividers
-          sx={{ p: 4, display: 'flex', alignItems: 'center', flexDirection: 'column' }}
-        ></DialogContent>
-        <DialogActions
-          sx={{
-            p: theme => `${theme.spacing(3)} !important`,
-            display: 'flex',
-            alignItems: 'center',
-            flexDirection: 'column',
-            justifyContent: 'center'
-          }}
-        >
-          <Button variant='contained' sx={{ height: 50, padding: 4, margin: 2 }}>
-            payer
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </>
+      <DialogContent>
+        <Box sx={{ width: '400px',  }}>
+          <Elements stripe={stripePromise}>
+            <form onSubmit={handlePayment}>
+              {/* Use the CardElement from @stripe/react-stripe-js */}
+              <CardElement />
+              <Button type='submit' disabled={paymentStatus === 'processing'}>
+                {paymentStatus === 'processing' ? 'Processing...' : 'Pay now'}
+              </Button>
+            </form>
+          </Elements>
+        </Box>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose} disabled={paymentStatus === 'processing'}>
+          Cancel
+        </Button>
+      </DialogActions>
+    </Dialog>
   )
 }
 
-export default Stripe
+export default PaymentDialog

@@ -17,6 +17,7 @@ import { useRouter } from 'next/router'
 import Grid from '@mui/material/Grid'
 import { DataGrid } from '@mui/x-data-grid'
 import { he } from 'date-fns/locale'
+import PaymentDialog from './stripePopup'
 
 const columns = [
   { field: 'id', headerName: 'disignation', width: 130 },
@@ -49,6 +50,8 @@ type props = {
 const PointVente = (props: props) => {
   // ** State
   const router = useRouter()
+
+  const [OpenStripe, setOpenStripe] = useState(false)
   const { open, handleClose } = props
   const [selectionModel, setSelectionModel] = useState([])
   const [selections, setSelections] = useState([])
@@ -60,6 +63,12 @@ const PointVente = (props: props) => {
       setSelectionModel(newSelection.selectionModel)
       console.log(selectedRows)
     }
+  }
+  const onClose = () => setOpenStripe(false)
+
+  const CloseAndOPenStripe = () => {
+    handleClose();
+    setOpenStripe(true)
   }
 
   return (
@@ -107,11 +116,12 @@ const PointVente = (props: props) => {
           }}
         >
           2555$
-          <Button variant='contained' sx={{ height: 50, padding: 4, margin: 2 }}>
+          <Button variant='contained' onClick={CloseAndOPenStripe} sx={{ height: 50, padding: 4, margin: 2 }}>
             payer
           </Button>
         </DialogActions>
       </Dialog>
+      <PaymentDialog open={OpenStripe} onClose={onClose} amount={'500'}/>
     </>
   )
 }
