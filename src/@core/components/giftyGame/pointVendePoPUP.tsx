@@ -51,15 +51,19 @@ const PointVente = (props: props) => {
   const router = useRouter()
   const { open, handleClose } = props
   const [selectionModel, setSelectionModel] = useState([])
-
-  console.log(selectionModel)
+  const [selections, setSelections] = useState([])
+  console.log(selections)
   const handleSelectionModelChange = (newSelection: any) => {
-    setSelectionModel(newSelection.selectionModel)
+    if (newSelection) {
+      const selectedRows = newSelection.map((id: any) => rows.find(row => row.id === id))
+      setSelections(selectedRows)
+      setSelectionModel(newSelection.selectionModel)
+      console.log(selectedRows)
+    }
   }
 
   return (
     <>
-      
       <Dialog
         PaperProps={{ sx: { height: '70%' } }}
         maxWidth='md'
