@@ -85,7 +85,7 @@ const PaymentDialog = (props: props) => {
           <Elements stripe={stripePromise}>
             <form onSubmit={handlePayment}>
               {/* Use the CardElement from @stripe/react-stripe-js */}
-              <CardElement />
+              <CardElement  />
               <Button type='submit' disabled={paymentStatus === 'processing'}>
                 {paymentStatus === 'processing' ? 'Processing...' : 'Pay now'}
               </Button>

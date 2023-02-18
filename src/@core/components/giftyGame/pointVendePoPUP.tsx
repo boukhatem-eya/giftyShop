@@ -67,15 +67,16 @@ const PointVente = (props: props) => {
   const onClose = () => setOpenStripe(false)
 
   const CloseAndOPenStripe = () => {
-    handleClose();
+    handleClose()
     setOpenStripe(true)
   }
 
   return (
     <>
+    
       <Dialog
         PaperProps={{ sx: { height: '70%' } }}
-        maxWidth='md'
+        maxWidth='lg'
         onClose={handleClose}
         aria-labelledby='customized-dialog-title'
         open={open}
@@ -85,7 +86,7 @@ const PointVente = (props: props) => {
           id='customized-dialog-title'
           sx={{ p: 4, display: 'flex', alignItems: 'center', flexDirection: 'column', justifyContent: 'center' }}
         >
-          <img src='/images/giftyGameLogoMOdule.png' width='200px'></img>
+          <img src='/images/giftyGameLogoMOdule.png' height='100px'></img>
           <Typography variant='h6' component='span'></Typography>
           <IconButton
             aria-label='close'
@@ -95,7 +96,25 @@ const PointVente = (props: props) => {
             <Icon icon='mdi:close' />
           </IconButton>
         </DialogTitle>
-        <DialogContent dividers sx={{ p: 4, display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+        <DialogContent
+          dividers
+          sx={{ pb: 10, pl: 10, pr: 10, display: 'flex', alignItems: 'center', flexDirection: 'column' }}
+        >
+          <Typography variant='h5' component='span' sx={{ pb: 10 }}>
+            Please sign-in to your account and start the adventure Please sign-in
+          </Typography>
+          <DataGrid
+            rows={rows}
+            columns={columns}
+            pageSize={rows.length}
+            checkboxSelection
+            selectionModel={selectionModel}
+            onSelectionModelChange={handleSelectionModelChange}
+            sx={{ width: '100%', mt: 2, height: 'auto' }}
+          />
+         
+        </DialogContent>
+        {/* <DialogContent dividers sx={{ p: 4, display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
           <Typography variant='h5' component='span' sx={{ p: 4, fontWeight: 'bold' }}>
             veillez selectionner le point de vente ou laquelle vous devez ....
           </Typography>
@@ -108,7 +127,7 @@ const PointVente = (props: props) => {
             onSelectionModelChange={handleSelectionModelChange}
             sx={{ width: '100%', mt: 2, height: 'auto' }}
           />
-        </DialogContent>
+        </DialogContent> */}
 
         <DialogActions
           sx={{
@@ -121,7 +140,7 @@ const PointVente = (props: props) => {
           </Button>
         </DialogActions>
       </Dialog>
-      <PaymentDialog open={OpenStripe} onClose={onClose} amount={'500'}/>
+      <PaymentDialog open={OpenStripe} onClose={onClose} amount={'500'} />
     </>
   )
 }

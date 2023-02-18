@@ -83,10 +83,10 @@ const SecondPage = () => {
     <Grid container>
       <Grid item xs={12}>
         <Card>
-          <CardHeader title='Create Awesome 🙌'></CardHeader>
+          <CardHeader title='Mes Boutiques 🏬' sx={{ fontSize :"24px"}}></CardHeader>
           <CardContent>
-            <TableContainer component={Paper} sx={{ maxHeight: 440 }}>
-              <Table stickyHeader aria-label='sticky table'>
+            <TableContainer component={Paper} sx={{ minHeight: '65vh' }}>
+              <Table stickyHeader aria-label='sticky table' >
                 <TableHead>
                   <TableRow>
                     {columns.map(column => (

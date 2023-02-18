@@ -30,27 +30,19 @@ const WelcomePopup = (props: props) => {
   // ** State
   const router = useRouter()
   const { open, handleClose } = props
-  const [ openPointVente , setOPenPointVente ] = useState(false)
-
+  const [openPointVente, setOPenPointVente] = useState(false)
 
   const CloseAndOPenPOintVente = () => {
-     handleClose();
-     setOPenPointVente(true)
+    handleClose()
+    setOPenPointVente(true)
+  }
 
-
-
-    }
-
-    const handleClosePointVente = () => setOPenPointVente(false)
+  const handleClosePointVente = () => setOPenPointVente(false)
 
   return (
     <>
-      {/* <Button variant='outlined' onClick={handleClickOpen}>
-        Open dialog
-      </Button> */}
       <Dialog
-        PaperProps={{ sx: { height: '70%' } }}
-        maxWidth='md'
+        maxWidth='lg'
         onClose={handleClose}
         aria-labelledby='customized-dialog-title'
         open={open}
@@ -60,7 +52,7 @@ const WelcomePopup = (props: props) => {
           id='customized-dialog-title'
           sx={{ p: 4, display: 'flex', alignItems: 'center', flexDirection: 'column', justifyContent: 'center' }}
         >
-          <img src='/images/giftyGameLogoMOdule.png' width='200px'></img>
+          <img src='/images/giftyGameLogoMOdule.png' height='100px'></img>
           <Typography variant='h6' component='span'></Typography>
           <IconButton
             aria-label='close'
@@ -70,8 +62,11 @@ const WelcomePopup = (props: props) => {
             <Icon icon='mdi:close' />
           </IconButton>
         </DialogTitle>
-        <DialogContent dividers sx={{ p: 4, display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-          <Typography variant='h5' component='span' sx={{ p: 4 }}>
+        <DialogContent
+          dividers
+          sx={{ pb: 10, pl: 10, pr: 10, display: 'flex', alignItems: 'center', flexDirection: 'column' }}
+        >
+          <Typography variant='h5' component='span' sx={{ pb: 10 }}>
             Please sign-in to your account and start the adventure Please sign-in
           </Typography>
 
@@ -84,16 +79,20 @@ const WelcomePopup = (props: props) => {
             </Grid>
             <Grid item xs={6}>
               <Typography variant='h6'>A propos de ce module</Typography>
-              <Typography sx={{ p: 3 }}>
+              <Typography sx={{ py: 5 }}>
                 Please sign-in to your account and start the adventure Please sign-in to your account and start the
                 adventurePlease sign-in to your account and start the adventurePlease sign-in to your account and start
                 the adventurePlease sign-in to your account and start the adventure Please sign-in to your account and
                 start the adventure Please sign-in to your account and start the adventurePlease sign-in to your account
               </Typography>
-              <Typography>Choix votre plan</Typography>
+              <Typography variant='h6'>Choix votre plan</Typography>
               <Box sx={{ p: 2, display: 'flex', alignItems: 'center', flexDirection: 'row' }}>
                 <Box>
-                  <Button variant='contained' onClick={CloseAndOPenPOintVente} sx={{ height: 50, padding: 4, margin: 2 }}>
+                  <Button
+                    variant='contained'
+                    onClick={CloseAndOPenPOintVente}
+                    sx={{ height: 50, padding: 4, margin: 2 }}
+                  >
                     trimestrial
                   </Button>
                   255$
@@ -108,7 +107,7 @@ const WelcomePopup = (props: props) => {
             </Grid>
           </Grid>
         </DialogContent>
-        <DialogActions
+        {/* <DialogActions
           sx={{
             p: theme => `${theme.spacing(3)} !important`,
             display: 'flex',
@@ -116,10 +115,10 @@ const WelcomePopup = (props: props) => {
             flexDirection: 'column',
             justifyContent: 'center'
           }}
-        ></DialogActions>
+        ></DialogActions> */}
       </Dialog>
 
-      <PointVente open={openPointVente}  handleClose={handleClosePointVente} />
+      <PointVente open={openPointVente} handleClose={handleClosePointVente} />
     </>
   )
 }

@@ -43,7 +43,6 @@ const Home = () => {
   const handleCloseGiftyGame = () => setOpenGiftyShop(false)
 
   const handleClose = () => {
-    
     setOpen(false)
   }
 
@@ -85,8 +84,8 @@ const Home = () => {
       </Box>
 
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItem: 'center' }}>
-        <Grid container spacing={6} sx={{ width: { xs: '90%', md: '50%', lg: '50%' } }}>
-          <Grid item xs={4}>
+        <Grid container spacing={8} sx={{ width: { xs: '90%', md: '50%', lg: '50%' } }}>
+          <Grid item sm={6} md={6} lg={4}>
             <Card>
               <Button
                 variant='outlined'
@@ -94,13 +93,14 @@ const Home = () => {
                 sx={{
                   border: 'none',
                   '&.MuiButtonBase-root:hover': {
-                    bgcolor: 'transparent',
-                    focus: 'none'
+                    background: 'linear-gradient(177deg, rgba(255,99,237,1) 0%, rgba(255,153,38,1) 100%)',
+                    color : "white"
+                    // focus: 'none'
                   }
                 }}
               >
                 <CardContent sx={{ width: '100%' }}>
-                  <img src='/images/Gifty game.png' width='100%'></img>
+                  <img src='/images/Module_GiftyGAME.svg' width='200px'></img>
                   <Typography sx={{ p: 2, color: 'black' }} variant='h5'>
                     Gifty Game
                   </Typography>
@@ -108,11 +108,11 @@ const Home = () => {
               </Button>
             </Card>
           </Grid>
-          <Grid item xs={4}>
+          <Grid item  sm={6} md={6} lg={4}>
             <Card>
               <Button variant='outlined' onClick={handleClickOpenGiftyShop} sx={{ border: 'none' }}>
                 <CardContent>
-                  <img src='/images/Gifty Call.png' width='100%'></img>
+                  <img src='/images/Gifty Call.png' width='100%' height='200px'></img>
                   <Typography sx={{ p: 2, color: 'black' }} variant='h5'>
                     gifty call
                   </Typography>
@@ -120,11 +120,11 @@ const Home = () => {
               </Button>
             </Card>
           </Grid>
-          <Grid item xs={4}>
+          <Grid item  sm={6} md={6} lg={4}>
             <Card>
               <Button variant='outlined' onClick={handleClickOpenGiftyShop} sx={{ border: 'none' }}>
                 <CardContent>
-                  <img src='/images/Gifty Feeds.png' width='100%'></img>
+                  <img src='/images/Gifty Feeds.png' width='100%' height='200px'></img>
                   <Typography sx={{ p: 2, color: 'black' }} variant='h5'>
                     Gifty feeds .
                   </Typography>
@@ -132,11 +132,11 @@ const Home = () => {
               </Button>
             </Card>
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={4} sm={6} md={6} lg={4}>
             <Card>
               <Button variant='outlined' onClick={handleClickOpenGiftyShop} sx={{ border: 'none' }}>
                 <CardContent>
-                  <img src='/images/Gifty sms.png' width='100%'></img>
+                  <img src='/images/Gifty sms.png' width='100%' height='200px'></img>
                   <Typography sx={{ p: 2, color: 'black' }} variant='h5'>
                     Gifty SMS
                   </Typography>
@@ -148,7 +148,7 @@ const Home = () => {
             <Card>
               <Button variant='outlined' onClick={handleClickOpenGiftyShop} sx={{ border: 'none' }}>
                 <CardContent>
-                  <img src='/images/Gifty Stat.png' width='100%'></img>
+                  <img src='/images/Gifty Stat.png' width='100%' height='200px'></img>
                   <Typography sx={{ p: 2, color: 'black' }} variant='h5'>
                     STatristique{' '}
                   </Typography>
@@ -162,18 +162,18 @@ const Home = () => {
         Open dialog
       </Button> */}
       <Dialog
-        PaperProps={{ sx: { height: '80%' } }}
+        // PaperProps={{ sx: { height: '70%' } }}
         maxWidth='md'
         onClose={handleClose}
         aria-labelledby='customized-dialog-title'
         open={open}
-        sx={{ width: '100%' }}
+        // sx={{ width: '100%' }}
       >
         <DialogTitle
           id='customized-dialog-title'
           sx={{ p: 4, display: 'flex', alignItems: 'center', flexDirection: 'column', justifyContent: 'center' }}
         >
-          <img src='/images/giftishop.png' width='200px'></img>
+          <img src='/images/giftishop.png' height='100px'></img>
           <Typography variant='h6' component='span'></Typography>
           <IconButton
             aria-label='close'
@@ -212,14 +212,14 @@ const Home = () => {
       </Dialog>
 
       <Dialog
-        PaperProps={{ sx: { height: '90%' } }}
+        
         maxWidth='md'
         onClose={handleConfigClose}
         aria-labelledby='customized-dialog-title'
         open={openConfigPopup}
-        sx={{ width: '100%' }}
+       
       >
-        <DialogTitle id='customized-dialog-title' sx={{ p: 2 }}>
+        <DialogTitle id='customized-dialog-title' sx={{ p: 5 }}>
           <Typography variant='h4' component='span'>
             Nouvelle boutique
           </Typography>
@@ -231,16 +231,18 @@ const Home = () => {
             <Icon icon='mdi:close' />
           </IconButton>
         </DialogTitle>
-        <DialogContent dividers sx={{ p: 4, display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-          <Box sx={{ p: 4, display: 'flex', alignItems: 'center' }}>
-            <Typography variant='h4' component='span' sx={{ p: 4 }}>
-              aaaa
+        <DialogContent dividers sx={{ p: 4, display: 'flex', alignItems: 'left', flexDirection: 'column' }}>
+          <Box sx={{ p: 4, display: 'flex', alignItems: 'left' }}>
+            <Typography variant='h4' component='span' sx={{ p: 0 }}>
+              <img src="/images/Image.svg" width="200px" />
             </Typography>
-            <Typography sx={{ p: 5 }}>
+
+            <Typography sx={{ p: 5 , display: 'flex', alignItems: 'left', flexDirection: 'column' }}>
               <Button onClick={handleSumbit} variant='contained' sx={{ height: 60, padding: 4, margin: 2 }}>
                 Télécharger une photos
               </Button>
-              Autorisé png et jpeg , taille maximale de book
+              
+              <Typography sx={{ p : 2}}>Autorisé png et jpeg , taille maximale de book</Typography>
             </Typography>
           </Box>
           <Grid container spacing={5}>
@@ -282,7 +284,7 @@ const Home = () => {
             p: theme => `${theme.spacing(3)} !important`
           }}
         >
-          <Button onClick={handleSumbit} variant='contained' sx={{ height: 60, padding: 4, margin: 2 }}>
+          <Button onClick={handleSumbit} variant='contained' sx={{ height: 60, padding: 4, margin: 2 , minWidth : "200px" , fontSize :"20px" , fontWeight :"700" }}>
             Ajouter
           </Button>
         </DialogActions>

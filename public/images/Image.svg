@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="520" height="520" viewBox="0 0 520 520">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#ff63ed"/>
+      <stop offset="1" stop-color="#ff9926"/>
+    </linearGradient>
+  </defs>
+  <g id="Groupe_1340" data-name="Groupe 1340" transform="translate(21400 3325)">
+    <rect id="Rectangle_12065" data-name="Rectangle 12065" width="520" height="520" transform="translate(-21400 -3325)" fill="#fff" opacity="0"/>
+    <g id="Groupe_1334" data-name="Groupe 1334" transform="translate(-21621.635 -3558.635)">
+      <g id="Image_10" data-name="Image 10" transform="translate(270 282)" stroke="#ff4848" stroke-width="4" fill="url(#linear-gradient)">
+        <rect width="423.269" height="423.269" rx="19" stroke="none"/>
+        <rect x="2" y="2" width="419.269" height="419.269" rx="17" fill="none"/>
+      </g>
+      <g id="logo-design" transform="translate(308.094 320.094)">
+        <path id="Tracé_829" data-name="Tracé 829" d="M70.815,103.132a157.637,157.637,0,0,0,101,263.28" transform="translate(-14.189 -36.578)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="6"/>
+        <path id="Tracé_830" data-name="Tracé 830" d="M197.532,30.56a156.882,156.882,0,0,0-83.469,34.046" transform="translate(-39.902 -14.512)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="6"/>
+        <path id="Tracé_831" data-name="Tracé 831" d="M278,30.56a157.639,157.639,0,0,1,0,313.786" transform="translate(-89.748 -14.512)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="6"/>
+        <circle id="Ellipse_153" data-name="Ellipse 153" cx="122.045" cy="122.045" r="122.045" transform="translate(50.896 50.896)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="6"/>
+        <g id="Groupe_1169" data-name="Groupe 1169" transform="translate(78.558 150.293)">
+          <g id="Groupe_1167" data-name="Groupe 1167" transform="translate(0 0.001)">
+            <path id="Tracé_832" data-name="Tracé 832" d="M120.381,223.457v45.258c.5.086,15.861,0,15.861,0" transform="translate(-120.381 -223.457)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="6"/>
+          </g>
+          <g id="Groupe_1168" data-name="Groupe 1168" transform="translate(85.413)">
+            <path id="Tracé_833" data-name="Tracé 833" d="M278.423,227.324a22.649,22.649,0,1,0-12.663,41.428c12.508,0,19.551-10.14,19.551-22.648h-13.55" transform="translate(-243.112 -223.456)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="6"/>
+          </g>
+          <circle id="Ellipse_154" data-name="Ellipse 154" cx="22.648" cy="22.648" r="22.648" transform="translate(24.26 0.001)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="6"/>
+          <circle id="Ellipse_155" data-name="Ellipse 155" cx="22.648" cy="22.648" r="22.648" transform="translate(143.47 0.001)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="6"/>
+        </g>
+        <g id="Groupe_1170" data-name="Groupe 1170" transform="translate(0 0)">
+          <line id="Ligne_163" data-name="Ligne 163" x1="127.009" transform="translate(188.252 15.311)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="6"/>
+          <line id="Ligne_164" data-name="Ligne 164" x1="127.009" transform="translate(30.621 15.311)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="6"/>
+          <path id="Tracé_834" data-name="Tracé 834" d="M7.5,22.811h0A15.311,15.311,0,0,1,22.811,7.5h0A15.311,15.311,0,0,1,38.121,22.811h0A15.311,15.311,0,0,1,22.811,38.121h0A15.311,15.311,0,0,1,7.5,22.811Z" transform="translate(-7.5 -7.5)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="6"/>
+          <path id="Tracé_835" data-name="Tracé 835" d="M460.5,22.811h0A15.311,15.311,0,0,1,475.811,7.5h0a15.311,15.311,0,0,1,15.311,15.311h0a15.311,15.311,0,0,1-15.311,15.311h0A15.311,15.311,0,0,1,460.5,22.811Z" transform="translate(-145.239 -7.5)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="6"/>
+          <path id="Tracé_836" data-name="Tracé 836" d="M234,34.642V10.98a3.48,3.48,0,0,1,3.48-3.48h23.662a3.48,3.48,0,0,1,3.48,3.48V34.642a3.48,3.48,0,0,1-3.48,3.48H237.48A3.48,3.48,0,0,1,234,34.642Z" transform="translate(-76.369 -7.5)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="6"/>
+        </g>
+        <g id="Groupe_1171" data-name="Groupe 1171" transform="translate(0 315.261)">
+          <line id="Ligne_165" data-name="Ligne 165" x1="67.364" transform="translate(188.252 15.311)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="6"/>
+          <line id="Ligne_166" data-name="Ligne 166" x1="35.288" transform="translate(279.973 15.311)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="6"/>
+          <line id="Ligne_167" data-name="Ligne 167" x1="127.009" transform="translate(30.621 15.311)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="6"/>
+          <path id="Tracé_837" data-name="Tracé 837" d="M7.5,475.811h0A15.311,15.311,0,0,1,22.811,460.5h0a15.311,15.311,0,0,1,15.311,15.311h0a15.311,15.311,0,0,1-15.311,15.311h0A15.311,15.311,0,0,1,7.5,475.811Z" transform="translate(-7.5 -460.5)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="6"/>
+          <path id="Tracé_838" data-name="Tracé 838" d="M460.5,475.811h0A15.311,15.311,0,0,1,475.811,460.5h0a15.311,15.311,0,0,1,15.311,15.311h0a15.311,15.311,0,0,1-15.311,15.311h0A15.311,15.311,0,0,1,460.5,475.811Z" transform="translate(-145.239 -460.5)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="6"/>
+          <path id="Tracé_839" data-name="Tracé 839" d="M234,487.642V463.98a3.48,3.48,0,0,1,3.48-3.48h23.662a3.48,3.48,0,0,1,3.48,3.48v23.662a3.48,3.48,0,0,1-3.48,3.48H237.48A3.48,3.48,0,0,1,234,487.642Z" transform="translate(-76.369 -460.5)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="6"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
