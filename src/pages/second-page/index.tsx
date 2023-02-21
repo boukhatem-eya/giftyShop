@@ -12,10 +12,11 @@ import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TablePagination from '@mui/material/TablePagination'
-import { ChangeEvent, useState } from 'react'
-
+import { ChangeEvent, useEffect, useState } from 'react'
+import { useQuery } from 'react-query'
+import { getShops } from '../../../servicesApi/shops'
 interface Column {
-  id: 'name' | 'code' | 'population' | 'size' | 'density'
+  id: 'name' | 'pays' | 'adresse' | 'ville' | 'Responsable'
   label: string
   minWidth?: number
   align?: 'right'
@@ -24,24 +25,24 @@ interface Column {
 
 const columns: readonly Column[] = [
   { id: 'name', label: 'Name', minWidth: 170 },
-  { id: 'code', label: 'ISO\u00a0Code', minWidth: 100 },
+  { id: 'pays', label: 'pays', minWidth: 100 },
   {
-    id: 'population',
-    label: 'Population',
+    id: 'adresse',
+    label: 'adresse',
     minWidth: 170,
     align: 'right',
     format: (value: number) => value.toLocaleString('en-US')
   },
   {
-    id: 'size',
-    label: 'Size\u00a0(km\u00b2)',
+    id: 'ville',
+    label: 'ville',
     minWidth: 170,
     align: 'right',
     format: (value: number) => value.toLocaleString('en-US')
   },
   {
-    id: 'density',
-    label: 'Density',
+    id: 'Responsable',
+    label: 'Responsable',
     minWidth: 170,
     align: 'right',
     format: (value: number) => value.toFixed(2)
@@ -56,17 +57,21 @@ interface Data {
   responsable: string
 }
 
-function createData(designiation: string, adress: string, ville: number, pays: number, responsable : string): Data {
- 
+function createData(designiation: string, adress: string, ville: number, pays: number, responsable: string): Data {
   return { designiation, adress, ville, pays, responsable }
 }
 
 const rows = [
-  createData('India', 'IN', 1324171354, 3287263,'India'),
-  createData('China', 'CN', 1403500365, 9596961,'India'),
- 
+  createData('India', 'IN', 1324171354, 3287263, 'India'),
+  createData('China', 'CN', 1403500365, 9596961, 'India')
 ]
 const SecondPage = () => {
+  const { isLoading, data } = useQuery('shops', () => getShops())
+
+  const shops = data ?? []
+
+  useEffect(() => {}, [shops])
+  console.log('shops----', shops.shops)
   // ** States
   const [page, setPage] = useState<number>(0)
   const [rowsPerPage, setRowsPerPage] = useState<number>(10)
@@ -83,10 +88,10 @@ const SecondPage = () => {
     <Grid container>
       <Grid item xs={12}>
         <Card>
-          <CardHeader title='Mes Boutiques 🏬' sx={{ fontSize :"24px"}}></CardHeader>
+          <CardHeader title='Mes Boutiques 🏬' sx={{ fontSize: '24px' }}></CardHeader>
           <CardContent>
             <TableContainer component={Paper} sx={{ minHeight: '65vh' }}>
-              <Table stickyHeader aria-label='sticky table' >
+              <Table stickyHeader aria-label='sticky table'>
                 <TableHead>
                   <TableRow>
                     {columns.map(column => (
@@ -97,21 +102,15 @@ const SecondPage = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => {
-                    return (
-                      <TableRow hover role='checkbox' tabIndex={-1} key={row.code}>
-                        {columns.map(column => {
-                          const value = row[column.id]
-
-                          return (
-                            <TableCell key={column.id} align={column.align}>
-                              {column.format && typeof value === 'number' ? column.format(value) : value}
-                            </TableCell>
-                          )
-                        })}
-                      </TableRow>
-                    )
-                  })}
+                  {shops?.shops?.map((row: any) => (
+                    <TableRow key={row.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                      <TableCell>{row.name}</TableCell>
+                      <TableCell>{row.pays}</TableCell>
+                      <TableCell>{row.addresse}</TableCell>
+                      <TableCell>{row.ville}</TableCell> 
+                      <TableCell>{row.responsable}</TableCell>
+                    </TableRow>
+                  ))}
                 </TableBody>
               </Table>
             </TableContainer>

@@ -134,8 +134,8 @@ const PointVente = (props: props) => {
             p: theme => `${theme.spacing(3)} !important`
           }}
         >
-          2555$
-          <Button variant='contained' onClick={CloseAndOPenStripe} sx={{ height: 50, padding: 4, margin: 2 }}>
+          2555$ 
+          <Button variant='contained' onClick={CloseAndOPenStripe} sx={{ height: 60, padding: 4, margin: 2, minWidth: '200px', fontSize: '20px', fontWeight: '700' }}>
             payer
           </Button>
         </DialogActions>

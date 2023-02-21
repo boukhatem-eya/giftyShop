@@ -87,18 +87,18 @@ const WelcomePopup = (props: props) => {
               </Typography>
               <Typography variant='h6'>Choix votre plan</Typography>
               <Box sx={{ p: 2, display: 'flex', alignItems: 'center', flexDirection: 'row' }}>
-                <Box>
+                <Box sx={{ p: 2, display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
                   <Button
                     variant='contained'
                     onClick={CloseAndOPenPOintVente}
-                    sx={{ height: 50, padding: 4, margin: 2 }}
+                    sx={{ height: 60, padding: 4, margin: 2, minWidth: '200px', fontSize: '20px', fontWeight: '700' }}
                   >
                     trimestrial
                   </Button>
                   255$
                 </Box>
-                <Box>
-                  <Button variant='contained' sx={{ height: 50, padding: 4, margin: 2 }}>
+                <Box sx={{ p: 2, display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+                  <Button variant='contained' sx={{ height: 60, padding: 4, margin: 2, minWidth: '200px', fontSize: '20px', fontWeight: '700' }}>
                     Anuelle
                   </Button>
                   255$

@@ -94,7 +94,7 @@ const Home = () => {
                   border: 'none',
                   '&.MuiButtonBase-root:hover': {
                     background: 'linear-gradient(177deg, rgba(255,99,237,1) 0%, rgba(255,153,38,1) 100%)',
-                    color : "white"
+                    color: 'white'
                     // focus: 'none'
                   }
                 }}
@@ -108,11 +108,22 @@ const Home = () => {
               </Button>
             </Card>
           </Grid>
-          <Grid item  sm={6} md={6} lg={4}>
+          <Grid item sm={6} md={6} lg={4}>
             <Card>
-              <Button variant='outlined' onClick={handleClickOpenGiftyShop} sx={{ border: 'none' }}>
+              <Button
+                variant='outlined'
+                onClick={handleClickOpenGiftyShop}
+                sx={{
+                  border: 'none',
+                  '&.MuiButtonBase-root:hover': {
+                    background: 'linear-gradient(177deg, rgba(255,99,237,1) 0%, rgba(255,153,38,1) 100%)',
+                    color: 'white'
+                    // focus: 'none'
+                  }
+                }}
+              >
                 <CardContent>
-                  <img src='/images/Gifty Call.png' width='100%' height='200px'></img>
+                  <img src='/images/Module_GiftyCALL (1).svg' width='100%' height='200px'></img>
                   <Typography sx={{ p: 2, color: 'black' }} variant='h5'>
                     gifty call
                   </Typography>
@@ -120,11 +131,22 @@ const Home = () => {
               </Button>
             </Card>
           </Grid>
-          <Grid item  sm={6} md={6} lg={4}>
+          <Grid item sm={6} md={6} lg={4}>
             <Card>
-              <Button variant='outlined' onClick={handleClickOpenGiftyShop} sx={{ border: 'none' }}>
+              <Button
+                variant='outlined'
+                onClick={handleClickOpenGiftyShop}
+                sx={{
+                  border: 'none',
+                  '&.MuiButtonBase-root:hover': {
+                    background: 'linear-gradient(177deg, rgba(255,99,237,1) 0%, rgba(255,153,38,1) 100%)',
+                    color: 'white'
+                    // focus: 'none'
+                  }
+                }}
+              >
                 <CardContent>
-                  <img src='/images/Gifty Feeds.png' width='100%' height='200px'></img>
+                  <img src='/images/Module_GiftyFeed (1).svg' width='100%' height='200px'></img>
                   <Typography sx={{ p: 2, color: 'black' }} variant='h5'>
                     Gifty feeds .
                   </Typography>
@@ -134,9 +156,20 @@ const Home = () => {
           </Grid>
           <Grid item xs={4} sm={6} md={6} lg={4}>
             <Card>
-              <Button variant='outlined' onClick={handleClickOpenGiftyShop} sx={{ border: 'none' }}>
+              <Button
+                variant='outlined'
+                onClick={handleClickOpenGiftyShop}
+                sx={{
+                  border: 'none',
+                  '&.MuiButtonBase-root:hover': {
+                    background: 'linear-gradient(177deg, rgba(255,99,237,1) 0%, rgba(255,153,38,1) 100%)',
+                    color: 'white'
+                    // focus: 'none'
+                  }
+                }}
+              >
                 <CardContent>
-                  <img src='/images/Gifty sms.png' width='100%' height='200px'></img>
+                  <img src='/images/Module_GiftySMS.svg' width='100%' height='200px'></img>
                   <Typography sx={{ p: 2, color: 'black' }} variant='h5'>
                     Gifty SMS
                   </Typography>
@@ -146,11 +179,45 @@ const Home = () => {
           </Grid>
           <Grid item xs={4}>
             <Card>
-              <Button variant='outlined' onClick={handleClickOpenGiftyShop} sx={{ border: 'none' }}>
+              <Button
+                variant='outlined'
+                onClick={handleClickOpenGiftyShop}
+                sx={{
+                  border: 'none',
+                  '&.MuiButtonBase-root:hover': {
+                    background: 'linear-gradient(177deg, rgba(255,99,237,1) 0%, rgba(255,153,38,1) 100%)',
+                    color: 'white'
+                    // focus: 'none'
+                  }
+                }}
+              >
                 <CardContent>
-                  <img src='/images/Gifty Stat.png' width='100%' height='200px'></img>
+                  <img src='/images/Module_GiftyStat.svg' width='100%' height='200px'></img>
                   <Typography sx={{ p: 2, color: 'black' }} variant='h5'>
-                    STatristique{' '}
+                    Statistique{' '}
+                  </Typography>
+                </CardContent>
+              </Button>
+            </Card>
+          </Grid>
+          <Grid item xs={4}>
+            <Card>
+              <Button
+                variant='outlined'
+                onClick={handleClickOpenGiftyShop}
+                sx={{
+                  border: 'none',
+                  '&.MuiButtonBase-root:hover': {
+                    background: 'linear-gradient(177deg, rgba(255,99,237,1) 0%, rgba(255,153,38,1) 100%)',
+                    color: 'white'
+                    // focus: 'none'
+                  }
+                }}
+              >
+                <CardContent>
+                  <img src='/images/Module_GiftySetting.svg' width='100%' height='200px'></img>
+                  <Typography sx={{ p: 2, color: 'black' }} variant='h5'>
+                    configuration{' '}
                   </Typography>
                 </CardContent>
               </Button>
@@ -205,19 +272,17 @@ const Home = () => {
             justifyContent: 'center'
           }}
         >
-          <Button onClick={handleCloseAndOpen} variant='contained' sx={{ height: 50, padding: 4, margin: 2 }}>
+          <Button onClick={handleCloseAndOpen} variant='contained' sx={{ height: 60, padding: 4, margin: 2, minWidth: '200px', fontSize: '20px', fontWeight: '700' }}>
             Configurer mon compte
           </Button>
         </DialogActions>
       </Dialog>
 
       <Dialog
-        
         maxWidth='md'
         onClose={handleConfigClose}
         aria-labelledby='customized-dialog-title'
         open={openConfigPopup}
-       
       >
         <DialogTitle id='customized-dialog-title' sx={{ p: 5 }}>
           <Typography variant='h4' component='span'>
@@ -234,15 +299,15 @@ const Home = () => {
         <DialogContent dividers sx={{ p: 4, display: 'flex', alignItems: 'left', flexDirection: 'column' }}>
           <Box sx={{ p: 4, display: 'flex', alignItems: 'left' }}>
             <Typography variant='h4' component='span' sx={{ p: 0 }}>
-              <img src="/images/Image.svg" width="200px" />
+              <img src='/images/Image.svg' width='200px' />
             </Typography>
 
-            <Typography sx={{ p: 5 , display: 'flex', alignItems: 'left', flexDirection: 'column' }}>
-              <Button onClick={handleSumbit} variant='contained' sx={{ height: 60, padding: 4, margin: 2 }}>
+            <Typography sx={{ p: 5, display: 'flex', alignItems: 'left', flexDirection: 'column' }}>
+              <Button onClick={handleSumbit} variant='contained' sx={{ height: 60, padding: 4, margin: 2, minWidth: '200px', fontSize: '20px', fontWeight: '700' }}>
                 Télécharger une photos
               </Button>
-              
-              <Typography sx={{ p : 2}}>Autorisé png et jpeg , taille maximale de book</Typography>
+
+              <Typography sx={{ p: 2 }}>Autorisé png et jpeg , taille maximale de book</Typography>
             </Typography>
           </Box>
           <Grid container spacing={5}>
@@ -284,7 +349,11 @@ const Home = () => {
             p: theme => `${theme.spacing(3)} !important`
           }}
         >
-          <Button onClick={handleSumbit} variant='contained' sx={{ height: 60, padding: 4, margin: 2 , minWidth : "200px" , fontSize :"20px" , fontWeight :"700" }}>
+          <Button
+            onClick={handleSumbit}
+            variant='contained'
+            sx={{ height: 60, padding: 4, margin: 2, minWidth: '200px', fontSize: '20px', fontWeight: '700' }}
+          >
             Ajouter
           </Button>
         </DialogActions>
