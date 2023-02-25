@@ -130,7 +130,7 @@ const VerticalNavLink = ({
         className='nav-link'
         disabled={item.disabled || false}
         sx={{
-          mt: 1.5,
+          mt: 2.5,
           transition: 'padding .25s ease-in-out',
           px: parent ? '0 !important' : `${theme.spacing(navCollapsed && !navHover ? 2 : 3)} !important`
         }}
@@ -151,7 +151,7 @@ const VerticalNavLink = ({
             }
           }}
           sx={{
-            py: 2.25,
+            py: 3.25,
             ...conditionalBgColor(),
             ...(item.disabled ? { pointerEvents: 'none' } : { cursor: 'pointer' }),
             pr: navCollapsed && !navHover ? (collapsedNavWidth - navigationBorderWidth - 24 - 16) / 8 : 3,
@@ -185,6 +185,8 @@ const VerticalNavLink = ({
               {...((themeConfig.menuTextTruncate || (!themeConfig.menuTextTruncate && navCollapsed && !navHover)) && {
                 noWrap: true
               })}
+              variant='h5'
+              sx={{ fontWeight :"800"}}
             >
               <Translations text={item.title} />
             </Typography>

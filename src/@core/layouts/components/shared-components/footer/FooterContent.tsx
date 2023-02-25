@@ -10,34 +10,30 @@ const FooterContent = () => {
   const hidden = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'))
 
   return (
-    <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between' }}>
+    <Box sx={{ display: 'flex',alignItems: 'center', justifyContent: 'space-between' }}>
       <Typography sx={{ mr: 2 }}>
-        {`© ${new Date().getFullYear()}, Made with `}
-        <Box component='span' sx={{ color: 'error.main' }}>
-          ❤️
-        </Box>
+        {`© ${new Date().getFullYear()},copyright `}
+       
         {` by `}
         <Link target='_blank' href='https://pixinvent.com/'>
-          Pixinvent
+          
         </Link>
       </Typography>
       {hidden ? null : (
         <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', '& :not(:last-child)': { mr: 4 } }}>
           <Link target='_blank' href='https://themeforest.net/licenses/standard'>
-            License
+            Gneral terme og use
           </Link>
           <Link target='_blank' href='https://1.envato.market/pixinvent_portfolio'>
-            More Themes
+            general condition of sale
           </Link>
           <Link
             target='_blank'
             href='https://pixinvent.com/demo/materialize-mui-react-nextjs-admin-template/documentation'
           >
-            Documentation
+          Confidentialité rules
           </Link>
-          <Link target='_blank' href='https://pixinvent.ticksy.com/'>
-            Support
-          </Link>
+        
         </Box>
       )}
     </Box>

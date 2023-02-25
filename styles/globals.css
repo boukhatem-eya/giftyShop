@@ -22,3 +22,18 @@ code:not([class*='language-']):after {
 code[class*='language-'] {
   padding: 0;
 }
+
+.gift-button.MuiButtonBase-root:hover .typhography {
+  color: #fff !important;
+}
+.image:hover {
+  fill : #fff !important;
+}
+.gift-button.MuiButtonBase-root:hover {
+  background: linear-gradient(177deg, rgba(255, 99, 237, 1) 0%, rgba(255, 153, 38, 1) 100%);
+  color: #fff !important;
+}
+
+.gift-button.MuiButtonBase-root:hover .image:hover {
+  fill: #fff; /* Change the fill color on hover */
+}

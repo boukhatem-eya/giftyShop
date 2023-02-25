@@ -54,6 +54,7 @@ export type NavLink = {
   action?: string
   subject?: string
   disabled?: boolean
+  type? : string
   badgeContent?: string
   externalLink?: boolean
   openInNewTab?: boolean

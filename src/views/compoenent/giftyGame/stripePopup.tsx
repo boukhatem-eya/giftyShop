@@ -3,7 +3,7 @@ import { loadStripe } from '@stripe/stripe-js'
 import { CardElement, Elements, useElements } from '@stripe/react-stripe-js'
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography, IconButton } from '@mui/material'
 import { Box } from '@mui/system'
-import Icon from '../../components/icon'
+import Icon from '../../../@core/components/icon'
 
 const stripePromise = loadStripe('YOUR_STRIPE_PUBLIC_KEY')
 type props = {

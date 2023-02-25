@@ -244,7 +244,7 @@ const VerticalNavGroup = (props: Props) => {
               'Mui-selected': groupActive.includes(item.title) || currentActiveGroup.includes(item.title)
             })}
             sx={{
-              py: 2.25,
+              py: 4.25,
               width: '100%',
               borderRadius: '8px',
               ...conditionalBgColor(),
@@ -277,13 +277,14 @@ const VerticalNavGroup = (props: Props) => {
                 {...((themeConfig.menuTextTruncate || (!themeConfig.menuTextTruncate && navCollapsed && !navHover)) && {
                   noWrap: true
                 })}
+                variant='h5'
               >
                 <Translations text={item.title} />
               </Typography>
               <Box
                 className='menu-item-meta'
                 sx={{
-                  ml: 1.5,
+                  ml: 2.5,
                   display: 'flex',
                   alignItems: 'center',
                   '& svg': {

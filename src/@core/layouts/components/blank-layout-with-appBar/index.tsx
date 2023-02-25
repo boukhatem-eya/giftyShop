@@ -102,7 +102,8 @@ const BlankLayoutAppBar = () => {
       sx={{
         backgroundColor: 'background.paper',
         minHeight: '100px',
-        ...(skin === 'bordered' && { borderBottom: `1px solid ${theme.palette.divider}` })
+        ...(skin === 'bordered' && { borderBottom: `1px solid ${theme.palette.divider}` }),
+        justifyContent: 'center'
       }}
     >
       <Toolbar
@@ -113,7 +114,7 @@ const BlankLayoutAppBar = () => {
         }}
       >
         <StyledLink href='/'>
-          <img src='/images/LOGO.svg' width='250px' />
+          <img src='/images/LOGO.svg' width='300px' />
         </StyledLink>
 
         <Badge

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="520" height="520" viewBox="0 0 520 520">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#ff63ed"/>
+      <stop offset="1" stop-color="#ff9926"/>
+    </linearGradient>
+  </defs>
+  <g id="Groupe_1333" data-name="Groupe 1333" transform="translate(23030 2758)">
+    <rect id="Rectangle_12064" data-name="Rectangle 12064" width="520" height="520" transform="translate(-23030 -2758)" fill="#fff" opacity="0"/>
+    <path id="telephone-intelligent" d="M116.185,399.818a36.711,36.711,0,0,0,36.657,36.657H317.915a36.707,36.707,0,0,0,36.652-36.657V367.865H116.185Zm238.382-49.41V36.666A36.7,36.7,0,0,0,317.915,0H152.842a36.709,36.709,0,0,0-36.657,36.666V350.4ZM195.675,64.86a8.738,8.738,0,1,1,.008,0Zm43.307,0a8.73,8.73,0,0,1,0-17.461h36.092a8.73,8.73,0,0,1,0,17.461ZM244.1,393.44a8.73,8.73,0,1,1-8.729-8.729,8.731,8.731,0,0,1,8.729,8.729Z" transform="translate(-23005.686 -2716.5)" stroke="#ff4848" stroke-width="4" fill-rule="evenodd" fill="url(#linear-gradient)"/>
+  </g>
+</svg>

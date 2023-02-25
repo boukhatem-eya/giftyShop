@@ -15,6 +15,7 @@ import Icon from 'src/@core/components/icon'
 
 // ** Configs
 import themeConfig from 'src/configs/themeConfig'
+import { useRouter } from 'next/router'
 
 interface Props {
   navHover: boolean
@@ -121,15 +122,23 @@ const VerticalNavHeader = (props: Props) => {
       }
     }
   }
-
+  const { pathname } = useRouter()
+  // modify the items array based on some condition
+  const image = () => {
+    if (pathname.indexOf('mes-magasin') > -1) {
+      return <img src='/images/LOGO.svg' width='250px' />
+    } else if (pathname.indexOf('the-heel-game') > -1) {
+      return <img src='/images/spinning-wheel.png' width='100px' />
+    }
+    return null; // return null as a default value if the pathname does not match any condition
+  }
   return (
-    <MenuHeaderWrapper className='nav-header' sx={{ pl: menuHeaderPaddingLeft()  , p : 4}}>
+    <MenuHeaderWrapper className='nav-header' sx={{ pl: menuHeaderPaddingLeft(), p: 4 }}>
       {userNavMenuBranding ? (
         userNavMenuBranding(props)
       ) : (
         <StyledLink href='/'>
-          <img src='/images/LOGO.svg' width='250px'></img>
-          
+         {image()}
         </StyledLink>
       )}
 
