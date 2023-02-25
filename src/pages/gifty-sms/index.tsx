@@ -15,6 +15,7 @@ import TablePagination from '@mui/material/TablePagination'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { getShops } from 'servicesApi/shops'
+import { Box, Button } from '@mui/material'
 interface Column {
   id: 'name' | 'pays' | 'adresse' | 'ville' | 'Responsable'
   label: string
@@ -88,7 +89,17 @@ const SecondPage = () => {
     <Grid container>
       <Grid item xs={12}>
         <Card>
-          <CardHeader title='Mes Boutiques 🏬' sx={{ fontSize: '24px' }}></CardHeader>
+        <CardHeader
+            title='Mes Boutiques 🏬'
+            sx={{ fontSize: '24px' }}
+            action={
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Button variant='contained' color='primary'>
+                  Ajouter
+                </Button>
+              </Box>
+            }
+          ></CardHeader>
           <CardContent>
             <TableContainer component={Paper} sx={{ minHeight: '65vh' }}>
               <Table stickyHeader aria-label='sticky table'>
@@ -107,7 +118,7 @@ const SecondPage = () => {
                       <TableCell>{row.name}</TableCell>
                       <TableCell>{row.pays}</TableCell>
                       <TableCell>{row.addresse}</TableCell>
-                      <TableCell>{row.ville}</TableCell> 
+                      <TableCell>{row.ville}</TableCell>
                       <TableCell>{row.responsable}</TableCell>
                     </TableRow>
                   ))}

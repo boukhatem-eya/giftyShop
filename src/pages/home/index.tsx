@@ -69,7 +69,11 @@ const Home = () => {
   const handleMouseLeave = () => {
     setIsHovering(false)
   }
+  const handleClickOpenMesBoutique = () => {
 
+  router.push('/mes-magasin')
+
+  }
   const gradientColor = isHovering ? '#3cb3ff' : '#ff9926'
   return (
     <>
@@ -225,7 +229,7 @@ const Home = () => {
             <Card>
               <Button
                 variant='outlined'
-                onClick={handleClickOpenGiftyShop}
+                // onClick={handleClickOpenMesBoutique}
                 className='gift-button'
                 sx={{
                   border: 'none',
@@ -239,7 +243,7 @@ const Home = () => {
                 <CardContent>
                   <img src='/images/Module_GiftyStat.svg' width='100%' height='200px'></img>
                   <Typography sx={{ p: 2 }} className='typhography' variant='h5'>
-                    Statistique{' '}
+                    Statistique
                   </Typography>
                 </CardContent>
               </Button>
@@ -249,7 +253,7 @@ const Home = () => {
             <Card>
               <Button
                 variant='outlined'
-                onClick={handleClickOpenGiftyShop}
+                onClick={handleClickOpenMesBoutique}
                 className='gift-button'
                 sx={{
                   border: 'none',
@@ -263,7 +267,7 @@ const Home = () => {
                 <CardContent>
                   <img src='/images/Module_GiftySetting.svg' width='100%' height='200px'></img>
                   <Typography sx={{ p: 2 }} variant='h5'>
-                    configuration{' '}
+                   Administration
                   </Typography>
                 </CardContent>
               </Button>

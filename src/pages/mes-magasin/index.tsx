@@ -15,6 +15,7 @@ import TablePagination from '@mui/material/TablePagination'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { getShops } from '../../../servicesApi/shops'
+import { Box, Button } from '@mui/material'
 interface Column {
   id: 'name' | 'pays' | 'adresse' | 'ville' | 'Responsable'
   label: string
@@ -87,8 +88,29 @@ const SecondPage = () => {
   return (
     <Grid container>
       <Grid item xs={12}>
+        <Typography variant='h4' sx={{ m: 3 }}>
+          {' '}
+          Mes Boutiques
+        </Typography>
+        <Typography variant='h5' sx={{ m: 3 }}>
+          Administration / <span style={{ color: 'red' }}>Mes boutiques</span>{' '}
+        </Typography>
         <Card>
-          <CardHeader title='Mes Boutiques 🏬' sx={{ fontSize: '24px' }}></CardHeader>
+          <CardHeader
+            title='Mes Boutiques 🏬'
+            sx={{ fontSize: '24px', pt: 3 }}
+            action={
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Button
+                  variant='contained'
+                  color='primary'
+                  sx={{ height: 60, padding: 3, margin: 2, minWidth: '200px', fontSize: '20px', fontWeight: '700' }}
+                >
+                  Ajouter
+                </Button>
+              </Box>
+            }
+          ></CardHeader>
           <CardContent>
             <TableContainer component={Paper} sx={{ minHeight: '65vh' }}>
               <Table stickyHeader aria-label='sticky table'>
@@ -107,7 +129,7 @@ const SecondPage = () => {
                       <TableCell>{row.name}</TableCell>
                       <TableCell>{row.pays}</TableCell>
                       <TableCell>{row.addresse}</TableCell>
-                      <TableCell>{row.ville}</TableCell> 
+                      <TableCell>{row.ville}</TableCell>
                       <TableCell>{row.responsable}</TableCell>
                     </TableRow>
                   ))}

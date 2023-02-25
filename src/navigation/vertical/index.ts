@@ -9,13 +9,13 @@ const navigation = (): VerticalNavItemsType => {
     {
       title: 'Boutiques',
       path: '/mes-magasin',
-      icon: 'mdi:email-outline',
+      icon: '',
       type:'mes-magasin'
     },
     {
       title: 'Licences',
       path: '/mes-magasin/licences',
-      icon: 'mdi:email-outline',
+      icon: '',
       type:'mes-magasin'
     },
     {

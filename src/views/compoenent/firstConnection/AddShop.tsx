@@ -31,6 +31,8 @@ const schema = yup.object().shape({
     name: yup.string().required('name is required'),
     adresse: yup.string().required(),
     ville : yup.string().required(),
+    responsable :yup.string().required(),
+    pays :yup.string().required(),
   })
   
 
@@ -39,6 +41,8 @@ const schema = yup.object().shape({
     name: string
     adresse: string
     ville: string
+    responsable:string
+    pays :string
   }
 const AddShop = (props: props) => {
   // ** State
@@ -61,7 +65,7 @@ const AddShop = (props: props) => {
   })
 
   const onSubmit = (data: FormData) => {
-    const { name, adresse ,ville } = data
+    const { name, adresse ,ville ,responsable,pays} = data
     
   }
 
@@ -86,7 +90,7 @@ const AddShop = (props: props) => {
             <Icon icon='mdi:close' />
           </IconButton>
         </DialogTitle>
-        <form noValidate autoComplete='off' onSubmit={handleSubmit}>
+        <form noValidate autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
         <DialogContent dividers sx={{ p: 4, display: 'flex', alignItems: 'left', flexDirection: 'column' }}>
        
           <Box sx={{ p: 4, display: 'flex', alignItems: 'left' }}>
@@ -126,28 +130,108 @@ const AddShop = (props: props) => {
             </Grid>
 
             <Grid item xs={12} sm={6}>
-              <FormControl fullWidth>
-                <TextField type='email' label='Desegiation ' placeholder='' />
+            <FormControl fullWidth>
+              <Controller
+                name='adresse'
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { value, onChange, onBlur } }) => (
+                  <TextField
+                    autoFocus
+                    label='Adresse'
+                    value={value}
+                    onBlur={onBlur}
+                    onChange={onChange}
+                    error={Boolean(errors.adresse)}
+                    placeholder='sssss'
+                  />
+                )}
+              />
+              {errors.adresse && <FormHelperText sx={{ color: 'error.main' }}>{errors.adresse.message}</FormHelperText>}
               </FormControl>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <FormControl fullWidth>
-                <TextField type='email' label='Responsable' placeholder='john.doe@email.com' />
+            <FormControl fullWidth>
+              <Controller
+                name='ville'
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { value, onChange, onBlur } }) => (
+                  <TextField
+                    autoFocus
+                    label='Ville'
+                    value={value}
+                    onBlur={onBlur}
+                    onChange={onChange}
+                    error={Boolean(errors.ville)}
+                    placeholder='sssss'
+                  />
+                )}
+              />
+              {errors.ville && <FormHelperText sx={{ color: 'error.main' }}>{errors.ville.message}</FormHelperText>}
               </FormControl>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <FormControl fullWidth>
-                <TextField type='email' label='Adresse' placeholder='john.doe@email.com' />
+            <FormControl fullWidth>
+              <Controller
+                name='name'
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { value, onChange, onBlur } }) => (
+                  <TextField
+                    autoFocus
+                    label='name'
+                    value={value}
+                    onBlur={onBlur}
+                    onChange={onChange}
+                    error={Boolean(errors.name)}
+                    placeholder='sssss'
+                  />
+                )}
+              />
+              {errors.name && <FormHelperText sx={{ color: 'error.main' }}>{errors.name.message}</FormHelperText>}
               </FormControl>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <FormControl fullWidth>
-                <TextField type='email' label='Ville' placeholder='Paris' />
+            <FormControl fullWidth>
+              <Controller
+                name='responsable'
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { value, onChange, onBlur } }) => (
+                  <TextField
+                    autoFocus
+                    label='Responsable'
+                    value={value}
+                    onBlur={onBlur}
+                    onChange={onChange}
+                    error={Boolean(errors.responsable)}
+                    placeholder='sssss'
+                  />
+                )}
+              />
+              {errors.responsable && <FormHelperText sx={{ color: 'error.main' }}>{errors.responsable.message}</FormHelperText>}
               </FormControl>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <FormControl fullWidth>
-                <TextField type='email' label='Pays' placeholder='france' />
+            <FormControl fullWidth>
+              <Controller
+                name='pays'
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { value, onChange, onBlur } }) => (
+                  <TextField
+                    autoFocus
+                    label='Pays'
+                    value={value}
+                    onBlur={onBlur}
+                    onChange={onChange}
+                    error={Boolean(errors.pays)}
+                    placeholder='sssss'
+                  />
+                )}
+              />
+              {errors.pays && <FormHelperText sx={{ color: 'error.main' }}>{errors.pays.message}</FormHelperText>}
               </FormControl>
             </Grid>
           </Grid>
