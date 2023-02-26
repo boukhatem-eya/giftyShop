@@ -19,14 +19,14 @@ export const getShops = async () => {
 
 export const addShop = async (data: any) => {
   const storedToken = window.localStorage.getItem(authConfig.storageTokenKeyName)!
-  console.log(data.formData)
+  console.log(data.data)
   const config = {
     headers: {
       Authorization: storedToken,
-      'content-type': 'multipart/form-data'
+      // 'content-type': 'content/form-data'
     }
   }
-  return await ShopApi.post('/ui/shops/', data.formData, config)
+  return await axios.post('http://testapi.giftyshop.pro/ui/shops/create/', data.data, config)
 }
 
 export const EditShop = async (data: any) => {

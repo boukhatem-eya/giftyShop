@@ -16,6 +16,8 @@ import { ChangeEvent, useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { getShops } from '../../../servicesApi/shops'
 import { Box, Button } from '@mui/material'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 interface Column {
   id: 'name' | 'pays' | 'adresse' | 'ville' | 'Responsable'
   label: string
@@ -72,7 +74,7 @@ const SecondPage = () => {
   const shops = data ?? []
 
   useEffect(() => {}, [shops])
-  console.log('shops----', shops.shops)
+  console.log('shops----', shops.shops[1].responsable)
   // ** States
   const [page, setPage] = useState<number>(0)
   const [rowsPerPage, setRowsPerPage] = useState<number>(10)
@@ -86,6 +88,7 @@ const SecondPage = () => {
     setPage(0)
   }
   return (
+    <>
     <Grid container>
       <Grid item xs={12}>
         <Typography variant='h4' sx={{ m: 3 }}>
@@ -149,6 +152,18 @@ const SecondPage = () => {
         </Card>
       </Grid>
     </Grid>
+   <ToastContainer
+     position="top-right"
+     autoClose={3000}
+     hideProgressBar={false}
+     newestOnTop={false}
+     closeOnClick
+     rtl={false}
+     pauseOnFocusLoss
+     draggable
+     pauseOnHover
+   />
+    </>
   )
 }
 

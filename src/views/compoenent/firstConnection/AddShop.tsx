@@ -21,42 +21,43 @@ import Grid from '@mui/material/Grid'
 import * as yup from 'yup'
 import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-
-
+import { useMutation, useQueryClient } from 'react-query'
+import { addShop } from 'servicesApi/shops'
+import { convertFileToBase64 } from 'src/utils/convertFile'
+import { toast } from 'react-toastify'
 type props = {
   open: boolean
   handleClose: () => void
 }
 const schema = yup.object().shape({
-    name: yup.string().required('name is required'),
-    adresse: yup.string().required(),
-    ville : yup.string().required(),
-    responsable :yup.string().required(),
-    pays :yup.string().required(),
-  })
-  
+  name: yup.string().required('name is required'),
+  desigination : yup.string().required('desigination is required'),
+  adresse: yup.string().required('adresse is required'),
+  ville: yup.string().required('desigination is required'),
+  responsable: yup.string().required('responsable is required'),
+  pays: yup.string().required('pays is required')
+})
 
-  
-  interface FormData {
-    name: string
-    adresse: string
-    ville: string
-    responsable:string
-    pays :string
-  }
+interface FormData {
+  name: string
+  desigination: string
+  adresse: string
+  ville: string
+  responsable: string
+  pays: string
+  logo: any
+}
 const AddShop = (props: props) => {
   // ** State
   const router = useRouter()
   const { open, handleClose } = props
+  const [image, setImage] = useState()
+  const queryClient = useQueryClient()
 
-
-  const handleSumbit = () => {
-    router.push('/mes-magasin')
-    handleClose()
-  }
   const {
     control,
     setError,
+    register,
     handleSubmit,
     formState: { errors }
   } = useForm({
@@ -64,20 +65,43 @@ const AddShop = (props: props) => {
     resolver: yupResolver(schema)
   })
 
-  const onSubmit = (data: FormData) => {
-    const { name, adresse ,ville ,responsable,pays} = data
-    
+  const UploadImage = (e: any) => {
+    const reader = new FileReader()
+    reader.readAsDataURL(e.target.files[0])
+    reader.onload = () => {
+      setImage(reader.result)
+    }
+
+    reader.onerror = () => {
+      console.log(reader.error)
+    }
   }
 
+  // ** Add shop with react query
+  const AddShopMutation = useMutation(addShop, {
+    onSuccess: () => {
+      // Invalidates cache and refetch
+      queryClient.invalidateQueries('shops')
+      router.push('/mes-magasin')
+      toast.success("shop add succefully!")
+      handleClose()
+    }
+  })
+
+  const onSubmit = async (data: FormData) => {
+    console.log(data.logo)
+    // if (data.logo) {
+    //   const picture64 = await convertFileToBase64(data.logo)
+    //   const logo = { src: picture64, title: `${data.logo.rawFile.name}` }
+    // }
+    // edit data
+    const { desigination ,name, adresse, ville, responsable, pays , logo  } = data
+    await AddShopMutation.mutateAsync({ data })
+  }
 
   return (
     <>
-   <Dialog
-        maxWidth='md'
-        onClose={handleClose}
-        aria-labelledby='customized-dialog-title'
-        open={open}
-      >
+      <Dialog maxWidth='md' onClose={handleClose} aria-labelledby='customized-dialog-title' open={open}>
         <DialogTitle id='customized-dialog-title' sx={{ p: 5 }}>
           <Typography variant='h4' component='span'>
             Nouvelle boutique
@@ -91,168 +115,173 @@ const AddShop = (props: props) => {
           </IconButton>
         </DialogTitle>
         <form noValidate autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
-        <DialogContent dividers sx={{ p: 4, display: 'flex', alignItems: 'left', flexDirection: 'column' }}>
-       
-          <Box sx={{ p: 4, display: 'flex', alignItems: 'left' }}>
-            <Typography variant='h4' component='span' sx={{ p: 0 }}>
-              <img src='/images/Image.svg' width='200px' />
-            </Typography>
+          <DialogContent dividers sx={{ p: 4, display: 'flex', alignItems: 'left', flexDirection: 'column' }}>
+            <Box sx={{ p: 4, display: 'flex', alignItems: 'left' }}>
+              <Typography variant='h4' component='span' sx={{ p: 0 }}>
+                <img src={image ? image : '/images/Image.svg'} width='200px' />
+              </Typography>
 
-            <Typography sx={{ p: 5, display: 'flex', alignItems: 'left', flexDirection: 'column' }}>
-              <Button onClick={handleSumbit} variant='contained' sx={{ height: 60, padding: 4, margin: 2, minWidth: '200px', fontSize: '20px', fontWeight: '700' }}>
-                Télécharger une photos
-              </Button>
+              <Typography sx={{ p: 5, display: 'flex', alignItems: 'left', flexDirection: 'column' }}>
+                <Button
+                  variant='contained'
+                  sx={{ height: 60, padding: 4, margin: 2, minWidth: '200px', fontSize: '20px', fontWeight: '700' }}
+                >
+                  Télécharger une photos
+                  <input type='file' {...register('logo')} hidden name='logo' onChange={UploadImage} />
+                </Button>
 
-              <Typography sx={{ p: 2 }}>Autorisé png et jpeg , taille maximale de book</Typography>
-            </Typography>
-          </Box>
-          <Grid container spacing={5}>
-            <Grid item xs={12} sm={6}>
-              <FormControl fullWidth>
-              <Controller
-                name='name'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange, onBlur } }) => (
-                  <TextField
-                    autoFocus
-                    label='name'
-                    value={value}
-                    onBlur={onBlur}
-                    onChange={onChange}
-                    error={Boolean(errors.name)}
-                    placeholder='sssss'
+                <Typography sx={{ p: 2 }}>Autorisé png et jpeg , taille maximale de book</Typography>
+              </Typography>
+            </Box>
+            <Grid container spacing={5}>
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth>
+                  <Controller
+                    name='desigination'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange, onBlur } }) => (
+                      <TextField
+                        autoFocus
+                        label='Desigination'
+                        value={value}
+                        onBlur={onBlur}
+                        onChange={onChange}
+                        error={Boolean(errors.desigination)}
+                        placeholder='sssss'
+                      />
+                    )}
                   />
-                )}
-              />
-              {errors.name && <FormHelperText sx={{ color: 'error.main' }}>{errors.name.message}</FormHelperText>}
-              </FormControl>
-            </Grid>
-
-            <Grid item xs={12} sm={6}>
-            <FormControl fullWidth>
-              <Controller
-                name='adresse'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange, onBlur } }) => (
-                  <TextField
-                    autoFocus
-                    label='Adresse'
-                    value={value}
-                    onBlur={onBlur}
-                    onChange={onChange}
-                    error={Boolean(errors.adresse)}
-                    placeholder='sssss'
+                  {errors.desigination && <FormHelperText sx={{ color: 'error.main' }}>{errors.desigination.message}</FormHelperText>}
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth>
+                  <Controller
+                    name='name'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange, onBlur } }) => (
+                      <TextField
+                        autoFocus
+                        label='name'
+                        value={value}
+                        onBlur={onBlur}
+                        onChange={onChange}
+                        error={Boolean(errors.name)}
+                        placeholder='sssss'
+                      />
+                    )}
                   />
-                )}
-              />
-              {errors.adresse && <FormHelperText sx={{ color: 'error.main' }}>{errors.adresse.message}</FormHelperText>}
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-            <FormControl fullWidth>
-              <Controller
-                name='ville'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange, onBlur } }) => (
-                  <TextField
-                    autoFocus
-                    label='Ville'
-                    value={value}
-                    onBlur={onBlur}
-                    onChange={onChange}
-                    error={Boolean(errors.ville)}
-                    placeholder='sssss'
+                  {errors.name && <FormHelperText sx={{ color: 'error.main' }}>{errors.name.message}</FormHelperText>}
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth>
+                  <Controller
+                    name='adresse'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange, onBlur } }) => (
+                      <TextField
+                        autoFocus
+                        label='Adresse'
+                        value={value}
+                        onBlur={onBlur}
+                        onChange={onChange}
+                        error={Boolean(errors.adresse)}
+                        placeholder='sssss'
+                      />
+                    )}
                   />
-                )}
-              />
-              {errors.ville && <FormHelperText sx={{ color: 'error.main' }}>{errors.ville.message}</FormHelperText>}
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-            <FormControl fullWidth>
-              <Controller
-                name='name'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange, onBlur } }) => (
-                  <TextField
-                    autoFocus
-                    label='name'
-                    value={value}
-                    onBlur={onBlur}
-                    onChange={onChange}
-                    error={Boolean(errors.name)}
-                    placeholder='sssss'
+                  {errors.adresse && (
+                    <FormHelperText sx={{ color: 'error.main' }}>{errors.adresse.message}</FormHelperText>
+                  )}
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth>
+                  <Controller
+                    name='ville'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange, onBlur } }) => (
+                      <TextField
+                        autoFocus
+                        label='Ville'
+                        value={value}
+                        onBlur={onBlur}
+                        onChange={onChange}
+                        error={Boolean(errors.ville)}
+                        placeholder='sssss'
+                      />
+                    )}
                   />
-                )}
-              />
-              {errors.name && <FormHelperText sx={{ color: 'error.main' }}>{errors.name.message}</FormHelperText>}
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-            <FormControl fullWidth>
-              <Controller
-                name='responsable'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange, onBlur } }) => (
-                  <TextField
-                    autoFocus
-                    label='Responsable'
-                    value={value}
-                    onBlur={onBlur}
-                    onChange={onChange}
-                    error={Boolean(errors.responsable)}
-                    placeholder='sssss'
+                  {errors.ville && <FormHelperText sx={{ color: 'error.main' }}>{errors.ville.message}</FormHelperText>}
+                </FormControl>
+              </Grid>
+             
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth>
+                  <Controller
+                    name='responsable'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange, onBlur } }) => (
+                      <TextField
+                        autoFocus
+                        label='Responsable'
+                        value={value}
+                        onBlur={onBlur}
+                        onChange={onChange}
+                        error={Boolean(errors.responsable)}
+                        placeholder='sssss'
+                      />
+                    )}
                   />
-                )}
-              />
-              {errors.responsable && <FormHelperText sx={{ color: 'error.main' }}>{errors.responsable.message}</FormHelperText>}
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-            <FormControl fullWidth>
-              <Controller
-                name='pays'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange, onBlur } }) => (
-                  <TextField
-                    autoFocus
-                    label='Pays'
-                    value={value}
-                    onBlur={onBlur}
-                    onChange={onChange}
-                    error={Boolean(errors.pays)}
-                    placeholder='sssss'
+                  {errors.responsable && (
+                    <FormHelperText sx={{ color: 'error.main' }}>{errors.responsable.message}</FormHelperText>
+                  )}
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth>
+                  <Controller
+                    name='pays'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange, onBlur } }) => (
+                      <TextField
+                        autoFocus
+                        label='Pays'
+                        value={value}
+                        onBlur={onBlur}
+                        onChange={onChange}
+                        error={Boolean(errors.pays)}
+                        placeholder='sssss'
+                      />
+                    )}
                   />
-                )}
-              />
-              {errors.pays && <FormHelperText sx={{ color: 'error.main' }}>{errors.pays.message}</FormHelperText>}
-              </FormControl>
+                  {errors.pays && <FormHelperText sx={{ color: 'error.main' }}>{errors.pays.message}</FormHelperText>}
+                </FormControl>
+              </Grid>
             </Grid>
-          </Grid>
-       
-        </DialogContent>
-        <DialogActions
-          sx={{
-            p: theme => `${theme.spacing(3)} !important`
-          }}
-        >
-          <Button
-            type="submit"
-            variant='contained'
-            sx={{ height: 60, padding: 4, margin: 2, minWidth: '200px', fontSize: '20px', fontWeight: '700' }}
+          </DialogContent>
+          <DialogActions
+            sx={{
+              p: theme => `${theme.spacing(3)} !important`
+            }}
           >
-            Ajouter
-          </Button>
-        </DialogActions>
+            <Button
+              type='submit'
+              variant='contained'
+              sx={{ height: 60, padding: 4, margin: 2, minWidth: '200px', fontSize: '20px', fontWeight: '700' }}
+            >
+              Ajouter
+            </Button>
+          </DialogActions>
         </form>
       </Dialog>
-
     </>
   )
 }
