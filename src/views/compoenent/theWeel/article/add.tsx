@@ -21,7 +21,7 @@ type props = {
   handleClose: () => void
 }
 
-const ActivateTheWeel = (props: props) => {
+const AddArticle = (props: props) => {
   // ** State
   const router = useRouter()
   const { open, handleClose } = props
@@ -45,10 +45,10 @@ const ActivateTheWeel = (props: props) => {
       >
         <DialogTitle
           id='customized-dialog-title'
-          sx={{ p: 4, display: 'flex', alignItems: 'center', flexDirection: 'column', justifyContent: 'center' }}
+          sx={{ p: 4, display: 'flex',  flexDirection: 'column', justifyContent: 'center' }}
         >
-          <img src='/images/wheel header.svg' height='100px'></img>
-          <Typography variant='h6' component='span'></Typography>
+         
+          <Typography variant='h4' component='span'>Nouvelle article</Typography>
           <IconButton
             aria-label='close'
             onClick={handleClose}
@@ -113,4 +113,4 @@ const ActivateTheWeel = (props: props) => {
   )
 }
 
-export default ActivateTheWeel
+export default AddArticle

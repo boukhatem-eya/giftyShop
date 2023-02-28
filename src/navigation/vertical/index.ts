@@ -26,9 +26,18 @@ const navigation = (): VerticalNavItemsType => {
     },
     {
       title: 'Article',
-      path: '/the-heel-game/article',
       icon: '',
-      type: 'the-heel'
+      type: 'the-heel',
+      children: [
+        {
+          title: 'List',
+          path: '/the-heel-game/article'
+        },
+        {
+          title: 'Archiver',
+          path: '/apps/user/list'
+        },
+      ]
     },
     {
       title: 'Design',

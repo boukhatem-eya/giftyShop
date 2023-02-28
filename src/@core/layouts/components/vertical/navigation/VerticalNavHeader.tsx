@@ -128,19 +128,13 @@ const VerticalNavHeader = (props: Props) => {
     if (pathname.indexOf('mes-magasin') > -1) {
       return <img src='/images/LOGO.svg' width='250px' />
     } else if (pathname.indexOf('the-heel-game') > -1) {
-      return <img src='/images/spinning-wheel.png' width='100px' />
+      return <img src='/images/wheel header.svg' width='250px' />
     }
-    return null; // return null as a default value if the pathname does not match any condition
+    return null // return null as a default value if the pathname does not match any condition
   }
   return (
     <MenuHeaderWrapper className='nav-header' sx={{ pl: menuHeaderPaddingLeft(), p: 4 }}>
-      {userNavMenuBranding ? (
-        userNavMenuBranding(props)
-      ) : (
-        <StyledLink href='/'>
-         {image()}
-        </StyledLink>
-      )}
+      {userNavMenuBranding ? userNavMenuBranding(props) : <StyledLink href='/'>{image()}</StyledLink>}
 
       {hidden ? (
         <IconButton

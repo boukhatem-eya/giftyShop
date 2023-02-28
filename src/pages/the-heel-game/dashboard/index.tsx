@@ -22,65 +22,65 @@ const dashboard = () => {
     <>
       <Typography variant='h4'> Dashboard</Typography>
       <Typography variant='h5' > The Wheel / <span style={{ color :'red'}} >Dashboard</span> </Typography>
-      <Grid container spacing={8} sx={{ width: { xs: '90%', md: '90%', lg: '100%' } , pt : 10}}>
-        <Grid item sm={6} md={6} lg={6}>
+      <Grid container spacing={8} sx={{ width: { xs: '90%', md: '100%', lg: '100%' } , pt : 10}}>
+        <Grid item  xs={12} md={6} lg={6}>
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', justifyContent: 'space-between' , alignItems:'center' }}>
-                <Box sx={{ flex: '1 0 auto', alignSelf: 'flex-start' }}>
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between', flexDirection: 'column' }}>
+                <Box sx={{ alignSelf: 'flex-start' }}>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', flexDirection: 'column' , width : '100%'}}>
                     <Typography variant='h4'>Telecharger flyer</Typography>
-                    <Box sx={{ pt: 40 }}>
+                    <Box sx={{ pt: { xs: 20, md: 20, lg: 40 } , }}>
                       <Button  sx={{ height: 60, padding: 4, margin: 2, minWidth: '200px', fontSize: '20px', fontWeight: '700' }} variant='contained' color='primary'>
                         Telecharger
                       </Button>
                     </Box>
                   </Box>
                 </Box>
-                <Box sx={{ flex: '1 0 auto', alignSelf: 'flex-end' }}>
-                  <img src='/images/Flyer.svg' width='200px' height='250px'></img>
+                <Box sx={{  alignSelf: 'flex-end' }}>
+                  <img src='/images/Flyer.svg' width='100%' height='250px'></img>
                 </Box>
               </Box>
             </CardContent>
           </Card>
         </Grid>
-        <Grid item sm={6} md={6} lg={6}>
+        <Grid item  xs={12} md={6} lg={6}>
         <Card>
             <CardContent>
               <Box sx={{ display: 'flex', justifyContent: 'space-between' , alignItems:'center' }}>
-                <Box sx={{ flex: '1 0 auto', alignSelf: 'flex-start' }}>
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between', flexDirection: 'column' }}>
+                <Box sx={{  alignSelf: 'flex-start' }}>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', flexDirection: 'column' ,width : '100%'}}>
                     <Typography variant='h4'>Voir mon application</Typography>
-                    <Box sx={{ pt: 40 }}>
+                    <Box sx={{ pt: { xs: 20, md: 20, lg: 40 } , }}>
                       <Button variant='contained' color='primary'  sx={{ height: 60, padding: 4, margin: 2, minWidth: '200px', fontSize: '20px', fontWeight: '700' }}>
                         Lancer app
                       </Button>
                     </Box>
                   </Box>
                 </Box>
-                <Box sx={{ flex: '1 0 auto', alignSelf: 'flex-end' }}>
-                  <img src='/images/Application.svg' width='200px' height='250px'></img>
+                <Box sx={{  alignSelf: 'flex-end' }}>
+                  <img src='/images/Application.svg' width='100%' height='250px'></img>
                 </Box>
               </Box>
             </CardContent>
           </Card>
         </Grid>
-        <Grid item sm={6} md={6} lg={6}>
+        <Grid item  xs={12} md={6} lg={6}>
         <Card>
             <CardContent>
               <Box sx={{ display: 'flex', justifyContent: 'space-between' , alignItems:'center' }}>
                 <Box sx={{ flex: '1 0 auto', alignSelf: 'flex-start' }}>
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between', flexDirection: 'column' }}>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', flexDirection: 'column',width : '100%' }}>
                     <Typography variant='h4'>Telecharger QR code</Typography>
-                    <Box sx={{ pt: 40 }}>
+                    <Box sx={{ pt: { xs: 20, md: 20, lg: 40 } , }}>
                       <Button  sx={{ height: 60, padding: 4, margin: 2, minWidth: '200px', fontSize: '20px', fontWeight: '700' }} variant='contained' color='primary'>
                         Telecharger
                       </Button>
                     </Box>
                   </Box>
                 </Box>
-                <Box sx={{ flex: '1 0 auto', alignSelf: 'flex-end' }}>
-                  <img src='/images/MyQRcode.svg' width='200px' height='250px'></img>
+                <Box sx={{ alignSelf: 'flex-end' }}>
+                  <img src='/images/MyQRcode.svg' width='100%' height='250px'></img>
                 </Box>
               </Box>
             </CardContent>

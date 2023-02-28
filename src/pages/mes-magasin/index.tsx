@@ -74,7 +74,7 @@ const SecondPage = () => {
   const shops = data ?? []
 
   useEffect(() => {}, [shops])
-  console.log('shops----', shops.shops[1].responsable)
+  // console.log('shops----', shops.shops[1].responsable)
   // ** States
   const [page, setPage] = useState<number>(0)
   const [rowsPerPage, setRowsPerPage] = useState<number>(10)
