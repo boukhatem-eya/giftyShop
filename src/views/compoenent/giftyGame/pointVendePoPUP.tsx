@@ -114,21 +114,7 @@ const PointVente = (props: props) => {
           />
          
         </DialogContent>
-        {/* <DialogContent dividers sx={{ p: 4, display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-          <Typography variant='h5' component='span' sx={{ p: 4, fontWeight: 'bold' }}>
-            veillez selectionner le point de vente ou laquelle vous devez ....
-          </Typography>
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            pageSize={rows.length}
-            checkboxSelection
-            selectionModel={selectionModel}
-            onSelectionModelChange={handleSelectionModelChange}
-            sx={{ width: '100%', mt: 2, height: 'auto' }}
-          />
-        </DialogContent> */}
-
+        
         <DialogActions
           sx={{
             p: theme => `${theme.spacing(3)} !important`

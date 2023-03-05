@@ -4,6 +4,9 @@ import {
   Card,
   CardContent,
   CardHeader,
+  IconButton,
+  Menu,
+  MenuItem,
   Paper,
   Table,
   TableBody,
@@ -14,8 +17,76 @@ import {
   TableRow,
   Typography
 } from '@mui/material'
-import { useState } from 'react'
+import { MouseEvent, useState } from 'react'
 import AddArticle from 'src/views/compoenent/theWeel/article/add'
+
+
+// ** Icon Imports
+import Icon from 'src/@core/components/icon'
+import { useDispatch } from 'react-redux'
+import Link from 'next/link'
+
+const RowOptions = ({ id }: { id: number | string }) => {
+
+
+  // ** State
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+
+  const rowOptionsOpen = Boolean(anchorEl)
+
+  const handleRowOptionsClick = (event: MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget)
+  }
+  const handleRowOptionsClose = () => {
+    setAnchorEl(null)
+  }
+
+  const handleDelete = () => {
+  
+    handleRowOptionsClose()
+  }
+
+  return (
+    <>
+      <IconButton size='small' onClick={handleRowOptionsClick}>
+        <Icon icon='mdi:dots-vertical' />
+      </IconButton>
+      <Menu
+        keepMounted
+        anchorEl={anchorEl}
+        open={rowOptionsOpen}
+        onClose={handleRowOptionsClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right'
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right'
+        }}
+        PaperProps={{ style: { minWidth: '8rem' } }}
+      >
+        <MenuItem
+          component={Link}
+          sx={{ '& svg': { mr: 2 } }}
+          onClick={handleRowOptionsClose}
+          href='/apps/user/view/overview/'
+        >
+          <Icon icon='mdi:eye-outline' fontSize={20} />
+          View
+        </MenuItem>
+        <MenuItem onClick={handleRowOptionsClose} sx={{ '& svg': { mr: 2 } }}>
+          <Icon icon='mdi:pencil-outline' fontSize={20} />
+          Edit
+        </MenuItem>
+        <MenuItem onClick={handleDelete} sx={{ '& svg': { mr: 2 } }}>
+          <Icon icon='mdi:delete-outline' fontSize={20} />
+          Archiver
+        </MenuItem>
+      </Menu>
+    </>
+  )
+}
 
 const Article = () => {
   const [openAddArticle, setOpenAddArticlel] = useState<boolean>(false)
@@ -45,6 +116,13 @@ const Article = () => {
               >
                 Ajouter
               </Button>
+              <Button
+ 
+                sx={{ height: 60, padding: 3, margin: 2, minWidth: '200px', fontSize: '20px', fontWeight: '700' }}
+
+              >
+                archiver
+              </Button>
             </Box>
           }
         ></CardHeader>
@@ -72,19 +150,12 @@ const Article = () => {
                   <TableCell>aaaaaaa</TableCell>
                   <TableCell>aaaaaaa</TableCell>
                   <TableCell>aaaaaaa</TableCell>
+                  <TableCell><RowOptions id={'1'}/></TableCell>
                 </TableRow>
               </TableBody>
             </Table>
           </TableContainer>
-          <TablePagination
-            rowsPerPageOptions={[10, 25, 100]}
-            component='div'
-            // count={rows.length}
-            // rowsPerPage={rowsPerPage}
-            // page={page}
-            // onPageChange={handleChangePage}
-            // onRowsPerPageChange={handleChangeRowsPerPage}
-          />
+          
         </CardContent>
       </Card>
       <AddArticle open={openAddArticle} handleClose={handleClose} />

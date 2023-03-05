@@ -35,7 +35,7 @@ const navigation = (): VerticalNavItemsType => {
         },
         {
           title: 'Archiver',
-          path: '/apps/user/list'
+          path: '/the-heel-game/article/archifier'
         },
       ]
     },
