@@ -127,7 +127,7 @@ mock.onGet('/auth/me').reply(config => {
       // ** If onTokenExpiration === 'logout' then send 401 error
       if (defaultAuthConfig.onTokenExpiration === 'logout') {
         // ** 401 response will logout user from AuthContext file
-        response = [401, { error: { error: 'Invalid User' } }]
+        // response = [401, { error: { error: 'Invalid User' } }]
       } else {
         // ** If onTokenExpiration === 'refreshToken' then generate the new token
         const oldTokenDecoded = jwt.decode(token, { complete: true })

@@ -45,7 +45,7 @@ const navigation = (): VerticalNavItemsType => {
     },
     {
       title: 'Les gangants',
-      path: '/the-heel-game/les-ganiants',
+      path: '/the-heel-game/les-gagnants',
       icon: '',
       type: 'the-heel'
     },

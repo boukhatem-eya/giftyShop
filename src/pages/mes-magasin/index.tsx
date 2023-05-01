@@ -81,6 +81,7 @@ const SecondPage = () => {
   const refreshMutation = useMutation(refreshShops, {
     onSuccess: (response: any) => {
       window.localStorage.setItem('accessToken', response.data.token)
+      console.log('rr', window.localStorage.getItem('accessToken'))
       window.localStorage.setItem('userData', JSON.stringify(response.data.userData))
     }
   })

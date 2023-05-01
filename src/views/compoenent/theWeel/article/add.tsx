@@ -85,18 +85,17 @@ const AddArticle = (props: props) => {
   })
   const onSubmit = async (data: any) => {
     const dataToSave = {
-      name: data.designation,
-      image: base64Image,
-      image_mime: image?.picture?.type || '',
-      stock: Number(data.limitStock),
-      disponible: '',
-      porductbyday: Number(data.limitProduct),
-      state: '',
-      archive: false,
-      can_win: data.ProductLimit,
-      can_win_time_to: data.startDate,
-      can_win_time_from: data.endDate,
-      stop_id: window.localStorage.getItem('shopId')
+      name: data.designation
+      // image: base64Image,
+      // image_mime: image?.picture?.type || '',
+      // stock: Number(data.limitStock),
+      // disponible: '',
+      // porductbyday: Number(data.limitProduct),
+      // state: '',
+      // archive: false,
+      // can_win: data.ProductLimit,
+      // can_win_time_to: data.startDate,
+      // can_win_time_from: data.endDate
     }
     await AddProductMutation.mutateAsync({ dataToSave })
   }

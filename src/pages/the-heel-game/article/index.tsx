@@ -68,7 +68,10 @@ const columns: readonly Column[] = [
   }
 ]
 const Article = () => {
-  const { data } = useQuery('products', () => getProducts())
+  // filter={ "status": "ordered" }&range=[0, 24]&sort=["id", "ASC"]
+  const { data } = useQuery('products', () =>
+    getProducts({ filter: { status: '"ordered"' }, range: [0, 24], sort: ['"id"', '"ASC"'] })
+  )
   const queryClient = useQueryClient()
   const router = useRouter()
   const [selectedProduct, setSelectedProduct] = useState<any>()
@@ -83,7 +86,7 @@ const Article = () => {
     setRowsPerPage(parseInt(event.target.value, 10))
     setPage(0)
   }
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, products?.prodcuts?.length - page * rowsPerPage)
+  const emptyRows = rowsPerPage - Math.min(rowsPerPage, products?.length - page * rowsPerPage)
 
   const [openAddArticle, setOpenAddArticle] = useState<boolean>(false)
   const handleClickOpenactivatePopup = () => setOpenAddArticle(true)
@@ -209,9 +212,12 @@ const Article = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {products?.products?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row: any) => (
+                {products?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row: any) => (
                   <TableRow key={row.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                     <TableCell>{row.name || '-'}</TableCell>
+                    <TableCell>
+                      <img src={row.image || ''} />
+                    </TableCell>
                     <TableCell>{row.produit || '-'}</TableCell>
                     <TableCell>{row.stock || '-'}</TableCell>
                     <TableCell>{row.disponibilte || '-'}</TableCell>
@@ -228,7 +234,7 @@ const Article = () => {
             <TablePagination
               rowsPerPageOptions={[4]}
               component='div'
-              count={products?.products?.length}
+              count={products?.length}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}

@@ -29,8 +29,10 @@ interface AclGuardProps {
 const AclGuard = (props: AclGuardProps) => {
   // ** Props
   const { aclAbilities, children, guestGuard } = props
+  console.log('guestGuard', guestGuard)
 
   const [ability, setAbility] = useState<AppAbility | undefined>(undefined)
+  console.log('ability', ability)
 
   // ** Hooks
   const auth = useAuth()

@@ -7,14 +7,18 @@ const ProductsApi = axios.create({
   baseURL: process.env.API_URL
 })
 
-export const getProducts = async () => {
+export const getProducts = async (data: any) => {
   const storedToken = window.localStorage.getItem(authConfig.storageTokenKeyName)!
   const config = {
     headers: {
       Authorization: storedToken
     }
   }
-  const response = await ProductsApi.get(`/ui/products`, config)
+
+  const response = await ProductsApi.get(
+    `/ui/products?filter={ "status": "ordered" }&range=[0, 24]&sort=["id", "ASC"]`,
+    config
+  )
 
   return response.data
 }
@@ -31,6 +35,7 @@ export const getProductsArchivier = async () => {
 }
 
 export const addProduct = async (data: any) => {
+  console.log('data', data)
   const storedToken = window.localStorage.getItem(authConfig.storageTokenKeyName)!
   const config = {
     headers: {

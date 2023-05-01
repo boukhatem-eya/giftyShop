@@ -34,7 +34,6 @@ const AuthProvider = ({ children }: Props) => {
   // ** States
   const [user, setUser] = useState<UserDataType | null>(defaultProvider.user)
   const [loading, setLoading] = useState<boolean>(defaultProvider.loading)
-  console.log('loading', loading)
 
   // ** Hooks
   const router = useRouter()
@@ -53,7 +52,10 @@ const AuthProvider = ({ children }: Props) => {
           .then(async response => {
             setLoading(false)
             setUser({ ...response.data.userData })
-            window.localStorage.setItem('userData', JSON.stringify(response.data.userData))
+            console.log(
+              'window.localStorage.setItem(authConfig.storageTokenKeyName, response.data.token)',
+              window.localStorage.getItem(authConfig.storageTokenKeyName)
+            )
           })
           .catch(() => {
             localStorage.removeItem('userData')
@@ -64,6 +66,7 @@ const AuthProvider = ({ children }: Props) => {
             setUser(null)
             setLoading(false)
             if (authConfig.onTokenExpiration === 'logout' && !router.pathname.includes('login')) {
+              console.log('test')
               router.replace('/login')
             }
           })
@@ -89,6 +92,7 @@ const AuthProvider = ({ children }: Props) => {
     axios(config)
       .then(async response => {
         window.localStorage.setItem(authConfig.storageTokenKeyName, response.data.token)
+
         const returnUrl = router.query.returnUrl
 
         setUser({ ...response.data.data })
