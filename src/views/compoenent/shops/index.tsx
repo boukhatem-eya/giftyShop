@@ -118,10 +118,10 @@ const ShopsModal = (props: props) => {
   const handleShop = async () => {
     setShop(shopdata.name)
     window.localStorage.removeItem('selectedShop')
-    window.localStorage.setItem('selectedShop', name)
-    window.localStorage.setItem('shopId', id)
+    window.localStorage.setItem('selectedShop', shopdata.name)
+    window.localStorage.setItem('shopId', shopdata.id)
 
-    await refreshMutation.mutateAsync(id)
+    await refreshMutation.mutateAsync(shopdata.id)
   }
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, shops?.shops?.length - page * rowsPerPage)
 
