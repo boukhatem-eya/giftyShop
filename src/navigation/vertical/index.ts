@@ -1,8 +1,6 @@
-import { useRouter } from 'next/router';
-import { VerticalNavItemsType } from 'src/@core/layouts/types';
-
-
-
+/* eslint-disable react-hooks/rules-of-hooks */
+import { useRouter } from 'next/router'
+import { VerticalNavItemsType } from 'src/@core/layouts/types'
 
 const navigation = (): VerticalNavItemsType => {
   let items = [
@@ -10,13 +8,13 @@ const navigation = (): VerticalNavItemsType => {
       title: 'Boutiques',
       path: '/mes-magasin',
       icon: '',
-      type:'mes-magasin'
+      type: 'mes-magasin'
     },
     {
       title: 'Licences',
       path: '/mes-magasin/licences',
       icon: '',
-      type:'mes-magasin'
+      type: 'mes-magasin'
     },
     {
       title: 'Dashboard',
@@ -25,18 +23,18 @@ const navigation = (): VerticalNavItemsType => {
       type: 'the-heel'
     },
     {
-      title: 'Article',
+      title: 'Cadeaux',
       icon: '',
       type: 'the-heel',
       children: [
         {
-          title: 'List',
+          title: 'List des cadeaux',
           path: '/the-heel-game/article'
         },
         {
-          title: 'Archiver',
+          title: 'Cadeaux Archivé',
           path: '/the-heel-game/article/archifier'
-        },
+        }
       ]
     },
     {
@@ -106,20 +104,20 @@ const navigation = (): VerticalNavItemsType => {
       path: '/acl',
       icon: '',
       type: 'Gifty-sms'
-    },
-    
-  ];
-  const { pathname } = useRouter();
+    }
+  ]
+  const { pathname } = useRouter()
+
   // modify the items array based on some condition
-  if (pathname.indexOf("mes-magasin") > -1) {
-    items = items.filter(item => item.type == 'mes-magasin');
-  } else if(pathname.indexOf("the-heel-game") > -1) {
-    items = items.filter(item => item.type == 'the-heel');
-  } else if (pathname.indexOf("gifty-sms") > -1) {
-    items = items.filter(item => item.type == 'Gifty-sms');
+  if (pathname.indexOf('mes-magasin') > -1 || pathname.includes('modules')) {
+    items = items.filter(item => item.type == 'mes-magasin')
+  } else if (pathname.indexOf('the-heel-game') > -1) {
+    items = items.filter(item => item.type == 'the-heel')
+  } else if (pathname.indexOf('gifty-sms') > -1) {
+    items = items.filter(item => item.type == 'Gifty-sms')
   }
 
-  return items;
-};
+  return items
+}
 
-export default navigation;
+export default navigation

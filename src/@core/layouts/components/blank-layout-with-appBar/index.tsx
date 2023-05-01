@@ -7,14 +7,6 @@ import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import { styled, useTheme } from '@mui/material/styles'
 import { useRouter } from 'next/router'
-// ** Components
-import ModeToggler from 'src/@core/layouts/components/shared-components/ModeToggler'
-import UserDropdown from 'src/@core/layouts/components/shared-components/UserDropdown'
-import LanguageDropdown from 'src/@core/layouts/components/shared-components/LanguageDropdown'
-import NotificationDropdown, {
-  NotificationsType
-} from 'src/@core/layouts/components/shared-components/NotificationDropdown'
-// ** MUI Imports
 import Box from '@mui/material/Box'
 import Menu from '@mui/material/Menu'
 import Badge from '@mui/material/Badge'
@@ -22,11 +14,9 @@ import Avatar from '@mui/material/Avatar'
 import Divider from '@mui/material/Divider'
 import MenuItem from '@mui/material/MenuItem'
 import { useAuth } from 'src/hooks/useAuth'
+
 // ** Icon Imports
 import Icon from 'src/@core/components/icon'
-
-// ** Configs
-import themeConfig from 'src/configs/themeConfig'
 
 // ** Hook
 import { useSettings } from 'src/@core/hooks/useSettings'
@@ -38,6 +28,7 @@ const StyledLink = styled(Link)(({ theme }) => ({
   textDecoration: 'none',
   marginRight: theme.spacing(8)
 }))
+
 // ** Styled Components
 const BadgeContentSpan = styled('span')(({ theme }) => ({
   width: 8,
@@ -52,7 +43,6 @@ const BlankLayoutAppBar = () => {
   const theme = useTheme()
   const { settings } = useSettings()
   const { skin } = settings
-  // ** Props
 
   // ** States
   const [anchorEl, setAnchorEl] = useState<Element | null>(null)
@@ -94,6 +84,7 @@ const BlankLayoutAppBar = () => {
     logout()
     handleDropdownClose()
   }
+
   return (
     <AppBar
       color='default'
@@ -114,7 +105,7 @@ const BlankLayoutAppBar = () => {
         }}
       >
         <StyledLink href='/'>
-          <img src='/images/LOGO.svg' width='300px' />
+          <img src='/images/LOGO.svg' alt='logo' width='300px' />
         </StyledLink>
 
         <Badge

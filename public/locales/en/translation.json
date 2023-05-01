@@ -1,0 +1,19 @@
+{
+    "mes-boutiques": "Shops",
+    "modules": "Modules",
+    "subscribe": "Subscribe",
+    "unsubscribe": "Unsubscribe",
+    "add": "Add",
+    "shop": "Shops",
+    "enligsh": "English",
+    "french": "French",
+    "empty-email": "Please enter email address.",
+    "invalid email": " Please enter a valid email address.",
+    "new-shop": "New shop",
+    "upload-image": "Select image",
+    "autorized-file": "Allowed PNG or JPEG. Maximum size of 800k",
+    "return": "Return",
+    "contact-details": "Conatct details",
+    "means-of-payment": "Means of payment",
+    "card-information": "Card information"
+}

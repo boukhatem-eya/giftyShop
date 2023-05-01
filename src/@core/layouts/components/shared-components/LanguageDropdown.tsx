@@ -18,12 +18,13 @@ interface Props {
 const LanguageDropdown = ({ settings, saveSettings }: Props) => {
   // ** Hook
   const { i18n } = useTranslation()
+  const { t } = useTranslation('translation')
 
   // ** Vars
   const { layout } = settings
-
-  const handleLangItemClick = (lang: 'en' | 'fr' | 'ar') => {
-    i18n.changeLanguage(lang)
+  const handleChangeLanguage = (value: string) => {
+    localStorage.setItem('language', value)
+    window.location.reload()
   }
 
   return (
@@ -33,35 +34,26 @@ const LanguageDropdown = ({ settings, saveSettings }: Props) => {
       iconButtonProps={{ color: 'inherit', sx: { ...(layout === 'vertical' ? { mr: 0.75 } : { mx: 0.75 }) } }}
       options={[
         {
-          text: 'English',
+          text: t('enligsh'),
           menuItemProps: {
             sx: { py: 2 },
             selected: i18n.language === 'en',
             onClick: () => {
-              handleLangItemClick('en')
+              // handleLangItemClick('en')
+              handleChangeLanguage('en')
               saveSettings({ ...settings, direction: 'ltr' })
             }
           }
         },
         {
-          text: 'French',
+          text: t('french'),
           menuItemProps: {
             sx: { py: 2 },
             selected: i18n.language === 'fr',
             onClick: () => {
-              handleLangItemClick('fr')
+              // handleLangItemClick('fr')
+              handleChangeLanguage('fr')
               saveSettings({ ...settings, direction: 'ltr' })
-            }
-          }
-        },
-        {
-          text: 'Arabic',
-          menuItemProps: {
-            sx: { py: 2 },
-            selected: i18n.language === 'ar',
-            onClick: () => {
-              handleLangItemClick('ar')
-              saveSettings({ ...settings, direction: 'rtl' })
             }
           }
         }

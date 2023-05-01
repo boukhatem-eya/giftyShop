@@ -1,9 +1,8 @@
 import { useState } from 'react'
 import { loadStripe } from '@stripe/stripe-js'
-import { CardElement, Elements, useElements } from '@stripe/react-stripe-js'
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography, IconButton, Icon } from '@mui/material'
+import { CardElement, Elements } from '@stripe/react-stripe-js'
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography, IconButton } from '@mui/material'
 import { Box } from '@mui/system'
-
 
 const stripePromise = loadStripe('YOUR_STRIPE_PUBLIC_KEY')
 type props = {
@@ -28,8 +27,10 @@ const PaymentDialog = (props: props) => {
 
     const result = await stripe.createPaymentMethod({
       type: 'card'
+
       // card: elements.getElement(CardElement)
     })
+
     // Handle the payment method result
     if (result.error) {
       setPaymentStatus('error')
@@ -66,26 +67,26 @@ const PaymentDialog = (props: props) => {
       open={open}
       onClose={handleClose}
     >
-     <DialogTitle
-          id='customized-dialog-title'
-          sx={{ p: 4, display: 'flex', alignItems: 'center', flexDirection: 'column', justifyContent: 'center' }}
+      <DialogTitle
+        id='customized-dialog-title'
+        sx={{ p: 4, display: 'flex', alignItems: 'center', flexDirection: 'column', justifyContent: 'center' }}
+      >
+        <img src='/images/stripe.png' alt='stripe' width='150px'></img>
+        <Typography variant='h6' component='span'></Typography>
+        <IconButton
+          aria-label='close'
+          onClick={handleClose}
+          sx={{ top: 10, right: 10, position: 'absolute', color: 'grey.500' }}
         >
-          <img src='/images/stripe.png' width='150px'></img>
-          <Typography variant='h6' component='span'></Typography>
-          <IconButton
-            aria-label='close'
-            onClick={handleClose}
-            sx={{ top: 10, right: 10, position: 'absolute', color: 'grey.500' }}
-          >
-            {/* <Icon icon='mdi:close' /> */}
-          </IconButton>
-        </DialogTitle>
+          {/* <Icon icon='mdi:close' /> */}
+        </IconButton>
+      </DialogTitle>
       <DialogContent>
-        <Box sx={{ width: '400px',  }}>
+        <Box sx={{ width: '400px' }}>
           <Elements stripe={stripePromise}>
             <form onSubmit={handlePayment}>
               {/* Use the CardElement from @stripe/react-stripe-js */}
-              <CardElement  />
+              <CardElement />
               <Button type='submit' disabled={paymentStatus === 'processing'}>
                 {paymentStatus === 'processing' ? 'Processing...' : 'Pay now'}
               </Button>

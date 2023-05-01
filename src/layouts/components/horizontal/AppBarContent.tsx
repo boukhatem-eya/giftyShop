@@ -5,9 +5,9 @@ import Box from '@mui/material/Box'
 import { Settings } from 'src/@core/context/settingsContext'
 import LanguageDropdown from 'src/@core/layouts/components/shared-components/LanguageDropdown'
 
-// ** Components
-import ModeToggler from 'src/@core/layouts/components/shared-components/ModeToggler'
-import NotificationDropdown, { NotificationsType } from 'src/@core/layouts/components/shared-components/NotificationDropdown'
+import NotificationDropdown, {
+  NotificationsType
+} from 'src/@core/layouts/components/shared-components/NotificationDropdown'
 import ShortcutsDropdown, { ShortcutsType } from 'src/@core/layouts/components/shared-components/ShortcutsDropdown'
 import UserDropdown from 'src/@core/layouts/components/shared-components/UserDropdown'
 
@@ -116,12 +116,10 @@ const AppBarContent = (props: Props) => {
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-      {/* <ModeToggler settings={settings} saveSettings={saveSettings} /> */}
       <LanguageDropdown settings={settings} saveSettings={saveSettings} />
       <ShortcutsDropdown settings={settings} shortcuts={shortcuts} />
       <NotificationDropdown settings={settings} notifications={notifications} />
       <UserDropdown settings={settings} />
-
     </Box>
   )
 }

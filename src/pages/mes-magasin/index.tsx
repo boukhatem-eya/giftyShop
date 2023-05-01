@@ -10,159 +10,253 @@ import TableRow from '@mui/material/TableRow'
 import TableHead from '@mui/material/TableHead'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
+import Radio from '@mui/material/Radio'
 import TableContainer from '@mui/material/TableContainer'
 import TablePagination from '@mui/material/TablePagination'
-import { ChangeEvent, useEffect, useState } from 'react'
+import { useState, MouseEvent } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useQuery } from 'react-query'
-import { getShops } from '../../../servicesApi/shops'
-import { Box, Button } from '@mui/material'
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { getShops, refreshShops } from '../../servicesApi/shops'
+import { Box, Button, IconButton, Menu, MenuItem } from '@mui/material'
+import Icon from 'src/@core/components/icon'
+import { useMutation } from 'react-query'
+import 'react-toastify/dist/ReactToastify.css'
+import { useUiContext } from 'src/context/uiContext'
+import AddShop from 'src/views/compoenent/firstConnection/AddShop'
+import { useRouter } from 'next/router'
+
 interface Column {
-  id: 'name' | 'pays' | 'adresse' | 'ville' | 'Responsable'
+  id: 'name' | 'pays' | 'adresse' | 'ville' | 'Responsable' | 'Module' | '' | 'Action'
   label: string
-  minWidth?: number
+  width?: number
   align?: 'right'
   format?: (value: number) => string
 }
 
 const columns: readonly Column[] = [
-  { id: 'name', label: 'Name', minWidth: 170 },
-  { id: 'pays', label: 'pays', minWidth: 100 },
+  { id: '', label: '', width: 100 },
+  { id: 'name', label: 'Name', width: 150 },
+  { id: 'pays', label: 'pays', width: 150 },
   {
     id: 'adresse',
     label: 'adresse',
-    minWidth: 170,
-    align: 'right',
+    width: 150,
     format: (value: number) => value.toLocaleString('en-US')
   },
   {
     id: 'ville',
     label: 'ville',
-    minWidth: 170,
-    align: 'right',
+    width: 150,
     format: (value: number) => value.toLocaleString('en-US')
   },
   {
     id: 'Responsable',
     label: 'Responsable',
-    minWidth: 170,
-    align: 'right',
+    width: 150,
+    format: (value: number) => value.toFixed(2)
+  },
+  {
+    id: 'Module',
+    label: 'Module',
+    width: 150,
+    format: (value: number) => value.toFixed(2)
+  },
+  {
+    id: 'Action',
+    label: 'Action',
+    width: 150,
     format: (value: number) => value.toFixed(2)
   }
 ]
-
-interface Data {
-  designiation: string
-  adress: string
-  ville: number
-  pays: number
-  responsable: string
-}
-
-function createData(designiation: string, adress: string, ville: number, pays: number, responsable: string): Data {
-  return { designiation, adress, ville, pays, responsable }
-}
-
-const rows = [
-  createData('India', 'IN', 1324171354, 3287263, 'India'),
-  createData('China', 'CN', 1403500365, 9596961, 'India')
-]
 const SecondPage = () => {
-  const { isLoading, data } = useQuery('shops', () => getShops())
-
+  const { data } = useQuery('shops', () => getShops())
+  const [selectedShopId, setSelectedShopId] = useState<any>()
+  const [openConfigPopup, setOpenConfigPopup] = useState<boolean>(false)
+  const { t } = useTranslation('translation')
+  const router = useRouter()
+  const { setShop, selectedShop } = useUiContext()
   const shops = data ?? []
-
-  useEffect(() => {}, [shops])
-  // console.log('shops----', shops.shops[1].responsable)
-  // ** States
   const [page, setPage] = useState<number>(0)
-  const [rowsPerPage, setRowsPerPage] = useState<number>(10)
+  const [rowsPerPage, setRowsPerPage] = useState<any>(3)
+  const refreshMutation = useMutation(refreshShops, {
+    onSuccess: (response: any) => {
+      window.localStorage.setItem('accessToken', response.data.token)
+      window.localStorage.setItem('userData', JSON.stringify(response.data.userData))
+    }
+  })
+  const handleChange = async (id: any, name: string) => {
+    setShop(name)
+    window.localStorage.removeItem('selectedShop')
+    window.localStorage.setItem('selectedShop', name)
+    window.localStorage.setItem('shopId', id)
 
-  const handleChangePage = (event: unknown, newPage: number) => {
+    await refreshMutation.mutateAsync(id)
+  }
+
+  const handleChangePage = (event: any, newPage: any) => {
     setPage(newPage)
   }
 
-  const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(+event.target.value)
+  const handleChangeRowsPerPage = (event: any) => {
+    setRowsPerPage(parseInt(event.target.value, 10))
     setPage(0)
   }
+  const emptyRows = rowsPerPage - Math.min(rowsPerPage, shops?.shops?.length - page * rowsPerPage)
+
+  const handleClickConfigOpen = () => setOpenConfigPopup(true)
+
+  const handleConfigClose = () => setOpenConfigPopup(false)
+
+  const handleCloseAndOpen = () => {
+    handleClickConfigOpen()
+  }
+  const RowOptions = ({ id }: { id: number | string }) => {
+    // ** State
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+
+    const rowOptionsOpen = Boolean(anchorEl)
+
+    const handleRowOptionsClick = (event: MouseEvent<HTMLElement>) => {
+      setAnchorEl(event.currentTarget)
+    }
+    const handleRowOptionsClose = () => {
+      setAnchorEl(null)
+    }
+
+    const handleEditShop = () => {
+      handleRowOptionsClose()
+      setSelectedShopId(id)
+      handleClickConfigOpen()
+    }
+
+    return (
+      <>
+        <IconButton size='small' onClick={handleRowOptionsClick}>
+          <Icon icon='mdi:dots-vertical' />
+        </IconButton>
+        <Menu
+          keepMounted
+          anchorEl={anchorEl}
+          open={rowOptionsOpen}
+          onClose={handleRowOptionsClose}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right'
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'right'
+          }}
+          PaperProps={{ style: { minWidth: '8rem' } }}
+        >
+          <MenuItem onClick={handleEditShop} sx={{ '& svg': { mr: 2 } }}>
+            <Icon icon='mdi:pencil-outline' fontSize={20} />
+            Edit
+          </MenuItem>
+        </Menu>
+      </>
+    )
+  }
+
   return (
     <>
-    <Grid container>
-      <Grid item xs={12}>
-        <Typography variant='h4' sx={{ m: 3 }}>
-          {' '}
-          Mes Boutiques
-        </Typography>
-        <Typography variant='h5' sx={{ m: 3 }}>
-          Administration / <span style={{ color: 'red' }}>Mes boutiques</span>{' '}
-        </Typography>
-        <Card>
-          <CardHeader
-            title='Mes Boutiques 🏬'
-            sx={{ fontSize: '24px', pt: 3 }}
-            action={
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Button
-                  variant='contained'
-                  color='primary'
-                  sx={{ height: 60, padding: 3, margin: 2, minWidth: '200px', fontSize: '20px', fontWeight: '700' }}
-                >
-                  Ajouter
-                </Button>
-              </Box>
-            }
-          ></CardHeader>
-          <CardContent>
-            <TableContainer component={Paper} sx={{ minHeight: '65vh' }}>
-              <Table stickyHeader aria-label='sticky table'>
-                <TableHead>
-                  <TableRow>
-                    {columns.map(column => (
-                      <TableCell key={column.id} align={column.align} sx={{ minWidth: column.minWidth }}>
-                        {column.label}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {shops?.shops?.map((row: any) => (
-                    <TableRow key={row.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                      <TableCell>{row.name}</TableCell>
-                      <TableCell>{row.pays}</TableCell>
-                      <TableCell>{row.addresse}</TableCell>
-                      <TableCell>{row.ville}</TableCell>
-                      <TableCell>{row.responsable}</TableCell>
+      <Grid container>
+        <Grid item xs={12}>
+          <Typography variant='h4' sx={{ m: 3 }}>
+            {' '}
+            {t('mes-boutiques')}
+          </Typography>
+          <Typography variant='h5' sx={{ m: 3 }}>
+            Administration / <span style={{ color: 'red' }}>{t('mes-boutiques')}</span>{' '}
+          </Typography>
+          <Card sx={{ height: '80%' }}>
+            <CardHeader
+              title='Mes Boutiques 🏬'
+              sx={{ fontSize: '24px', pt: 3 }}
+              action={
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Button
+                    onClick={handleCloseAndOpen}
+                    variant='contained'
+                    color='primary'
+                    sx={{ height: 60, padding: 3, margin: 2, minWidth: '200px', fontSize: '20px', fontWeight: '700' }}
+                  >
+                    Ajouter
+                  </Button>
+                </Box>
+              }
+            ></CardHeader>
+            <CardContent>
+              <TableContainer component={Paper}>
+                <Table stickyHeader aria-label='sticky table'>
+                  <TableHead>
+                    <TableRow>
+                      {columns.map(column => (
+                        <TableCell key={column.id} align={column.align} sx={{ width: column.width }}>
+                          {column.label}
+                        </TableCell>
+                      ))}
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-            <TablePagination
-              rowsPerPageOptions={[10, 25, 100]}
-              component='div'
-              count={rows.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            />
-          </CardContent>
-        </Card>
+                  </TableHead>
+                  <TableBody>
+                    {shops?.shops?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row: any) => (
+                      <TableRow key={row.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                        <TableCell>
+                          <Radio
+                            value={row.name}
+                            onChange={() => handleChange(row.id, row.name)}
+                            name='radio-button-demo'
+                            checked={
+                              selectedShop === row.name || window.localStorage.getItem('selectedShop') === row.name
+                            }
+                            inputProps={{ 'aria-label': 'A' }}
+                          />
+                        </TableCell>
+                        <TableCell>{row.name || '-'}</TableCell>
+                        <TableCell>{row.pays || '-'}</TableCell>
+                        <TableCell>{row.addresse || '-'}</TableCell>
+                        <TableCell>{row.ville || '-'}</TableCell>
+                        <TableCell>{row.responsable || '-'}</TableCell>
+                        <TableCell>
+                          <Button
+                            variant='text'
+                            color='secondary'
+                            onClick={() => {
+                              ;(selectedShop === row.name ||
+                                window.localStorage.getItem('selectedShop') === row.name) &&
+                                router.push({
+                                  pathname: '/mes-magasin/modules',
+                                  query: { shopId: row.id }
+                                })
+                            }}
+                          >
+                            {' '}
+                            {row.module || '0/4'}
+                          </Button>
+                        </TableCell>
+                        <TableCell>
+                          <RowOptions id={row?.id} />
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                    {emptyRows > 0 && <TableRow style={{ height: 74 * emptyRows }}></TableRow>}
+                  </TableBody>
+                </Table>
+                <TablePagination
+                  rowsPerPageOptions={[4]}
+                  component='div'
+                  count={shops?.shops?.length}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  onPageChange={handleChangePage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+              </TableContainer>
+            </CardContent>
+          </Card>
+        </Grid>
       </Grid>
-    </Grid>
-   <ToastContainer
-     position="top-right"
-     autoClose={3000}
-     hideProgressBar={false}
-     newestOnTop={false}
-     closeOnClick
-     rtl={false}
-     pauseOnFocusLoss
-     draggable
-     pauseOnHover
-   />
+      <AddShop open={openConfigPopup} handleClose={handleConfigClose} id={selectedShopId} />
     </>
   )
 }

@@ -2,41 +2,28 @@
 import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
-import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent'
-import Paper from '@mui/material/Paper'
-import Table from '@mui/material/Table'
-import TableRow from '@mui/material/TableRow'
-import TableHead from '@mui/material/TableHead'
-import TableBody from '@mui/material/TableBody'
-import TableCell from '@mui/material/TableCell'
-import TableContainer from '@mui/material/TableContainer'
-import TablePagination from '@mui/material/TablePagination'
-import { ChangeEvent, ReactNode, useEffect, useState } from 'react'
-import { useQuery } from 'react-query'
-import { getShops } from '../../../servicesApi/shops'
+
+import { ReactNode } from 'react'
 import { Box, Button } from '@mui/material'
 import BlankLayoutWithAppBar from 'src/@core/layouts/BlankLayoutWithAppBar'
-import ActivateTheWeel from 'src/views/compoenent/theWeel/welcomepoup'
+import { useRouter } from 'next/router'
 
 const HeelGame = () => {
-  const [openActivateWeel, setOpenActivateWeel] = useState<boolean>(false)
-  const handleClickOpenactivatePopup = () => setOpenActivateWeel(true)
-  const handleClose = () => {
-    setOpenActivateWeel(false)
-  }
+  const router = useRouter()
+
   return (
     <>
       <Box>
         <Typography
           variant='h4'
           component='span'
-          sx={{ display: 'flex', justifyContent: 'center', alignItem: 'center', p: 4 }}
+          sx={{ display: 'flex', justifyContent: 'center', alignItem: 'center', p: 3 }}
         >
-          Quelle Jeux souhaite vous metre en place ?
+          Quelle Jeux souhaitez vous metre en place ?
         </Typography>
-        <Typography sx={{ display: 'flex', justifyContent: 'center', alignItem: 'center', pb: 6 }}>
-          Please make sure to read our Template Documentation to understand wher
+        <Typography sx={{ display: 'flex', justifyContent: 'center', alignItem: 'center', pb: 4 }}>
+          Vous pouvez revenir à tout moment sur cet écran selon vos besoins en cliquant sur l’icône
         </Typography>
       </Box>
 
@@ -46,7 +33,9 @@ const HeelGame = () => {
             <Card>
               <Button
                 variant='outlined'
-                onClick={handleClickOpenactivatePopup}
+                onClick={() => {
+                  router.push('/the-heel-game/dashboard')
+                }}
                 className='gift-button'
                 sx={{
                   border: 'none',
@@ -57,33 +46,10 @@ const HeelGame = () => {
                 }}
               >
                 <CardContent sx={{ width: '100%' }} className='image'>
-                  <img src='/images/spinning-wheel.png' width='100%' height='200px'></img>
+                  <img src='/images/spinning-wheel.png' alt='spinning' width='100%' height='145px'></img>
 
                   <Typography className='typhography' sx={{ p: 2 }} variant='h5'>
                     The Weel
-                  </Typography>
-                </CardContent>
-              </Button>
-            </Card>
-          </Grid>
-          <Grid item sm={6} md={6} lg={6}>
-            <Card>
-              <Button
-                variant='outlined'
-                className='gift-button'
-                sx={{
-                  border: 'none',
-                  '&.MuiButtonBase-root:hover': {
-                    background: 'linear-gradient(177deg, rgba(255,99,237,1) 0%, rgba(255,153,38,1) 100%)',
-                    color: 'white'
-                    // focus: 'none'
-                  }
-                }}
-              >
-                <CardContent>
-                  <img src='/images/playing-cards.png' width='100%' height='200px'></img>
-                  <Typography sx={{ p: 2 }} className='typhography' variant='h5'>
-                    gifty call
                   </Typography>
                 </CardContent>
               </Button>
@@ -101,13 +67,12 @@ const HeelGame = () => {
                   '&.MuiButtonBase-root:hover': {
                     background: 'linear-gradient(177deg, rgba(255,99,237,1) 0%, rgba(255,153,38,1) 100%)',
                     color: 'white'
-                    // focus: 'none'
                   }
                 }}
               >
                 <CardContent>
-                  <Box sx={{ height: '250px', position : 'center' }}>
-                    <Typography sx={{ p: 2 }} className='typhography' variant='h5'>
+                  <Box sx={{ height: '200px', position: 'center' }}>
+                    <Typography sx={{ p: 2, paddingTop: '75px' }} className='typhography' variant='h5'>
                       Comming Soon
                     </Typography>
                   </Box>
@@ -117,19 +82,57 @@ const HeelGame = () => {
           </Grid>
           <Grid item sm={6} md={6} lg={6}>
             <Card>
-              <Button disabled={true} variant='outlined' className='gift-button'>
+              <Button
+                variant='outlined'
+                className='gift-button'
+                sx={{
+                  border: 'none',
+                  Color: 'white',
+                  background: 'linear-gradient(177deg, rgba(255,99,237,1) 0%, rgba(255,153,38,1) 100%)',
+                  '&.MuiButtonBase-root:hover': {
+                    background: 'linear-gradient(177deg, rgba(255,99,237,1) 0%, rgba(255,153,38,1) 100%)',
+                    color: 'white'
+                  }
+                }}
+              >
                 <CardContent>
-                  <img src='/images/Module_GiftySMS.svg' width='100%' height='200px'></img>
-                  <Typography sx={{ p: 2 }} className='typhography' variant='h5'>
-                    Gifty SMS
-                  </Typography>
+                  <Box sx={{ height: '200px', position: 'center' }}>
+                    <Typography sx={{ p: 2, paddingTop: '75px' }} className='typhography' variant='h5'>
+                      Comming Soon
+                    </Typography>
+                  </Box>
+                </CardContent>
+              </Button>
+            </Card>
+          </Grid>
+          <Grid item sm={6} md={6} lg={6}>
+            <Card>
+              <Button
+                variant='outlined'
+                className='gift-button'
+                sx={{
+                  border: 'none',
+                  Color: 'white',
+                  background: 'linear-gradient(177deg, rgba(255,99,237,1) 0%, rgba(255,153,38,1) 100%)',
+                  '&.MuiButtonBase-root:hover': {
+                    background: 'linear-gradient(177deg, rgba(255,99,237,1) 0%, rgba(255,153,38,1) 100%)',
+                    color: 'white'
+                  }
+                }}
+              >
+                <CardContent>
+                  <Box sx={{ height: '200px', position: 'center' }}>
+                    <Typography sx={{ p: 2, paddingTop: '75px' }} className='typhography' variant='h5'>
+                      Comming Soon
+                    </Typography>
+                  </Box>
                 </CardContent>
               </Button>
             </Card>
           </Grid>
         </Grid>
       </Box>
-      <ActivateTheWeel open={openActivateWeel} handleClose={handleClose} />
+      {/* <ActivateTheWeel open={openActivateWeel} handleClose={handleClose} /> */}
     </>
   )
 }

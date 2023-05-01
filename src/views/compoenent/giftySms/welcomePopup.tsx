@@ -1,25 +1,15 @@
-// ** MUI Imports
-import Card from '@mui/material/Card'
 import Typography from '@mui/material/Typography'
-import CardHeader from '@mui/material/CardHeader'
-import CardContent from '@mui/material/CardContent'
 import { Box } from '@mui/system'
 import Button from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog'
 import IconButton from '@mui/material/IconButton'
 import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
-import DialogActions from '@mui/material/DialogActions'
-import { ReactNode, useState } from 'react'
+import { useState } from 'react'
+
 // ** Icon Imports
 import Icon from 'src/@core/components/icon'
-import BlankLayoutWithAppBar from 'src/@core/layouts/BlankLayoutWithAppBar'
-import { FormControl, FormHelperText, InputAdornment, InputLabel, OutlinedInput, TextField } from '@mui/material'
-import { Controller, useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { useRouter } from 'next/router'
 import Grid from '@mui/material/Grid'
-import PointVente from './pointVendePoPUP'
 
 type props = {
   open: boolean
@@ -27,17 +17,14 @@ type props = {
 }
 
 const WelcomePopupSms = (props: props) => {
-  // ** State
-  const router = useRouter()
   const { open, handleClose } = props
   const [openPointVente, setOPenPointVente] = useState(false)
+  console.log('openPointVente', openPointVente)
 
   const CloseAndOPenPOintVente = () => {
     handleClose()
     setOPenPointVente(true)
   }
-
-  const handleClosePointVente = () => setOPenPointVente(false)
 
   return (
     <>
@@ -52,7 +39,7 @@ const WelcomePopupSms = (props: props) => {
           id='customized-dialog-title'
           sx={{ p: 4, display: 'flex', alignItems: 'center', flexDirection: 'column', justifyContent: 'center' }}
         >
-          <img src='/images/Header_GiftySMS.svg' height='100px'></img>
+          <img src='/images/Header_GiftySMS.svg' alt='giftySMS' height='100px'></img>
           <Typography variant='h6' component='span'></Typography>
           <IconButton
             aria-label='close'
@@ -98,7 +85,10 @@ const WelcomePopupSms = (props: props) => {
                   255$
                 </Box>
                 <Box sx={{ p: 2, display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-                  <Button variant='contained' sx={{ height: 60, padding: 4, margin: 2, minWidth: '200px', fontSize: '20px', fontWeight: '700' }}>
+                  <Button
+                    variant='contained'
+                    sx={{ height: 60, padding: 4, margin: 2, minWidth: '200px', fontSize: '20px', fontWeight: '700' }}
+                  >
                     Anuelle
                   </Button>
                   255$
@@ -117,8 +107,6 @@ const WelcomePopupSms = (props: props) => {
           }}
         ></DialogActions> */}
       </Dialog>
-
-      <PointVente open={openPointVente} handleClose={handleClosePointVente} />
     </>
   )
 }

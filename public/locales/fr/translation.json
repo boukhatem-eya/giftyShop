@@ -1,0 +1,19 @@
+{
+    "mes-boutiques": "Mes boutiques",
+    "modules": "Mes modules",
+    "subscribe": "S'abonner",
+    "unsubscribe": "Désabonner",
+    "add": "Ajouter",
+    "shop": "Boutiques",
+    "enligsh": "Anglais",
+    "french": "Français",
+    "empty-email": "Entrer adresse mail svp.",
+    "invalid email": "Entrer adresse mail valid svp.",
+    "new-shop": "Nouvelle boutique",
+    "upload-image": "Choisir une photo",
+    "autorized-file": "Autorisé PNG ou JPEG. Taille maximale de 800k",
+    "return": "Retour",
+    "contact-details": "Coordonnées",
+    "means-of-payment": "Moyen de paiement",
+    "card-information": "Informations de la carte"
+}

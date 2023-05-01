@@ -1,8 +1,5 @@
 // ** MUI Imports
-import Card from '@mui/material/Card'
 import Typography from '@mui/material/Typography'
-import CardHeader from '@mui/material/CardHeader'
-import CardContent from '@mui/material/CardContent'
 import { Box } from '@mui/system'
 import Button from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog'
@@ -10,59 +7,100 @@ import IconButton from '@mui/material/IconButton'
 import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
-// ** MUI Imports
-import Tab from '@mui/material/Tab'
-import TabList from '@mui/lab/TabList'
-import TabPanel from '@mui/lab/TabPanel'
-import TabContext from '@mui/lab/TabContext'
-import { ReactNode, SyntheticEvent, useState } from 'react'
+import Switch from '@mui/material/Switch'
+import FormGroup from '@mui/material/FormGroup'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import { useTranslation } from 'react-i18next'
+import { useMutation, useQueryClient } from 'react-query'
+import { addProduct } from 'src/servicesApi/products'
+
+import React, { useEffect, useState } from 'react'
+
 // ** Icon Imports
 import Icon from 'src/@core/components/icon'
 import { useRouter } from 'next/router'
-import Grid from '@mui/material/Grid'
-import { FormControl, FormHelperText, Tabs } from '@mui/material'
 import { Controller, useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { TextField, Select, MenuItem } from "@mui/material";
+import { DatePicker } from '@mui/x-date-pickers'
+import { TextField } from '@mui/material'
+import { toast } from 'react-toastify'
+
 type props = {
   open: boolean
   handleClose: () => void
+  id: any
 }
 
 const AddArticle = (props: props) => {
   // ** State
   const router = useRouter()
+  const queryClient = useQueryClient()
   const { open, handleClose } = props
+  const { t } = useTranslation('translation')
 
-  const CloseAndOpenTheWeel = () => {
-    handleClose()
-    router.push('/the-heel-game/dashboard')
-  }
-  const {
-    control,
-    setError,
-    register,
-    handleSubmit,
-    formState: { errors }
-  } = useForm({
-    mode: 'onBlur'
-    // resolver: yupResolver(schema)
+  const { control, handleSubmit, watch } = useForm({})
+
+  const [image, setImage] = useState<{ preview: string; picture: File | null }>({
+    picture: null,
+    preview: ''
   })
-  // ** State
-  const [value, setValue] = useState<string>('1')
 
-  const handleChange = (event: SyntheticEvent, newValue: string) => {
-    setValue(newValue)
+  const handleChangeFile = (e: any) => {
+    if (e.target.files.length) {
+      setImage({
+        picture: e.target.files[0],
+        preview: URL.createObjectURL(e.target.files[0])
+      })
+    }
   }
-  const [activeTab, setActiveTab] = useState(0);
+  const hiddenFileInput: React.MutableRefObject<any> = React.useRef(null)
+  const handleClick = () => {
+    if (hiddenFileInput?.current) {
+      hiddenFileInput.current.click()
+    }
+  }
+  const [base64Image, setBase64Image] = useState<any>('')
 
+  useEffect(() => {
+    const fetchImage = async () => {
+      if (image.preview) {
+        const response = await fetch(image.preview)
+        const blob = await response.blob()
+        const reader = new FileReader()
+        reader.readAsDataURL(blob)
+        reader.onloadend = () => {
+          setBase64Image(reader?.result)
+        }
+      }
+    }
+    fetchImage()
+  }, [image.preview])
+  const AddProductMutation = useMutation(addProduct, {
+    onSuccess: () => {
+      // Invalidates cache and refetch
+      queryClient.invalidateQueries('products')
+      router.push('/the-heel-game/article')
+      toast.success('Product add succefully!')
+      handleClose()
+    }
+  })
+  const onSubmit = async (data: any) => {
+    const dataToSave = {
+      name: data.designation,
+      image: base64Image,
+      image_mime: image?.picture?.type || '',
+      stock: Number(data.limitStock),
+      disponible: '',
+      porductbyday: Number(data.limitProduct),
+      state: '',
+      archive: false,
+      can_win: data.ProductLimit,
+      can_win_time_to: data.startDate,
+      can_win_time_from: data.endDate,
+      stop_id: window.localStorage.getItem('shopId')
+    }
+    await AddProductMutation.mutateAsync({ dataToSave })
+  }
 
-  const handleTabChange = (event: any, newValue:any) => {
-    setActiveTab(newValue);
-  };
-  const onSubmit = (data:any) => {
-    console.log(data);
-  };
   return (
     <>
       <Dialog
@@ -88,83 +126,200 @@ const AddArticle = (props: props) => {
           </IconButton>
         </DialogTitle>
         <form onSubmit={handleSubmit(onSubmit)}>
-        <DialogContent dividers sx={{ pb: 10, pl: 10, pr: 10 }}>
-          <Box sx={{ p: 4, display: 'flex', alignItems: 'left' }}>
-            <Typography variant='h4' component='span' sx={{ p: 0 }}>
-              <img src={'/images/Image.svg'} width='200px' />
-            </Typography>
-
-            <Typography sx={{ p: 5, display: 'flex', alignItems: 'left', flexDirection: 'column' }}>
-              <Button
-                variant='contained'
-                sx={{ height: 60, padding: 4, margin: 2, minWidth: '200px', fontSize: '20px', fontWeight: '700' }}
-              >
-                Télécharger une photos
-                <input type='file' hidden name='logo' />
-              </Button>
-
-              <Typography sx={{ p: 2 }}>Autorisé png et jpeg , taille maximale de book</Typography>
-            </Typography>
-          </Box>
-
-          <Tabs value={activeTab} onChange={handleTabChange}>
-            <Tab label="Informations" />
-            <Tab label="Avances" />
-          </Tabs>
-
-          <Box sx={{ p: 2 }}>
-            {activeTab === 0 && (
-              <>
-                <TextField {...register("name")} label="Name" />
-                <TextField
-                  {...register("designation")}
-                  label="Designation"
+          <DialogContent dividers sx={{ pb: 10, pl: 10, pr: 10 }}>
+            <Box sx={{ pr: 4, display: 'flex', alignItems: 'left' }}>
+              <Typography variant='h4' component='span' sx={{ p: 0 }}>
+                <img
+                  src={image?.preview ? image?.preview : '/images/Image.svg'}
+                  alt='logoShop'
+                  width='200px'
+                  height='180px'
                 />
-              </>
-            )}
+              </Typography>
 
-            {activeTab === 1 && (
-              <>
+              <Typography sx={{ p: 5, display: 'flex', alignItems: 'left', flexDirection: 'column' }}>
+                <Button
+                  variant='contained'
+                  sx={{ height: 60, padding: 4, margin: 2, width: '210px', fontSize: '20px', fontWeight: '700' }}
+                  onClick={handleClick}
+                >
+                  {t('upload-image')}
+                  <input
+                    type='file'
+                    style={{ display: 'none' }}
+                    ref={hiddenFileInput}
+                    name='logo'
+                    onChange={handleChangeFile}
+                  />
+                </Button>
+
+                <Typography sx={{ p: 2 }}>{t('autorized-file')}</Typography>
+              </Typography>
+            </Box>
+            <Controller
+              name='designation'
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
-                  {...register("produitMaximale")}
-                  label="Produit Maximale"
-                  type="number"
+                  label='Designation'
+                  name='designation'
+                  value={value}
+                  onChange={onChange}
+                  type='text'
+                  style={{ width: '400px' }}
                 />
-                {/* <DatePicker
-                  {...register("disponibleJusqua")}
-                  label="Disponible Jusqua"
-                  renderInput={(params:any) => (
-                    <TextField {...params} fullWidth />
-                  )}
-                /> */}
-              </>
-            )}
+              )}
+            />
 
-           
-          </Box>
-        </DialogContent>
-        <DialogActions
-          sx={{
-            p: theme => `${theme.spacing(3)} !important`,
-            display: 'flex',
-            flexDirection: 'row',
-          }}
-        >
-          <Button
-            // onClick={handleCloseAndOpen}
-
-            sx={{ height: 60, padding: 4, margin: 2, minWidth: '200px', fontSize: '20px', fontWeight: '700' }}
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignContent: 'center',
+                alignItems: 'center',
+                paddingTop: '15px'
+              }}
+            >
+              {' '}
+              <Typography sx={{ p: 2, color: 'red', fontWeight: '500' }}>Produit limité</Typography>
+              <Controller
+                name='ProductLimit'
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { value, onChange } }) => (
+                  <>
+                    {' '}
+                    <FormGroup row>
+                      <FormControlLabel control={<Switch />} label='' value={value} onChange={onChange} />
+                    </FormGroup>
+                  </>
+                )}
+              />
+              {watch('ProductLimit') && (
+                <>
+                  <Typography variant='subtitle2'>Produit maximum à ganger par personne</Typography>
+                  <Controller
+                    name='limitProduct'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <TextField
+                        name='limitProduct'
+                        type='number'
+                        sx={{ marginLeft: '20px', width: '100px' }}
+                        value={value}
+                        onChange={onChange}
+                      />
+                    )}
+                  />
+                </>
+              )}
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'row', alignContent: 'center', alignItems: 'center' }}>
+              {' '}
+              <Typography sx={{ p: 2, color: 'red', fontWeight: '500' }}>Stock limité</Typography>
+              <Controller
+                name='stockLimit'
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { value, onChange } }) => (
+                  <>
+                    {' '}
+                    <FormGroup row>
+                      <FormControlLabel control={<Switch />} label='' value={value} onChange={onChange} />
+                    </FormGroup>
+                  </>
+                )}
+              />
+              {watch('stockLimit') && (
+                <>
+                  <Typography variant='subtitle2'>Stock produit</Typography>
+                  <Controller
+                    name='limitStock'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <TextField
+                        name='limitStock'
+                        type='number'
+                        sx={{ marginLeft: '20px', width: '100px' }}
+                        value={value}
+                        onChange={onChange}
+                      />
+                    )}
+                  />
+                </>
+              )}
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignContent: 'center',
+                alignItems: 'center',
+                marginTop: '10px'
+              }}
+            >
+              {' '}
+              <Typography sx={{ p: 2, color: 'red', fontWeight: '500' }}>Date limité</Typography>
+              <Controller
+                name='dateLimit'
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { value, onChange } }) => (
+                  <>
+                    {' '}
+                    <FormGroup row>
+                      <FormControlLabel control={<Switch />} label='' value={value} onChange={onChange} />
+                    </FormGroup>
+                  </>
+                )}
+              />
+              {watch('dateLimit') && (
+                <>
+                  <div style={{ width: '160px', marginLeft: '20px' }}>
+                    <Controller
+                      name='startDate'
+                      control={control}
+                      rules={{ required: true }}
+                      render={({ field: { value, onChange } }) => (
+                        <DatePicker label='Disponible de' value={value} onChange={onChange} />
+                      )}
+                    />
+                  </div>
+                  <div style={{ width: '160px', marginLeft: '20px' }}>
+                    <Controller
+                      name='endDate'
+                      control={control}
+                      rules={{ required: true }}
+                      render={({ field: { value, onChange } }) => (
+                        <DatePicker label={`Jusqu'à`} value={value} onChange={onChange} />
+                      )}
+                    />
+                  </div>
+                </>
+              )}
+            </div>
+          </DialogContent>
+          <DialogActions
+            sx={{
+              p: theme => `${theme.spacing(3)} !important`,
+              display: 'flex',
+              flexDirection: 'row'
+            }}
           >
-            cancel
-          </Button>
-          <Button
-            type="submit" 
-            variant='contained'
-            sx={{ height: 60, padding: 4, margin: 2, minWidth: '200px', fontSize: '20px', fontWeight: '700' }}
-          >
-            Submit
-          </Button>
-        </DialogActions>
+            <Button sx={{ height: 60, padding: 4, margin: 2, minWidth: '200px', fontSize: '20px', fontWeight: '700' }}>
+              cancel
+            </Button>
+            <Button
+              type='submit'
+              variant='contained'
+              sx={{ height: 60, padding: 4, margin: 2, minWidth: '200px', fontSize: '20px', fontWeight: '700' }}
+            >
+              Submit
+            </Button>
+          </DialogActions>
         </form>
       </Dialog>
     </>

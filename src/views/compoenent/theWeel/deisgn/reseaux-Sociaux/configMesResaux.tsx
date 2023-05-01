@@ -15,37 +15,21 @@ import {
   TableRow,
   Typography
 } from '@mui/material'
-import { List, ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText, Switch, TextField } from '@mui/material'
+import { ListItemIcon, Switch, TextField } from '@mui/material'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
-import { makeStyles } from '@mui/styles'
-import { useRouter } from 'next/router'
-import { Delete, Edit } from '@mui/icons-material'
+import { Delete } from '@mui/icons-material'
+
 import Icon from 'src/@core/components/icon'
-const useStyles = makeStyles((theme: any) => ({
-  root: {
-    backgroundColor: theme.palette.background.paper
-  },
-  item: {
-    display: 'flex',
-    alignItems: 'center'
-  },
-  dragHandle: {
-    marginRight: theme.spacing(2)
-  }
-}))
 
 const ReseauxConfig = (props: any) => {
-  const classes = useStyles
-
-  const router = useRouter()
   const { open, handleClose } = props
   const [items, setItems] = useState([
-    { id: '0', designation: 'Facebook', lien: 'Name 1', icon :'',enabled: true },
-    { id: '1', designation: 'Instgram', lien: 'Name 2',  icon :'', enabled: false },
-    { id: '2', designation: 'Twiter', lien: 'Name 3',  icon :'', enabled: true },
-    { id: '4', designation: 'google', lien: 'Name 1',  icon :'',enabled: true },
-    { id: '5', designation: 'snapshat', lien: 'Name 2',  icon :'', enabled: false },
-    { id: '6', designation: 'Designation 3', lien: 'Name 3',  icon :'', enabled: true }
+    { id: '0', designation: 'Facebook', lien: 'Name 1', icon: '', enabled: true },
+    { id: '1', designation: 'Instgram', lien: 'Name 2', icon: '', enabled: false },
+    { id: '2', designation: 'Twiter', lien: 'Name 3', icon: '', enabled: true },
+    { id: '4', designation: 'google', lien: 'Name 1', icon: '', enabled: true },
+    { id: '5', designation: 'snapshat', lien: 'Name 2', icon: '', enabled: false },
+    { id: '6', designation: 'Designation 3', lien: 'Name 3', icon: '', enabled: true }
   ])
 
   const handleDragEnd = (result: any) => {
@@ -80,14 +64,15 @@ const ReseauxConfig = (props: any) => {
 
   const handleAddItem = () => {
     const newItem = {
-        id: items.length.toString(), // Generate a unique id based on the current length of the array
-        designation: '',
-        lien: '',
-        icon: '',
-        enabled: true
-      };
-      setItems([...items, newItem]);
+      id: items.length.toString(), // Generate a unique id based on the current length of the array
+      designation: '',
+      lien: '',
+      icon: '',
+      enabled: true
+    }
+    setItems([...items, newItem])
   }
+
   return (
     <Dialog
       maxWidth='lg'
@@ -129,20 +114,16 @@ const ReseauxConfig = (props: any) => {
             <DragDropContext onDragEnd={handleDragEnd}>
               <Droppable droppableId='items'>
                 {provided => (
-                  <TableBody ref={provided.innerRef} {...provided.droppableProps} >
+                  <TableBody ref={provided.innerRef} {...provided.droppableProps}>
                     {items.map((item, index) => (
                       <Draggable key={item.id} draggableId={item.id} index={index}>
                         {provided => (
-                          <TableRow ref={provided.innerRef} {...provided.draggableProps} >
+                          <TableRow ref={provided.innerRef} {...provided.draggableProps}>
                             <TableCell>
-                              <ListItemIcon {...provided.dragHandleProps} >
-                                ...
-                              </ListItemIcon>
+                              <ListItemIcon {...provided.dragHandleProps}>...</ListItemIcon>
                             </TableCell>
                             <TableCell>
-                              <ListItemIcon {...provided.dragHandleProps} >
-                                {index}
-                              </ListItemIcon>
+                              <ListItemIcon {...provided.dragHandleProps}>{index}</ListItemIcon>
                             </TableCell>
                             <TableCell>
                               <TextField
@@ -182,12 +163,12 @@ const ReseauxConfig = (props: any) => {
             </DragDropContext>
           </Table>
           <Button
-          onClick={handleAddItem}
-          variant='contained'
-          sx={{ height: 60, padding: 4, margin: 2, minWidth: '200px', fontSize: '20px', fontWeight: '700' }}
-        >
-          Ajouter
-        </Button>
+            onClick={handleAddItem}
+            variant='contained'
+            sx={{ height: 60, padding: 4, margin: 2, minWidth: '200px', fontSize: '20px', fontWeight: '700' }}
+          >
+            Ajouter
+          </Button>
         </TableContainer>
       </DialogContent>
       <DialogActions
@@ -198,15 +179,10 @@ const ReseauxConfig = (props: any) => {
           flexDirection: 'row'
         }}
       >
-        <Button
-          // onClick={handleCloseAndOpen}
-
-          sx={{ height: 60, padding: 4, margin: 2, minWidth: '200px', fontSize: '20px', fontWeight: '700' }}
-        >
+        <Button sx={{ height: 60, padding: 4, margin: 2, minWidth: '200px', fontSize: '20px', fontWeight: '700' }}>
           cancel
         </Button>
         <Button
-          
           variant='contained'
           sx={{ height: 60, padding: 4, margin: 2, minWidth: '200px', fontSize: '20px', fontWeight: '700' }}
         >

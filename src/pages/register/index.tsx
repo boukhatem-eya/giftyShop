@@ -11,14 +11,13 @@ import Checkbox from '@mui/material/Checkbox'
 import TextField from '@mui/material/TextField'
 import InputLabel from '@mui/material/InputLabel'
 import IconButton from '@mui/material/IconButton'
-import Box, { BoxProps } from '@mui/material/Box'
+import Box from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
-import useMediaQuery from '@mui/material/useMediaQuery'
 import OutlinedInput from '@mui/material/OutlinedInput'
-import { styled, useTheme } from '@mui/material/styles'
+import { styled } from '@mui/material/styles'
 import FormHelperText from '@mui/material/FormHelperText'
 import InputAdornment from '@mui/material/InputAdornment'
-import Typography, { TypographyProps } from '@mui/material/Typography'
+import Typography from '@mui/material/Typography'
 import MuiFormControlLabel, { FormControlLabelProps } from '@mui/material/FormControlLabel'
 
 // ** Icon Imports
@@ -37,10 +36,6 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 
 // ** Hooks
 import { useAuth } from 'src/hooks/useAuth'
-import { useSettings } from 'src/@core/hooks/useSettings'
-
-// ** Demo Imports
-import FooterIllustrationsV2 from 'src/views/pages/auth/FooterIllustrationsV2'
 import { Card, CardContent, Grid } from '@mui/material'
 
 const defaultValues = {
@@ -60,49 +55,6 @@ interface FormData {
   password: string
 }
 
-// ** Styled Components
-const RegisterIllustrationWrapper = styled(Box)<BoxProps>(({ theme }) => ({
-  padding: theme.spacing(20),
-  paddingRight: '0 !important',
-  [theme.breakpoints.down('lg')]: {
-    padding: theme.spacing(10)
-  }
-}))
-
-const RegisterIllustration = styled('img')(({ theme }) => ({
-  maxWidth: '48rem',
-  [theme.breakpoints.down('xl')]: {
-    maxWidth: '38rem'
-  },
-  [theme.breakpoints.down('lg')]: {
-    maxWidth: '30rem'
-  }
-}))
-
-const RightWrapper = styled(Box)<BoxProps>(({ theme }) => ({
-  width: '100%',
-  [theme.breakpoints.up('md')]: {
-    maxWidth: 400
-  },
-  [theme.breakpoints.up('lg')]: {
-    maxWidth: 450
-  }
-}))
-
-const BoxWrapper = styled(Box)<BoxProps>(({ theme }) => ({
-  width: '100%',
-  [theme.breakpoints.down('md')]: {
-    maxWidth: 400
-  }
-}))
-
-const TypographyStyled = styled(Typography)<TypographyProps>(({ theme }) => ({
-  fontWeight: 600,
-  letterSpacing: '0.18px',
-  marginBottom: theme.spacing(1.5),
-  [theme.breakpoints.down('md')]: { marginTop: theme.spacing(8) }
-}))
-
 const FormControlLabel = styled(MuiFormControlLabel)<FormControlLabelProps>(({ theme }) => ({
   marginBottom: theme.spacing(4),
   '& .MuiFormControlLabel-label': {
@@ -114,14 +66,8 @@ const Register = () => {
   // ** States
   const [showPassword, setShowPassword] = useState<boolean>(false)
 
-  // ** Hooks
-  const theme = useTheme()
   const { register } = useAuth()
-  const { settings } = useSettings()
-  const hidden = useMediaQuery(theme.breakpoints.down('md'))
 
-  // ** Vars
-  const { skin } = settings
   const schema = yup.object().shape({
     password: yup.string().min(5).required(),
     name: yup.string().min(3).required(),
@@ -160,14 +106,12 @@ const Register = () => {
     })
   }
 
-  const imageSource = skin === 'bordered' ? 'auth-v2-register-illustration-bordered' : 'auth-v2-register-illustration'
-
   return (
     <Box className='content-center'>
       <Card sx={{ zIndex: 1, width: '600px' }}>
         <CardContent sx={{ p: theme => `${theme.spacing(13, 7, 6.5)} !important` }}>
           <Box sx={{ mb: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <img src='/images/Groupe 1192.png' width='150px'></img>
+            <img src='/images/Groupe 1192.png' alt='group' width='150px'></img>
           </Box>
           <Box sx={{ mb: 6 }}>
             <Typography variant='h5' sx={{ mb: 1.5, fontWeight: 600, letterSpacing: '0.18px' }}>

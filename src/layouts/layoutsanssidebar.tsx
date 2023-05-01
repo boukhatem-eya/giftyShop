@@ -9,8 +9,6 @@ import useMediaQuery from '@mui/material/useMediaQuery'
 // !Do not remove this Layout import
 import Layout from 'src/@core/layouts/Layout'
 
-// ** Navigation Imports
-import VerticalNavItems from 'src/navigation/vertical'
 import HorizontalNavItems from 'src/navigation/horizontal'
 
 // ** Component Import
@@ -59,8 +57,7 @@ const UserLayoutWithoutSideBar = ({ children, contentHeightFixed }: Props) => {
       contentHeightFixed={contentHeightFixed}
       verticalLayoutProps={{
         navMenu: {
-        //   navItems: VerticalNavItems()
-
+          //   navItems: VerticalNavItems()
           // Uncomment the below line when using server-side menu in vertical layout and comment the above line
           // navItems: verticalMenuItems
         },
@@ -75,7 +72,7 @@ const UserLayoutWithoutSideBar = ({ children, contentHeightFixed }: Props) => {
           )
         }
       }}
-       {...(settings.layout === 'horizontal' && {
+      {...(settings.layout === 'horizontal' && {
         horizontalLayoutProps: {
           navMenu: {
             navItems: HorizontalNavItems()

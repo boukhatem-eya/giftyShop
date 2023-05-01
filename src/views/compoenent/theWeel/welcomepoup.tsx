@@ -1,17 +1,11 @@
 // ** MUI Imports
-import Card from '@mui/material/Card'
 import Typography from '@mui/material/Typography'
-import CardHeader from '@mui/material/CardHeader'
-import CardContent from '@mui/material/CardContent'
 import { Box } from '@mui/system'
 import Button from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog'
 import IconButton from '@mui/material/IconButton'
 import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
-import DialogActions from '@mui/material/DialogActions'
-import { ReactNode, useState } from 'react'
-// ** Icon Imports
 import Icon from 'src/@core/components/icon'
 import { useRouter } from 'next/router'
 import Grid from '@mui/material/Grid'
@@ -26,13 +20,10 @@ const ActivateTheWeel = (props: props) => {
   const router = useRouter()
   const { open, handleClose } = props
 
-
   const CloseAndOpenTheWeel = () => {
     handleClose()
     router.push('/the-heel-game/dashboard')
   }
-
-
 
   return (
     <>
@@ -47,7 +38,7 @@ const ActivateTheWeel = (props: props) => {
           id='customized-dialog-title'
           sx={{ p: 4, display: 'flex', alignItems: 'center', flexDirection: 'column', justifyContent: 'center' }}
         >
-          <img src='/images/wheel header.svg' height='100px'></img>
+          <img src='/images/wheel header.svg' alt='wheel' height='100px'></img>
           <Typography variant='h6' component='span'></Typography>
           <IconButton
             aria-label='close'
@@ -62,7 +53,7 @@ const ActivateTheWeel = (props: props) => {
           sx={{ pb: 10, pl: 10, pr: 10, display: 'flex', alignItems: 'center', flexDirection: 'column' }}
         >
           <Typography variant='h5' component='span' sx={{ pb: 10 }}>
-          vous n'avez pas activié le module the weel
+            vous n'avez pas activié le module the weel
           </Typography>
 
           <Grid container spacing={4} sx={{}}>
@@ -90,9 +81,7 @@ const ActivateTheWeel = (props: props) => {
                   >
                     Activier ce module
                   </Button>
-                  
                 </Box>
-               
               </Box>
             </Grid>
           </Grid>
@@ -107,8 +96,6 @@ const ActivateTheWeel = (props: props) => {
           }}
         ></DialogActions> */}
       </Dialog>
-
-  
     </>
   )
 }

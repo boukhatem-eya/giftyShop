@@ -1,8 +1,5 @@
 // ** MUI Imports
-import Card from '@mui/material/Card'
 import Typography from '@mui/material/Typography'
-import CardHeader from '@mui/material/CardHeader'
-import CardContent from '@mui/material/CardContent'
 import { Box } from '@mui/system'
 import Button from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog'
@@ -10,34 +7,28 @@ import IconButton from '@mui/material/IconButton'
 import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
-import { ReactNode, useState } from 'react'
+import React, { useEffect, useState } from 'react'
+
 // ** Icon Imports
 import Icon from 'src/@core/components/icon'
-import BlankLayoutWithAppBar from 'src/@core/layouts/BlankLayoutWithAppBar'
-import { FormControl, FormHelperText, InputAdornment, InputLabel, OutlinedInput, TextField } from '@mui/material'
+import { FormControl, FormHelperText, TextField } from '@mui/material'
 import { useRouter } from 'next/router'
 import Grid from '@mui/material/Grid'
+
 // ** Third Party Imports
 import * as yup from 'yup'
 import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useMutation, useQueryClient } from 'react-query'
-import { addShop } from 'servicesApi/shops'
-import { convertFileToBase64 } from 'src/utils/convertFile'
+import { useMutation, useQueryClient, useQuery } from 'react-query'
+import { addShop, getShopById, EditShop } from 'src/servicesApi/shops'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
+
 type props = {
   open: boolean
   handleClose: () => void
+  id: string
 }
-const schema = yup.object().shape({
-  name: yup.string().required('name is required'),
-  desigination : yup.string().required('desigination is required'),
-  adresse: yup.string().required('adresse is required'),
-  ville: yup.string().required('desigination is required'),
-  responsable: yup.string().required('responsable is required'),
-  pays: yup.string().required('pays is required')
-})
-
 interface FormData {
   name: string
   desigination: string
@@ -46,36 +37,91 @@ interface FormData {
   responsable: string
   pays: string
   logo: any
+  email: string
 }
 const AddShop = (props: props) => {
   // ** State
-  const router = useRouter()
-  const { open, handleClose } = props
-  const [image, setImage] = useState()
-  const queryClient = useQueryClient()
+  const { open, handleClose, id } = props
 
-  const {
-    control,
-    setError,
-    register,
-    handleSubmit,
-    formState: { errors }
-  } = useForm({
-    mode: 'onBlur',
-    resolver: yupResolver(schema)
+  const { refetch, data } = useQuery('shop', () => getShopById(id), {
+    enabled: false
   })
+  console.log('data', data)
 
-  const UploadImage = (e: any) => {
-    const reader = new FileReader()
-    reader.readAsDataURL(e.target.files[0])
-    reader.onload = () => {
-      setImage(reader.result)
-    }
+  const router = useRouter()
 
-    reader.onerror = () => {
-      console.log(reader.error)
+  const { t } = useTranslation('translation')
+  const schema = yup.object().shape({
+    ville: yup.string().required('Ville is required'),
+    name: yup.string().required('Desigination is required'),
+    adresse: yup.string().required('Adresse is required'),
+    email: yup
+      .string()
+      .required(`${t('empty-email')}`)
+      .email(`${t('invalid email')}`),
+    responsable: yup.string().required('Responsable is required'),
+    pays: yup.string().required('Pays is required')
+  })
+  const [image, setImage] = useState<{ preview: string; picture: File | null }>({
+    picture: null,
+    preview: ''
+  })
+  const queryClient = useQueryClient()
+  useEffect(() => {
+    if (data)
+      setImage({
+        picture: null,
+        preview: data?.shop?.image || ''
+      })
+  }, [data])
+  const handleChangeFile = (e: any) => {
+    if (e.target.files.length) {
+      setImage({
+        picture: e.target.files[0],
+        preview: URL.createObjectURL(e.target.files[0])
+      })
     }
   }
+  const hiddenFileInput: React.MutableRefObject<any> = React.useRef(null)
+  const handleClick = () => {
+    if (hiddenFileInput?.current) {
+      hiddenFileInput.current.click()
+    }
+  }
+  const [base64Image, setBase64Image] = useState<any>('')
+
+  useEffect(() => {
+    if (id) refetch()
+  }, [id, refetch])
+  useEffect(() => {
+    const fetchImage = async () => {
+      if (image.preview) {
+        const response = await fetch(image.preview)
+        const blob = await response.blob()
+        const reader = new FileReader()
+        reader.readAsDataURL(blob)
+        reader.onloadend = () => {
+          setBase64Image(reader?.result)
+        }
+      }
+    }
+    fetchImage()
+  }, [image.preview])
+  const {
+    control,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<FormData>({
+    defaultValues: {
+      adresse: data?.shop?.adresse || '',
+      email: data?.shop?.adresse || '',
+      name: data?.shop?.adresse || '',
+      pays: data?.shop?.adresse || '',
+      responsable: data?.shop?.adresse || '',
+      ville: data?.shop?.adresse || ''
+    },
+    resolver: yupResolver(schema)
+  })
 
   // ** Add shop with react query
   const AddShopMutation = useMutation(addShop, {
@@ -83,20 +129,22 @@ const AddShop = (props: props) => {
       // Invalidates cache and refetch
       queryClient.invalidateQueries('shops')
       router.push('/mes-magasin')
-      toast.success("shop add succefully!")
+      toast.success('shop add succefully!')
       handleClose()
     }
   })
-
+  const UpdateShopMutation = useMutation(EditShop, {
+    onSuccess: () => {
+      // Invalidates cache and refetch
+      queryClient.invalidateQueries('shops')
+      router.push('/mes-magasin')
+      toast.success('Shop updated succefully!')
+      handleClose()
+    }
+  })
   const onSubmit = async (data: FormData) => {
-    console.log(data.logo)
-    // if (data.logo) {
-    //   const picture64 = await convertFileToBase64(data.logo)
-    //   const logo = { src: picture64, title: `${data.logo.rawFile.name}` }
-    // }
-    // edit data
-    const { desigination ,name, adresse, ville, responsable, pays , logo  } = data
-    await AddShopMutation.mutateAsync({ data })
+    if (!id) await AddShopMutation.mutateAsync({ ...data, logo: base64Image })
+    await UpdateShopMutation.mutateAsync({ ...data, logo: base64Image })
   }
 
   return (
@@ -104,7 +152,7 @@ const AddShop = (props: props) => {
       <Dialog maxWidth='md' onClose={handleClose} aria-labelledby='customized-dialog-title' open={open}>
         <DialogTitle id='customized-dialog-title' sx={{ p: 5 }}>
           <Typography variant='h4' component='span'>
-            Nouvelle boutique
+            {t('new-shop')}
           </Typography>
           <IconButton
             aria-label='close'
@@ -118,62 +166,78 @@ const AddShop = (props: props) => {
           <DialogContent dividers sx={{ p: 4, display: 'flex', alignItems: 'left', flexDirection: 'column' }}>
             <Box sx={{ p: 4, display: 'flex', alignItems: 'left' }}>
               <Typography variant='h4' component='span' sx={{ p: 0 }}>
-                <img src={image ? image : '/images/Image.svg'} width='200px' />
+                <img
+                  src={image?.preview ? image?.preview : '/images/Image.svg'}
+                  alt='logoShop'
+                  width='200px'
+                  height='200px'
+                />
               </Typography>
 
               <Typography sx={{ p: 5, display: 'flex', alignItems: 'left', flexDirection: 'column' }}>
                 <Button
                   variant='contained'
                   sx={{ height: 60, padding: 4, margin: 2, minWidth: '200px', fontSize: '20px', fontWeight: '700' }}
+                  onClick={handleClick}
                 >
-                  Télécharger une photos
-                  <input type='file' {...register('logo')} hidden name='logo' onChange={UploadImage} />
+                  {t('upload-image')}
+                  <input
+                    type='file'
+                    style={{ display: 'none' }}
+                    ref={hiddenFileInput}
+                    name='logo'
+                    onChange={handleChangeFile}
+                  />
                 </Button>
 
-                <Typography sx={{ p: 2 }}>Autorisé png et jpeg , taille maximale de book</Typography>
+                <Typography sx={{ p: 2 }}>{t('autorized-file')}</Typography>
               </Typography>
             </Box>
             <Grid container spacing={5}>
               <Grid item xs={12} sm={6}>
                 <FormControl fullWidth>
                   <Controller
-                    name='desigination'
+                    name='name'
                     control={control}
                     rules={{ required: true }}
-                    render={({ field: { value, onChange, onBlur } }) => (
+                    render={({ field: { value, onChange, ref } }) => (
                       <TextField
-                        autoFocus
+                        name='name'
                         label='Desigination'
                         value={value}
-                        onBlur={onBlur}
                         onChange={onChange}
+                        inputRef={ref}
                         error={Boolean(errors.desigination)}
-                        placeholder='sssss'
+                        placeholder='Desigination boutique'
                       />
                     )}
                   />
-                  {errors.desigination && <FormHelperText sx={{ color: 'error.main' }}>{errors.desigination.message}</FormHelperText>}
+                  {errors.desigination && (
+                    <FormHelperText sx={{ color: 'error.main' }}>{errors.desigination.message}</FormHelperText>
+                  )}
                 </FormControl>
               </Grid>
               <Grid item xs={12} sm={6}>
                 <FormControl fullWidth>
                   <Controller
-                    name='name'
+                    name='responsable'
                     control={control}
                     rules={{ required: true }}
-                    render={({ field: { value, onChange, onBlur } }) => (
+                    render={({ field: { value, onChange, ref } }) => (
                       <TextField
-                        autoFocus
-                        label='name'
+                        name='responsable'
+                        label='Responsable'
                         value={value}
-                        onBlur={onBlur}
                         onChange={onChange}
+                        inputRef={ref}
                         error={Boolean(errors.name)}
-                        placeholder='sssss'
+                        placeholder='Responsable'
                       />
                     )}
                   />
-                  {errors.name && <FormHelperText sx={{ color: 'error.main' }}>{errors.name.message}</FormHelperText>}
+                  {errors.responsable && (
+                    <FormHelperText sx={{ color: 'error.main' }}>{errors.responsable.message}</FormHelperText>
+                  )}
                 </FormControl>
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -182,15 +246,14 @@ const AddShop = (props: props) => {
                     name='adresse'
                     control={control}
                     rules={{ required: true }}
-                    render={({ field: { value, onChange, onBlur } }) => (
+                    render={({ field: { value, onChange } }) => (
                       <TextField
-                        autoFocus
                         label='Adresse'
+                        name='adresse'
                         value={value}
-                        onBlur={onBlur}
                         onChange={onChange}
                         error={Boolean(errors.adresse)}
-                        placeholder='sssss'
+                        placeholder='Adresse'
                       />
                     )}
                   />
@@ -205,64 +268,58 @@ const AddShop = (props: props) => {
                     name='ville'
                     control={control}
                     rules={{ required: true }}
-                    render={({ field: { value, onChange, onBlur } }) => (
+                    render={({ field: { value, onChange } }) => (
                       <TextField
-                        autoFocus
                         label='Ville'
+                        name='ville'
                         value={value}
-                        onBlur={onBlur}
                         onChange={onChange}
                         error={Boolean(errors.ville)}
-                        placeholder='sssss'
+                        placeholder='Ville'
                       />
                     )}
                   />
                   {errors.ville && <FormHelperText sx={{ color: 'error.main' }}>{errors.ville.message}</FormHelperText>}
                 </FormControl>
               </Grid>
-             
-              <Grid item xs={12} sm={6}>
-                <FormControl fullWidth>
-                  <Controller
-                    name='responsable'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange, onBlur } }) => (
-                      <TextField
-                        autoFocus
-                        label='Responsable'
-                        value={value}
-                        onBlur={onBlur}
-                        onChange={onChange}
-                        error={Boolean(errors.responsable)}
-                        placeholder='sssss'
-                      />
-                    )}
-                  />
-                  {errors.responsable && (
-                    <FormHelperText sx={{ color: 'error.main' }}>{errors.responsable.message}</FormHelperText>
-                  )}
-                </FormControl>
-              </Grid>
+
               <Grid item xs={12} sm={6}>
                 <FormControl fullWidth>
                   <Controller
                     name='pays'
                     control={control}
                     rules={{ required: true }}
-                    render={({ field: { value, onChange, onBlur } }) => (
+                    render={({ field: { value, onChange } }) => (
                       <TextField
-                        autoFocus
                         label='Pays'
                         value={value}
-                        onBlur={onBlur}
                         onChange={onChange}
                         error={Boolean(errors.pays)}
-                        placeholder='sssss'
+                        placeholder='Pays'
                       />
                     )}
                   />
                   {errors.pays && <FormHelperText sx={{ color: 'error.main' }}>{errors.pays.message}</FormHelperText>}
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth>
+                  <Controller
+                    name='email'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <TextField
+                        name='email'
+                        label='Email'
+                        value={value}
+                        onChange={onChange}
+                        error={Boolean(errors.responsable)}
+                        placeholder='Email responsable boutique '
+                      />
+                    )}
+                  />
+                  {errors.email && <FormHelperText sx={{ color: 'error.main' }}>{errors.email.message}</FormHelperText>}
                 </FormControl>
               </Grid>
             </Grid>
@@ -273,11 +330,19 @@ const AddShop = (props: props) => {
             }}
           >
             <Button
+              color='secondary'
+              variant='contained'
+              sx={{ height: 60, padding: 4, margin: 2, minWidth: '200px', fontSize: '20px', fontWeight: '700' }}
+            >
+              {' '}
+              {t('return')}
+            </Button>
+            <Button
               type='submit'
               variant='contained'
               sx={{ height: 60, padding: 4, margin: 2, minWidth: '200px', fontSize: '20px', fontWeight: '700' }}
             >
-              Ajouter
+              {t('add')}
             </Button>
           </DialogActions>
         </form>

@@ -38,6 +38,7 @@ const Layout = (props: LayoutProps) => {
   if (settings.layout === 'horizontal') {
     return <HorizontalLayout {...props}>{children}</HorizontalLayout>
   }
+
   // return <HorizontalLayout {...props}>{children}</HorizontalLayout>
 
   return <VerticalLayout {...props}>{children}</VerticalLayout>

@@ -1,67 +1,58 @@
 // ** MUI Imports
-import Card from '@mui/material/Card'
 import Typography from '@mui/material/Typography'
-import CardHeader from '@mui/material/CardHeader'
-import CardContent from '@mui/material/CardContent'
-import { Box } from '@mui/system'
 import Button from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog'
 import IconButton from '@mui/material/IconButton'
 import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
-import { ReactNode, useState } from 'react'
+import { useState } from 'react'
+import { useQuery } from 'react-query'
+import { getShops } from '../../../servicesApi/shops'
+import { getMount } from 'src/utils/getMount'
+
 // ** Icon Imports
 import Icon from 'src/@core/components/icon'
-import { useRouter } from 'next/router'
-import Grid from '@mui/material/Grid'
 import { DataGrid } from '@mui/x-data-grid'
-import { he } from 'date-fns/locale'
-import PaymentDialog from './stripePopup'
+import StripeModal from './stripeModal'
 
 const columns = [
-  { field: 'id', headerName: 'disignation', width: 130 },
-  { field: 'disignation', headerName: 'disignation', width: 130 },
-  { field: 'firstName', headerName: 'Adresse', width: 130 },
-  { field: 'lastName', headerName: 'villle', width: 130 },
+  { field: 'desigination', headerName: 'Disignation', width: 190 },
+  { field: 'adresse', headerName: 'Adresse', width: 190 },
+  { field: 'ville', headerName: 'Ville', width: 190 },
   {
-    field: 'age',
+    field: 'responsable',
     headerName: 'Responsable',
-    width: 130
+    width: 190
   },
   {
-    field: 'numero',
-    headerName: 'numero',
-    width: 120
+    field: 'responsable_email',
+    headerName: 'Email',
+    width: 190
   }
-]
-
-const rows = [
-  { id: 1, disignation: 'zdefefe', lastName: 'Snow', firstName: 'Jon', age: 'kamle', numero: '1515212' },
-  { id: 2, disignation: 'dfedfced', lastName: 'Lannister', firstName: 'Cersei', age: 'raouf', numero: '1515212' },
-  { id: 3, disignation: 'dvfdfvdf', lastName: 'Lannister', firstName: 'Jaime', age: 'nesriine', numero: '1515212' }
 ]
 
 type props = {
   open: boolean
+  type: string | undefined
   handleClose: () => void
 }
 
 const PointVente = (props: props) => {
   // ** State
-  const router = useRouter()
-
   const [OpenStripe, setOpenStripe] = useState(false)
-  const { open, handleClose } = props
+  const { open, handleClose, type } = props
   const [selectionModel, setSelectionModel] = useState([])
   const [selections, setSelections] = useState([])
-  console.log(selections)
+  const { data } = useQuery('shops', () => getShops())
+  type ObjectKey = keyof typeof getMount
+  const typeAbonnement = type as ObjectKey
+
   const handleSelectionModelChange = (newSelection: any) => {
     if (newSelection) {
-      const selectedRows = newSelection.map((id: any) => rows.find(row => row.id === id))
+      const selectedRows = newSelection.map((id: any) => data?.shops?.find((row: any) => row.id === id))
       setSelections(selectedRows)
-      setSelectionModel(newSelection.selectionModel)
-      console.log(selectedRows)
+      setSelectionModel(newSelection)
     }
   }
   const onClose = () => setOpenStripe(false)
@@ -73,9 +64,8 @@ const PointVente = (props: props) => {
 
   return (
     <>
-    
       <Dialog
-        PaperProps={{ sx: { height: '70%' } }}
+        PaperProps={{ sx: { height: '85%' } }}
         maxWidth='lg'
         onClose={handleClose}
         aria-labelledby='customized-dialog-title'
@@ -84,9 +74,9 @@ const PointVente = (props: props) => {
       >
         <DialogTitle
           id='customized-dialog-title'
-          sx={{ p: 4, display: 'flex', alignItems: 'center', flexDirection: 'column', justifyContent: 'center' }}
+          sx={{ p: 2, display: 'flex', alignItems: 'center', flexDirection: 'column', justifyContent: 'center' }}
         >
-          <img src='/images/giftyGameLogoMOdule.png' height='100px'></img>
+          <img src='/images/giftyGameLogoMOdule.png' alt='giftygame' height='100px'></img>
           <Typography variant='h6' component='span'></Typography>
           <IconButton
             aria-label='close'
@@ -96,37 +86,46 @@ const PointVente = (props: props) => {
             <Icon icon='mdi:close' />
           </IconButton>
         </DialogTitle>
-        <DialogContent
-          dividers
-          sx={{ pb: 10, pl: 10, pr: 10, display: 'flex', alignItems: 'center', flexDirection: 'column' }}
-        >
-          <Typography variant='h5' component='span' sx={{ pb: 10 }}>
-            Please sign-in to your account and start the adventure Please sign-in
+        <DialogContent dividers sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+          <Typography variant='h5' component='span' sx={{ pb: 5, width: '70%', textAlign: 'center' }}>
+            Veuillez séléctionner les points de ventes dans lesquelles vous souhaitez activer ce module
           </Typography>
           <DataGrid
-            rows={rows}
+            rows={data?.shops}
             columns={columns}
-            pageSize={rows.length}
+            pageSize={data?.shops?.length}
             checkboxSelection
             selectionModel={selectionModel}
             onSelectionModelChange={handleSelectionModelChange}
-            sx={{ width: '100%', mt: 2, height: 'auto' }}
+            sx={{ width: '100%', mt: 2, height: '100%' }}
           />
-         
         </DialogContent>
-        
+
         <DialogActions
           sx={{
             p: theme => `${theme.spacing(3)} !important`
           }}
         >
-          2555$ 
-          <Button variant='contained' onClick={CloseAndOPenStripe} sx={{ height: 60, padding: 4, margin: 2, minWidth: '200px', fontSize: '20px', fontWeight: '700' }}>
-            payer
+          <Typography variant='h6' component='span' sx={{ padding: 4 }}>
+            Total 2555$/ans
+          </Typography>
+
+          <Button
+            variant='contained'
+            onClick={CloseAndOPenStripe}
+            sx={{ height: 60, padding: 4, margin: 2, minWidth: '200px', fontSize: '20px', fontWeight: '700' }}
+          >
+            Payer
           </Button>
         </DialogActions>
       </Dialog>
-      <PaymentDialog open={OpenStripe} onClose={onClose} amount={'500'} />
+      <StripeModal
+        open={OpenStripe}
+        onClose={onClose}
+        amount={getMount[typeAbonnement]}
+        type={typeAbonnement}
+        selections={selections}
+      />
     </>
   )
 }

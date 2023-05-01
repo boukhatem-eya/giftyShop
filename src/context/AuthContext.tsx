@@ -34,6 +34,7 @@ const AuthProvider = ({ children }: Props) => {
   // ** States
   const [user, setUser] = useState<UserDataType | null>(defaultProvider.user)
   const [loading, setLoading] = useState<boolean>(defaultProvider.loading)
+  console.log('loading', loading)
 
   // ** Hooks
   const router = useRouter()
@@ -52,11 +53,14 @@ const AuthProvider = ({ children }: Props) => {
           .then(async response => {
             setLoading(false)
             setUser({ ...response.data.userData })
+            window.localStorage.setItem('userData', JSON.stringify(response.data.userData))
           })
           .catch(() => {
             localStorage.removeItem('userData')
             localStorage.removeItem('refreshToken')
             localStorage.removeItem('accessToken')
+            localStorage.removeItem('selectedShop')
+            localStorage.clear()
             setUser(null)
             setLoading(false)
             if (authConfig.onTokenExpiration === 'logout' && !router.pathname.includes('login')) {
@@ -73,8 +77,7 @@ const AuthProvider = ({ children }: Props) => {
   }, [])
 
   const handleLogin = (params: LoginParams, errorCallback?: ErrCallbackType) => {
-    console.log(params)
-    var config = {
+    const config = {
       method: 'post',
       maxBodyLength: Infinity,
       url: 'http://testapi.giftyshop.pro/ui/login',
@@ -89,6 +92,7 @@ const AuthProvider = ({ children }: Props) => {
         const returnUrl = router.query.returnUrl
 
         setUser({ ...response.data.data })
+        window.localStorage.setItem('language', window.localStorage.getItem('language') || 'en')
         window.localStorage.setItem('userData', JSON.stringify(response.data.data))
 
         const redirectURL = returnUrl && returnUrl !== '/' ? returnUrl : '/'
@@ -100,17 +104,16 @@ const AuthProvider = ({ children }: Props) => {
         if (errorCallback) errorCallback(err)
       })
   }
-  console.log(user)
   const handleLogout = () => {
     setUser(null)
     window.localStorage.removeItem('userData')
     window.localStorage.removeItem(authConfig.storageTokenKeyName)
+    window.localStorage.clear()
     router.push('/login')
   }
 
   const handleRegister = (params: RegisterParams, errorCallback?: ErrCallbackType) => {
-    console.log(params)
-    var config = {
+    const config = {
       method: 'post',
       maxBodyLength: Infinity,
       url: 'http://testapi.giftyshop.pro/ui/create',

@@ -19,11 +19,9 @@ export const getHomeRoute = (role: string) => {
 }
 
 const Home = () => {
-  
   // ** Hooks
   const auth = useAuth()
   const router = useRouter()
-  console.log(auth.user)
   useEffect(() => {
     if (!router.isReady) {
       return
