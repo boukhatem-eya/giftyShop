@@ -19,7 +19,6 @@ type props = {
 const WelcomePopupSms = (props: props) => {
   const { open, handleClose } = props
   const [openPointVente, setOPenPointVente] = useState(false)
-  console.log('openPointVente', openPointVente)
 
   const CloseAndOPenPOintVente = () => {
     handleClose()

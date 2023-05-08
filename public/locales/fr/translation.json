@@ -15,5 +15,9 @@
     "return": "Retour",
     "contact-details": "Coordonnées",
     "means-of-payment": "Moyen de paiement",
-    "card-information": "Informations de la carte"
+    "card-information": "Informations de la carte",
+    "main-color": "Couleur principal",
+    "logo": "Logo",
+    "picture-lost": "Image perdu",
+    "background": "Arrière-plan"
 }

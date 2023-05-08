@@ -14,7 +14,7 @@ export const getHistory = async () => {
       Authorization: storedToken
     }
   }
-  const response = await HistoryApi.get(`/ui/history`, config)
+  const response = await HistoryApi.get(`/ui/history?filter={}&range=[0, 9]&sort=["id", "ASC"]`, config)
 
   return response.data
 }

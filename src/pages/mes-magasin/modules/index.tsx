@@ -61,7 +61,6 @@ const ModulePage = () => {
   }
   const handelSubscription = (state: string, id: any) => {
     const recentState = state ? t('unsubscribe') : t('subscribe')
-    console.log('recentState', recentState, id)
   }
 
   return (

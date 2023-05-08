@@ -12,7 +12,7 @@ import FormGroup from '@mui/material/FormGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import { useTranslation } from 'react-i18next'
 import { useMutation, useQueryClient } from 'react-query'
-import { addProduct } from 'src/servicesApi/products'
+import { addProduct, updateProduct } from 'src/servicesApi/products'
 
 import React, { useEffect, useState } from 'react'
 
@@ -34,7 +34,7 @@ const AddArticle = (props: props) => {
   // ** State
   const router = useRouter()
   const queryClient = useQueryClient()
-  const { open, handleClose } = props
+  const { open, handleClose, id } = props
   const { t } = useTranslation('translation')
 
   const { control, handleSubmit, watch } = useForm({})
@@ -83,21 +83,31 @@ const AddArticle = (props: props) => {
       handleClose()
     }
   })
+  const UpdateProductMutation = useMutation(updateProduct, {
+    onSuccess: () => {
+      // Invalidates cache and refetch
+      queryClient.invalidateQueries('products')
+      router.push('/the-heel-game/article')
+      toast.success('Product updated succefully!')
+      handleClose()
+    }
+  })
   const onSubmit = async (data: any) => {
     const dataToSave = {
-      name: data.designation
-      // image: base64Image,
-      // image_mime: image?.picture?.type || '',
-      // stock: Number(data.limitStock),
-      // disponible: '',
-      // porductbyday: Number(data.limitProduct),
-      // state: '',
-      // archive: false,
-      // can_win: data.ProductLimit,
-      // can_win_time_to: data.startDate,
-      // can_win_time_from: data.endDate
+      name: data.designation,
+      image: base64Image,
+      image_mime: image?.picture?.type || '',
+      stock: Number(data.limitStock),
+      disponible: '',
+      porductbyday: Number(data.limitProduct),
+      state: '',
+      archive: false,
+      can_win: data.ProductLimit,
+      can_win_time_to: data.startDate,
+      can_win_time_from: data.endDate
     }
-    await AddProductMutation.mutateAsync({ dataToSave })
+    if (id) await UpdateProductMutation.mutateAsync({ dataToSave })
+    await AddProductMutation.mutateAsync({ dataToSave, id })
   }
 
   return (

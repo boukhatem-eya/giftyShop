@@ -14,7 +14,10 @@ export const getGagnants = async () => {
       Authorization: storedToken
     }
   }
-  const response = await GagnantsApi.get(`/ui/gagnants`, config)
+  const response = await GagnantsApi.get(
+    `/ui/winners?filter={ "status": "ordered" }&range=[0, 24]&sort=["id", "ASC"]`,
+    config
+  )
 
   return response.data
 }

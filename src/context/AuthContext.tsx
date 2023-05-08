@@ -52,10 +52,6 @@ const AuthProvider = ({ children }: Props) => {
           .then(async response => {
             setLoading(false)
             setUser({ ...response.data.userData })
-            console.log(
-              'window.localStorage.setItem(authConfig.storageTokenKeyName, response.data.token)',
-              window.localStorage.getItem(authConfig.storageTokenKeyName)
-            )
           })
           .catch(() => {
             localStorage.removeItem('userData')
@@ -66,7 +62,6 @@ const AuthProvider = ({ children }: Props) => {
             setUser(null)
             setLoading(false)
             if (authConfig.onTokenExpiration === 'logout' && !router.pathname.includes('login')) {
-              console.log('test')
               router.replace('/login')
             }
           })

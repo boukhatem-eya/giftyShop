@@ -9,16 +9,12 @@ import DialogActions from '@mui/material/DialogActions'
 import { useState } from 'react'
 import { useMutation, useQuery } from 'react-query'
 import { getShops, refreshShops } from '../../../servicesApi/shops'
-import { getMount } from 'src/utils/getMount'
 
 // ** Icon Imports
 import Icon from 'src/@core/components/icon'
-import { DataGrid } from '@mui/x-data-grid'
 import {
-  Box,
   Card,
   CardContent,
-  CardHeader,
   Paper,
   Radio,
   Table,
@@ -31,21 +27,6 @@ import {
 } from '@mui/material'
 import { useUiContext } from 'src/context/uiContext'
 
-// const columns = [
-//   { field: 'desigination', headerName: 'Disignation', width: 190 },
-//   { field: 'adresse', headerName: 'Adresse', width: 190 },
-//   { field: 'ville', headerName: 'Ville', width: 190 },
-//   {
-//     field: 'responsable',
-//     headerName: 'Responsable',
-//     width: 190
-//   },
-//   {
-//     field: 'responsable_email',
-//     headerName: 'Email',
-//     width: 190
-//   }
-// ]
 interface Column {
   id: 'name' | 'pays' | 'adresse' | 'ville' | 'Responsable' | ''
   label: string
@@ -89,7 +70,8 @@ const ShopsModal = (props: props) => {
   const shops = data ?? []
   const [page, setPage] = useState<number>(0)
   const [rowsPerPage, setRowsPerPage] = useState<any>(3)
-  const [shopdata, setShopData] = useState<any>({})
+  const [shopdata, setShopData] = useState<any>({ name: window.localStorage.getItem('selectedShop') })
+  console.log('shopdata', shopdata)
   const { setShop, selectedShop } = useUiContext()
   const handleChangePage = (event: any, newPage: any) => {
     setPage(newPage)
@@ -102,20 +84,16 @@ const ShopsModal = (props: props) => {
   const refreshMutation = useMutation(refreshShops, {
     onSuccess: (response: any) => {
       window.localStorage.setItem('accessToken', response.data.token)
-      console.log('rr', window.localStorage.getItem('accessToken'))
       window.localStorage.setItem('userData', JSON.stringify(response.data.userData))
+      handleClose()
     }
   })
   const handleChange = async (id: any, name: string) => {
     setShopData({ id, name })
-    setShop(name)
-    window.localStorage.removeItem('selectedShop')
-    window.localStorage.setItem('selectedShop', name)
-    window.localStorage.setItem('shopId', id)
-
-    await refreshMutation.mutateAsync(id)
+    // setShop(name)
   }
   const handleShop = async () => {
+    console.log('shopdata.id', shopdata.id)
     setShop(shopdata.name)
     window.localStorage.removeItem('selectedShop')
     window.localStorage.setItem('selectedShop', shopdata.name)
@@ -178,9 +156,7 @@ const ShopsModal = (props: props) => {
                             value={row.name}
                             onChange={() => handleChange(row.id, row.name)}
                             name='radio-button-demo'
-                            checked={
-                              selectedShop === row.name || window.localStorage.getItem('selectedShop') === row.name
-                            }
+                            checked={shopdata.name === row.name}
                             inputProps={{ 'aria-label': 'A' }}
                           />
                         </TableCell>

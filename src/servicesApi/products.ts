@@ -35,7 +35,6 @@ export const getProductsArchivier = async () => {
 }
 
 export const addProduct = async (data: any) => {
-  console.log('data', data)
   const storedToken = window.localStorage.getItem(authConfig.storageTokenKeyName)!
   const config = {
     headers: {
@@ -46,7 +45,7 @@ export const addProduct = async (data: any) => {
   return await ProductsApi.post('/ui/products', data.dataToSave, config)
 }
 
-export const EditProduct = async (data: any) => {
+export const updateProduct = async (data: any) => {
   const storedToken = window.localStorage.getItem(authConfig.storageTokenKeyName)!
   const config = {
     headers: {
@@ -54,7 +53,7 @@ export const EditProduct = async (data: any) => {
     }
   }
 
-  return await ProductsApi.put(`/ui/products/${data.id.id}/`, data, config)
+  return await ProductsApi.put(`/ui/products/${data.id}/`, data.dataToSave, config)
 }
 
 export const deleteProduct = async (id: any) => {

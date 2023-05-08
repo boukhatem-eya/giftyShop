@@ -20,16 +20,19 @@ import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { Delete } from '@mui/icons-material'
 
 import Icon from 'src/@core/components/icon'
-
+import { useMutation } from 'react-query'
+import { addGameRules } from 'src/servicesApi/desgin'
+import toast from 'react-hot-toast'
+const DesignationList = ['Facebook', 'Instgram', 'Twiter', 'Google', 'Snapshat']
 const ReseauxConfig = (props: any) => {
   const { open, handleClose } = props
   const [items, setItems] = useState([
-    { id: '0', designation: 'Facebook', lien: 'Name 1', icon: '', enabled: true },
-    { id: '1', designation: 'Instgram', lien: 'Name 2', icon: '', enabled: false },
-    { id: '2', designation: 'Twiter', lien: 'Name 3', icon: '', enabled: true },
-    { id: '4', designation: 'google', lien: 'Name 1', icon: '', enabled: true },
-    { id: '5', designation: 'snapshat', lien: 'Name 2', icon: '', enabled: false },
-    { id: '6', designation: 'Designation 3', lien: 'Name 3', icon: '', enabled: true }
+    { id: '0', designation: 'Facebook', lien: '', icon: '', enabled: true },
+    { id: '1', designation: 'Instgram', lien: '', icon: '', enabled: false },
+    { id: '2', designation: 'Twiter', lien: '', icon: '', enabled: true },
+    { id: '4', designation: 'Google', lien: '', icon: '', enabled: true },
+    { id: '5', designation: 'Snapshat', lien: '', icon: '', enabled: false },
+    { id: '6', designation: 'Autre', lien: '', icon: '', enabled: true }
   ])
 
   const handleDragEnd = (result: any) => {
@@ -72,6 +75,28 @@ const ReseauxConfig = (props: any) => {
     }
     setItems([...items, newItem])
   }
+  const ConfigSocialMediaMutation = useMutation(addGameRules, {
+    onSuccess: () => {
+      toast.success('Social media added succefully!')
+      // handleClose()
+    }
+  })
+  const onSubmit = async () => {
+    await ConfigSocialMediaMutation.mutateAsync({
+      link_etc: items.find(elt => elt.designation === 'Autre')?.lien,
+      link_etc_order: items.find(elt => elt.designation === 'Autre')?.id,
+      link_facebook: items.find(elt => elt.designation === 'Facebook')?.lien,
+      link_facebook_order: items.find(elt => elt.designation === 'Facebook')?.id,
+      link_google: items.find(elt => elt.designation === 'Google')?.lien,
+      link_google_order: items.find(elt => elt.designation === 'Google')?.id,
+      link_instagram_order: items.find(elt => elt.designation === 'Instagram')?.id,
+      link_instagram: items.find(elt => elt.designation === 'Instagram')?.lien,
+      link_snapchat: items.find(elt => elt.designation === 'Snapchat')?.lien,
+      link_snapchat_order: items.find(elt => elt.designation === 'Snapchat')?.id,
+      link_twitter: items.find(elt => elt.designation === 'Twitter')?.lien,
+      link_twitter_order: items.find(elt => elt.designation === 'Twitter')?.id
+    })
+  }
 
   return (
     <Dialog
@@ -94,101 +119,105 @@ const ReseauxConfig = (props: any) => {
           <Icon icon='mdi:close' />
         </IconButton>
       </DialogTitle>
-      <DialogContent
-        dividers
-        sx={{ pb: 10, pl: 10, pr: 10, display: 'flex', alignItems: 'center', flexDirection: 'column' }}
-      >
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell></TableCell>
-                <TableCell>order</TableCell>
-                <TableCell>Designation</TableCell>
-                <TableCell>Lien</TableCell>
-                <TableCell>En production</TableCell>
-                <TableCell>delete</TableCell>
-              </TableRow>
-            </TableHead>
+      <form noValidate autoComplete='off' onSubmit={onSubmit}>
+        <DialogContent
+          dividers
+          sx={{ pb: 10, pl: 10, pr: 10, display: 'flex', alignItems: 'center', flexDirection: 'column' }}
+        >
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell></TableCell>
+                  <TableCell>order</TableCell>
+                  <TableCell>Designation</TableCell>
+                  <TableCell>Lien</TableCell>
+                  <TableCell>En production</TableCell>
+                  <TableCell>delete</TableCell>
+                </TableRow>
+              </TableHead>
 
-            <DragDropContext onDragEnd={handleDragEnd}>
-              <Droppable droppableId='items'>
-                {provided => (
-                  <TableBody ref={provided.innerRef} {...provided.droppableProps}>
-                    {items.map((item, index) => (
-                      <Draggable key={item.id} draggableId={item.id} index={index}>
-                        {provided => (
-                          <TableRow ref={provided.innerRef} {...provided.draggableProps}>
-                            <TableCell>
-                              <ListItemIcon {...provided.dragHandleProps}>...</ListItemIcon>
-                            </TableCell>
-                            <TableCell>
-                              <ListItemIcon {...provided.dragHandleProps}>{index}</ListItemIcon>
-                            </TableCell>
-                            <TableCell>
-                              <TextField
-                                label='Designation'
-                                value={item.designation}
-                                onChange={event => handleEditItem(item.id, { designation: event.target.value })}
-                              />
-                            </TableCell>
-                            <TableCell>
-                              <TextField
-                                label='lien'
-                                value={item.lien}
-                                onChange={event => handleEditItem(item.id, { lien: event.target.value })}
-                              />
-                            </TableCell>
-                            <TableCell>
-                              <ListItemIcon>
-                                <Switch
-                                  checked={item.enabled}
-                                  onChange={event => handleEditItem(item.id, { enabled: event.target.checked })}
+              <DragDropContext onDragEnd={handleDragEnd}>
+                <Droppable droppableId='items'>
+                  {provided => (
+                    <TableBody ref={provided.innerRef} {...provided.droppableProps}>
+                      {items.map((item, index) => (
+                        <Draggable key={item.id} draggableId={item.id} index={index}>
+                          {provided => (
+                            <TableRow ref={provided.innerRef} {...provided.draggableProps}>
+                              <TableCell>
+                                <ListItemIcon {...provided.dragHandleProps}>...</ListItemIcon>
+                              </TableCell>
+                              <TableCell>
+                                <ListItemIcon {...provided.dragHandleProps}>{index}</ListItemIcon>
+                              </TableCell>
+                              <TableCell>
+                                <TextField
+                                  label='Designation'
+                                  value={item.designation}
+                                  disabled={DesignationList.includes(item.designation)}
+                                  onChange={event => handleEditItem(item.id, { designation: event.target.value })}
                                 />
-                              </ListItemIcon>
-                            </TableCell>
-                            <TableCell>
-                              <ListItemIcon>
-                                <Delete onClick={() => handleDeleteItem(item.id)} />
-                              </ListItemIcon>
-                            </TableCell>
-                          </TableRow>
-                        )}
-                      </Draggable>
-                    ))}
-                    {provided.placeholder}
-                  </TableBody>
-                )}
-              </Droppable>
-            </DragDropContext>
-          </Table>
+                              </TableCell>
+                              <TableCell>
+                                <TextField
+                                  label='lien'
+                                  value={item.lien}
+                                  onChange={event => handleEditItem(item.id, { lien: event.target.value })}
+                                />
+                              </TableCell>
+                              <TableCell>
+                                <ListItemIcon>
+                                  <Switch
+                                    checked={item.enabled}
+                                    onChange={event => handleEditItem(item.id, { enabled: event.target.checked })}
+                                  />
+                                </ListItemIcon>
+                              </TableCell>
+                              <TableCell>
+                                <ListItemIcon>
+                                  <Delete onClick={() => handleDeleteItem(item.id)} />
+                                </ListItemIcon>
+                              </TableCell>
+                            </TableRow>
+                          )}
+                        </Draggable>
+                      ))}
+                      {provided.placeholder}
+                    </TableBody>
+                  )}
+                </Droppable>
+              </DragDropContext>
+            </Table>
+            <Button
+              onClick={handleAddItem}
+              variant='contained'
+              sx={{ height: 60, padding: 4, margin: 2, minWidth: '200px', fontSize: '20px', fontWeight: '700' }}
+            >
+              Ajouter
+            </Button>
+          </TableContainer>
+        </DialogContent>
+        <DialogActions
+          sx={{
+            p: theme => `${theme.spacing(3)} !important`,
+            display: 'flex',
+
+            flexDirection: 'row'
+          }}
+        >
+          <Button sx={{ height: 60, padding: 4, margin: 2, minWidth: '200px', fontSize: '20px', fontWeight: '700' }}>
+            cancel
+          </Button>
           <Button
-            onClick={handleAddItem}
+            type='submit'
             variant='contained'
             sx={{ height: 60, padding: 4, margin: 2, minWidth: '200px', fontSize: '20px', fontWeight: '700' }}
           >
-            Ajouter
+            Valider
           </Button>
-        </TableContainer>
-      </DialogContent>
-      <DialogActions
-        sx={{
-          p: theme => `${theme.spacing(3)} !important`,
-          display: 'flex',
-
-          flexDirection: 'row'
-        }}
-      >
-        <Button sx={{ height: 60, padding: 4, margin: 2, minWidth: '200px', fontSize: '20px', fontWeight: '700' }}>
-          cancel
-        </Button>
-        <Button
-          variant='contained'
-          sx={{ height: 60, padding: 4, margin: 2, minWidth: '200px', fontSize: '20px', fontWeight: '700' }}
-        >
-          Valider
-        </Button>
-      </DialogActions>
+        </DialogActions>
+      </form>
     </Dialog>
   )
 }

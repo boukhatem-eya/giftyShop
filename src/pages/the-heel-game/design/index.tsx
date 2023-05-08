@@ -7,9 +7,27 @@ import { useState } from 'react'
 import { Button } from '@mui/material'
 import { Box } from '@mui/system'
 import ReseauxConfig from 'src/views/compoenent/theWeel/deisgn/reseaux-Sociaux/configMesResaux'
+import DesignApplication from 'src/views/compoenent/theWeel/deisgn/rulesOfGame'
+import MessageOfGame from 'src/views/compoenent/theWeel/deisgn/messageOfGame'
+import MdpEmployer from 'src/views/compoenent/theWeel/deisgn/mdpEmployer'
 
 const Design = () => {
   const [openConfigResaux, setOpenConfigResaux] = useState<boolean>(false)
+  const [openDesignApplication, setOpenDesignApplication] = useState<boolean>(false)
+  const [openMessageOfGame, setOpenMessageOfGame] = useState<boolean>(false)
+  const [openMdpEmplyer, setOpenMdpEmplyer] = useState<boolean>(false)
+  const handleClickOpenMdpEmplyer = () => setOpenMdpEmplyer(true)
+  const handleCloseMdpEmplyer = () => {
+    setOpenMdpEmplyer(false)
+  }
+  const handleClickOpenMessageOfGame = () => setOpenMessageOfGame(true)
+  const handleCloseMessageOfGame = () => {
+    setOpenMessageOfGame(false)
+  }
+  const handleClickOpenDesignApplicationPopup = () => setOpenDesignApplication(true)
+  const handleCloseDesignApplication = () => {
+    setOpenDesignApplication(false)
+  }
   const handleClickOpenConfigResauxPopup = () => setOpenConfigResaux(true)
   const handleClose = () => {
     setOpenConfigResaux(false)
@@ -71,6 +89,7 @@ const Design = () => {
                     <Typography variant='h5'>Rèles du jeux</Typography>
                     <Box sx={{ pt: { xs: 20, md: 20, lg: 20 } }}>
                       <Button
+                        onClick={handleClickOpenDesignApplicationPopup}
                         variant='contained'
                         color='primary'
                         sx={{
@@ -94,6 +113,7 @@ const Design = () => {
             </CardContent>
           </Card>
         </Grid>
+        <DesignApplication open={openDesignApplication} handleClose={handleCloseDesignApplication} />
         <Grid item xs={12} md={6} lg={6}>
           <Card>
             <CardContent>
@@ -105,6 +125,7 @@ const Design = () => {
                     <Typography variant='h5'>Messages et traduction</Typography>
                     <Box sx={{ pt: { xs: 20, md: 20, lg: 20 } }}>
                       <Button
+                        onClick={handleClickOpenMessageOfGame}
                         sx={{
                           height: 50,
                           padding: 4,
@@ -128,6 +149,7 @@ const Design = () => {
             </CardContent>
           </Card>
         </Grid>
+        <MessageOfGame open={openMessageOfGame} handleClose={handleCloseMessageOfGame} />
         <Grid item xs={12} md={6} lg={6}>
           <Card>
             <CardContent>
@@ -139,6 +161,7 @@ const Design = () => {
                     <Typography variant='h5'>Mot de pass employé</Typography>
                     <Box sx={{ pt: { xs: 20, md: 20, lg: 20 } }}>
                       <Button
+                        onClick={handleClickOpenMdpEmplyer}
                         sx={{
                           height: 50,
                           padding: 4,
@@ -162,6 +185,7 @@ const Design = () => {
             </CardContent>
           </Card>
         </Grid>
+        <MdpEmployer open={openMdpEmplyer} handleClose={handleCloseMdpEmplyer} />
       </Grid>
     </>
   )

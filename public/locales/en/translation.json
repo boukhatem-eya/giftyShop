@@ -15,5 +15,9 @@
     "return": "Return",
     "contact-details": "Conatct details",
     "means-of-payment": "Means of payment",
-    "card-information": "Card information"
+    "card-information": "Card information",
+    "main-color": "Main color",
+    "logo": "Logo",
+    "picture-lost": "Picture lost",
+    "background": "Background"
 }

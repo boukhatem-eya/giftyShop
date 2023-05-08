@@ -42,11 +42,11 @@ interface FormData {
 const AddShop = (props: props) => {
   // ** State
   const { open, handleClose, id } = props
+  console.log('id', id)
 
   const { refetch, data } = useQuery('shop', () => getShopById(id), {
     enabled: false
   })
-  console.log('data', data)
 
   const router = useRouter()
 
@@ -71,7 +71,7 @@ const AddShop = (props: props) => {
     if (data)
       setImage({
         picture: null,
-        preview: data?.shop?.image || ''
+        preview: data?.image || ''
       })
   }, [data])
   const handleChangeFile = (e: any) => {
@@ -110,19 +110,24 @@ const AddShop = (props: props) => {
   const {
     control,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
+    setValue
   } = useForm<FormData>({
     defaultValues: {
       adresse: data?.shop?.adresse || '',
       email: data?.shop?.adresse || '',
-      name: data?.shop?.adresse || '',
+      name: data ? data?.name : '',
       pays: data?.shop?.adresse || '',
       responsable: data?.shop?.adresse || '',
       ville: data?.shop?.adresse || ''
     },
     resolver: yupResolver(schema)
   })
-
+  useEffect(() => {
+    if (data && id) {
+      setValue('name', data.name)
+    }
+  }, [data])
   // ** Add shop with react query
   const AddShopMutation = useMutation(addShop, {
     onSuccess: () => {
@@ -144,7 +149,7 @@ const AddShop = (props: props) => {
   })
   const onSubmit = async (data: FormData) => {
     if (!id) await AddShopMutation.mutateAsync({ ...data, logo: base64Image })
-    await UpdateShopMutation.mutateAsync({ ...data, logo: base64Image })
+    else await UpdateShopMutation.mutateAsync({ ...data, logo: base64Image, id })
   }
 
   return (
