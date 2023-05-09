@@ -15,9 +15,10 @@ import { getMount } from 'src/utils/getMount'
 import Icon from 'src/@core/components/icon'
 import { DataGrid } from '@mui/x-data-grid'
 import StripeModal from './stripeModal'
+import { toast } from 'react-hot-toast'
 
 const columns = [
-  { field: 'desigination', headerName: 'Disignation', width: 190 },
+  { field: 'name', headerName: 'Disignation', width: 190 },
   { field: 'adresse', headerName: 'Adresse', width: 190 },
   { field: 'ville', headerName: 'Ville', width: 190 },
   {
@@ -58,8 +59,10 @@ const PointVente = (props: props) => {
   const onClose = () => setOpenStripe(false)
 
   const CloseAndOPenStripe = () => {
-    handleClose()
-    setOpenStripe(true)
+    if (selections?.length > 0) {
+      handleClose()
+      setOpenStripe(true)
+    } else toast.error('Please select shop', { duration: 1000 })
   }
 
   return (

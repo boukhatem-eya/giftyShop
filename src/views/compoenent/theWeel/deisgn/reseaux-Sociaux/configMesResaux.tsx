@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   Button,
   Dialog,
@@ -20,21 +20,46 @@ import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { Delete } from '@mui/icons-material'
 
 import Icon from 'src/@core/components/icon'
-import { useMutation } from 'react-query'
+import { useMutation, useQuery } from 'react-query'
 import { addGameRules } from 'src/servicesApi/desgin'
 import toast from 'react-hot-toast'
+import { getShopById } from 'src/servicesApi/shops'
 const DesignationList = ['Facebook', 'Instgram', 'Twiter', 'Google', 'Snapshat']
 const ReseauxConfig = (props: any) => {
   const { open, handleClose } = props
-  const [items, setItems] = useState([
-    { id: '0', designation: 'Facebook', lien: '', icon: '', enabled: true },
-    { id: '1', designation: 'Instgram', lien: '', icon: '', enabled: false },
-    { id: '2', designation: 'Twiter', lien: '', icon: '', enabled: true },
-    { id: '4', designation: 'Google', lien: '', icon: '', enabled: true },
-    { id: '5', designation: 'Snapshat', lien: '', icon: '', enabled: false },
-    { id: '6', designation: 'Autre', lien: '', icon: '', enabled: true }
-  ])
-
+  const { data, refetch } = useQuery('shop', () => getShopById(window.localStorage.getItem('shopId')))
+  useEffect(() => {
+    refetch()
+  }, [open])
+  const [items, setItems] = useState<any>([])
+  useEffect(() => {
+    setItems([
+      {
+        id: data?.link_facebook_order ? data?.link_facebook_order : '0',
+        designation: 'Facebook',
+        lien: data?.link_facebook ? data?.link_facebook : '',
+        icon: '',
+        enabled: true
+      },
+      {
+        id: '1',
+        designation: 'Instgram',
+        lien: data?.link_instagram ? data?.link_instagram : '',
+        icon: '',
+        enabled: false
+      },
+      { id: '2', designation: 'Twiter', lien: '', icon: '', enabled: true },
+      { id: '4', designation: 'Google', lien: data?.link_google ? data?.link_google : '', icon: '', enabled: true },
+      {
+        id: '5',
+        designation: 'Snapshat',
+        lien: data?.link_snapchat ? data?.link_snapchat : '',
+        icon: '',
+        enabled: false
+      },
+      { id: '6', designation: 'Autre', lien: data?.link_etc ? data?.link_etc : '', icon: '', enabled: true }
+    ])
+  }, [data])
   const handleDragEnd = (result: any) => {
     if (!result.destination) {
       return
@@ -48,7 +73,7 @@ const ReseauxConfig = (props: any) => {
   }
 
   const handleEditItem = (itemId: any, updatedItem: any) => {
-    const updatedItems = items.map(item => {
+    const updatedItems = items.map((item: any) => {
       if (item.id === itemId) {
         return { ...item, ...updatedItem }
       }
@@ -60,7 +85,7 @@ const ReseauxConfig = (props: any) => {
   }
 
   const handleDeleteItem = (itemId: any) => {
-    const updatedItems = items.filter(item => item.id !== itemId)
+    const updatedItems = items?.filter((item: any) => item.id !== itemId)
 
     setItems(updatedItems)
   }
@@ -78,30 +103,48 @@ const ReseauxConfig = (props: any) => {
   const ConfigSocialMediaMutation = useMutation(addGameRules, {
     onSuccess: () => {
       toast.success('Social media added succefully!')
-      // handleClose()
+      setItems([
+        { id: '0', designation: 'Facebook', lien: '', icon: '', enabled: true },
+        { id: '1', designation: 'Instgram', lien: '', icon: '', enabled: false },
+        { id: '2', designation: 'Twiter', lien: '', icon: '', enabled: true },
+        { id: '4', designation: 'Google', lien: '', icon: '', enabled: true },
+        { id: '5', designation: 'Snapshat', lien: '', icon: '', enabled: false },
+        { id: '6', designation: 'Autre', lien: '', icon: '', enabled: true }
+      ])
+      handleClose()
     }
   })
   const onSubmit = async () => {
     await ConfigSocialMediaMutation.mutateAsync({
-      link_etc: items.find(elt => elt.designation === 'Autre')?.lien,
-      link_etc_order: items.find(elt => elt.designation === 'Autre')?.id,
-      link_facebook: items.find(elt => elt.designation === 'Facebook')?.lien,
-      link_facebook_order: items.find(elt => elt.designation === 'Facebook')?.id,
-      link_google: items.find(elt => elt.designation === 'Google')?.lien,
-      link_google_order: items.find(elt => elt.designation === 'Google')?.id,
-      link_instagram_order: items.find(elt => elt.designation === 'Instagram')?.id,
-      link_instagram: items.find(elt => elt.designation === 'Instagram')?.lien,
-      link_snapchat: items.find(elt => elt.designation === 'Snapchat')?.lien,
-      link_snapchat_order: items.find(elt => elt.designation === 'Snapchat')?.id,
-      link_twitter: items.find(elt => elt.designation === 'Twitter')?.lien,
-      link_twitter_order: items.find(elt => elt.designation === 'Twitter')?.id
+      link_etc: items.find((elt: any) => elt.designation === 'Autre')?.lien,
+      link_etc_order: items.find((elt: any) => elt.designation === 'Autre')?.id,
+      link_facebook: items.find((elt: any) => elt.designation === 'Facebook')?.lien,
+      link_facebook_order: items.find((elt: any) => elt.designation === 'Facebook')?.id,
+      link_google: items.find((elt: any) => elt.designation === 'Google')?.lien,
+      link_google_order: items.find((elt: any) => elt.designation === 'Google')?.id,
+      link_instagram_order: items.find((elt: any) => elt.designation === 'Instagram')?.id,
+      link_instagram: items.find((elt: any) => elt.designation === 'Instagram')?.lien,
+      link_snapchat: items.find((elt: any) => elt.designation === 'Snapchat')?.lien,
+      link_snapchat_order: items.find((elt: any) => elt.designation === 'Snapchat')?.id,
+      link_twitter: items.find((elt: any) => elt.designation === 'Twitter')?.lien,
+      link_twitter_order: items.find((elt: any) => elt.designation === 'Twitter')?.id
     })
   }
 
   return (
     <Dialog
       maxWidth='lg'
-      onClose={handleClose}
+      onClose={() => {
+        setItems([
+          { id: '0', designation: 'Facebook', lien: '', icon: '', enabled: true },
+          { id: '1', designation: 'Instgram', lien: '', icon: '', enabled: false },
+          { id: '2', designation: 'Twiter', lien: '', icon: '', enabled: true },
+          { id: '4', designation: 'Google', lien: '', icon: '', enabled: true },
+          { id: '5', designation: 'Snapshat', lien: '', icon: '', enabled: false },
+          { id: '6', designation: 'Autre', lien: '', icon: '', enabled: true }
+        ])
+        handleClose()
+      }}
       aria-labelledby='customized-dialog-title'
       open={open}
       sx={{ width: '100%' }}
@@ -141,7 +184,7 @@ const ReseauxConfig = (props: any) => {
                 <Droppable droppableId='items'>
                   {provided => (
                     <TableBody ref={provided.innerRef} {...provided.droppableProps}>
-                      {items.map((item, index) => (
+                      {items.map((item: any, index: any) => (
                         <Draggable key={item.id} draggableId={item.id} index={index}>
                           {provided => (
                             <TableRow ref={provided.innerRef} {...provided.draggableProps}>

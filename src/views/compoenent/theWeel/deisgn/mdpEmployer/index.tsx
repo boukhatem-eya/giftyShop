@@ -9,34 +9,49 @@ import {
   TextField,
   Typography
 } from '@mui/material'
-import React, { SyntheticEvent, useState } from 'react'
+import React, { useEffect } from 'react'
 
 import Icon from 'src/@core/components/icon'
 import { Controller, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { addGameRules } from 'src/servicesApi/desgin'
-import { useMutation } from 'react-query'
+import { useMutation, useQuery } from 'react-query'
 import toast from 'react-hot-toast'
+import { getShopById } from 'src/servicesApi/shops'
 
 const MdpEmployer = (props: any) => {
   const { open, handleClose } = props
   const { t } = useTranslation('translation')
-  const { control, handleSubmit } = useForm({})
+
+  const { data, refetch } = useQuery('shop', () => getShopById(window.localStorage.getItem('shopId')))
+  useEffect(() => {
+    refetch()
+  }, [open])
+  const { control, handleSubmit, setValue } = useForm()
+  useEffect(() => {
+    if (data) {
+      setValue('password', data.password)
+    }
+  }, [data])
   const UpdatePasswordMutation = useMutation(addGameRules, {
     onSuccess: () => {
       toast.success('Password updated succefully!')
+      setValue('password', '')
       handleClose()
     }
   })
   const onSubmit = async (values: any) => {
     await UpdatePasswordMutation.mutateAsync({
-      password: values.password
+      password: Number(values.password)
     })
   }
   return (
     <Dialog
       maxWidth='lg'
-      onClose={handleClose}
+      onClose={() => {
+        setValue('password', '')
+        handleClose()
+      }}
       aria-labelledby='customized-dialog-title'
       open={open}
       sx={{ width: '100%' }}

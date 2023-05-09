@@ -215,7 +215,7 @@ const SecondPage = () => {
                         </TableCell>
                         <TableCell>{row.name || '-'}</TableCell>
                         <TableCell>{row.pays || '-'}</TableCell>
-                        <TableCell>{row.addresse || '-'}</TableCell>
+                        <TableCell>{row.adresse || '-'}</TableCell>
                         <TableCell>{row.ville || '-'}</TableCell>
                         <TableCell>{row.responsable || '-'}</TableCell>
                         <TableCell>

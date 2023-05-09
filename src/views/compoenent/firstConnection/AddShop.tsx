@@ -37,13 +37,11 @@ interface FormData {
   responsable: string
   pays: string
   logo: any
-  email: string
+  responsable_email: string
 }
 const AddShop = (props: props) => {
   // ** State
   const { open, handleClose, id } = props
-  console.log('id', id)
-
   const { refetch, data } = useQuery('shop', () => getShopById(id), {
     enabled: false
   })
@@ -55,7 +53,7 @@ const AddShop = (props: props) => {
     ville: yup.string().required('Ville is required'),
     name: yup.string().required('Desigination is required'),
     adresse: yup.string().required('Adresse is required'),
-    email: yup
+    responsable_email: yup
       .string()
       .required(`${t('empty-email')}`)
       .email(`${t('invalid email')}`),
@@ -66,6 +64,7 @@ const AddShop = (props: props) => {
     picture: null,
     preview: ''
   })
+
   const queryClient = useQueryClient()
   useEffect(() => {
     if (data)
@@ -111,21 +110,42 @@ const AddShop = (props: props) => {
     control,
     handleSubmit,
     formState: { errors },
-    setValue
+    setValue,
+    reset
   } = useForm<FormData>({
     defaultValues: {
-      adresse: data?.shop?.adresse || '',
-      email: data?.shop?.adresse || '',
+      adresse: data?.adresse || '',
+      responsable_email: data?.responsable_email || '',
       name: data ? data?.name : '',
-      pays: data?.shop?.adresse || '',
-      responsable: data?.shop?.adresse || '',
-      ville: data?.shop?.adresse || ''
+      pays: data?.pays || '',
+      responsable: data?.responsable || '',
+      ville: data?.ville || ''
     },
     resolver: yupResolver(schema)
   })
+  const handleReset = () => {
+    reset({
+      adresse: ''
+    })
+    reset({ responsable_email: '' })
+    reset({ name: '' })
+    reset({ pays: '' })
+    reset({ responsable: '' })
+    reset({ ville: '' })
+  }
   useEffect(() => {
     if (data && id) {
+      console.log('data', data)
       setValue('name', data.name)
+      setValue('adresse', data.adresse)
+      setValue('responsable_email', data.responsable_email)
+      setValue('pays', data.pays)
+      setValue('responsable', data.responsable)
+      setValue('ville', data.ville)
+      setImage({
+        picture: null,
+        preview: data?.image || ''
+      })
     }
   }, [data])
   // ** Add shop with react query
@@ -133,6 +153,7 @@ const AddShop = (props: props) => {
     onSuccess: () => {
       // Invalidates cache and refetch
       queryClient.invalidateQueries('shops')
+      handleReset()
       router.push('/mes-magasin')
       toast.success('shop add succefully!')
       handleClose()
@@ -142,6 +163,7 @@ const AddShop = (props: props) => {
     onSuccess: () => {
       // Invalidates cache and refetch
       queryClient.invalidateQueries('shops')
+      handleReset()
       router.push('/mes-magasin')
       toast.success('Shop updated succefully!')
       handleClose()
@@ -161,7 +183,10 @@ const AddShop = (props: props) => {
           </Typography>
           <IconButton
             aria-label='close'
-            onClick={handleClose}
+            onClick={() => {
+              handleReset()
+              handleClose()
+            }}
             sx={{ top: 10, right: 10, position: 'absolute', color: 'grey.500' }}
           >
             <Icon icon='mdi:close' />
@@ -310,21 +335,23 @@ const AddShop = (props: props) => {
               <Grid item xs={12} sm={6}>
                 <FormControl fullWidth>
                   <Controller
-                    name='email'
+                    name='responsable_email'
                     control={control}
                     rules={{ required: true }}
                     render={({ field: { value, onChange } }) => (
                       <TextField
-                        name='email'
+                        name='responsable_email'
                         label='Email'
                         value={value}
                         onChange={onChange}
-                        error={Boolean(errors.responsable)}
+                        error={Boolean(errors.responsable_email)}
                         placeholder='Email responsable boutique '
                       />
                     )}
                   />
-                  {errors.email && <FormHelperText sx={{ color: 'error.main' }}>{errors.email.message}</FormHelperText>}
+                  {errors.responsable_email && (
+                    <FormHelperText sx={{ color: 'error.main' }}>{errors.responsable_email.message}</FormHelperText>
+                  )}
                 </FormControl>
               </Grid>
             </Grid>

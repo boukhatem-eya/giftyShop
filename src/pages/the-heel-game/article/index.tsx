@@ -75,7 +75,6 @@ const Article = () => {
   const queryClient = useQueryClient()
   const router = useRouter()
   const [selectedProduct, setSelectedProduct] = useState<any>()
-  console.log('selectedProduct', selectedProduct)
   const products = data ?? []
   const [page, setPage] = useState<number>(0)
   const [rowsPerPage, setRowsPerPage] = useState<any>(3)

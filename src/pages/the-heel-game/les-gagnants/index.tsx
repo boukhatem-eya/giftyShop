@@ -69,7 +69,7 @@ const Gagnants = () => {
     setRowsPerPage(parseInt(event.target.value, 10))
     setPage(0)
   }
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, gagnants?.gagnants?.length - page * rowsPerPage)
+  const emptyRows = rowsPerPage - Math.min(rowsPerPage, gagnants?.length - page * rowsPerPage)
 
   return (
     <>
@@ -92,7 +92,7 @@ const Gagnants = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {gagnants?.gagnants?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row: any) => (
+                {gagnants?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row: any) => (
                   <TableRow key={row.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                     <TableCell>{row.name || '-'}</TableCell>
                     <TableCell>{row.produit || '-'}</TableCell>
@@ -108,7 +108,7 @@ const Gagnants = () => {
             <TablePagination
               rowsPerPageOptions={[4]}
               component='div'
-              count={gagnants?.gagnants?.length}
+              count={gagnants?.length}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}

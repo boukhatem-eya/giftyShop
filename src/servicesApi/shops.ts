@@ -45,7 +45,6 @@ export const addShop = async (data: any) => {
 }
 
 export const EditShop = async (data: any) => {
-  console.log('data', data)
   const storedToken = window.localStorage.getItem(authConfig.storageTokenKeyName)!
   const config = {
     headers: {

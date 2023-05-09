@@ -21,20 +21,29 @@ import TabContext from '@mui/lab/TabContext'
 import Icon from 'src/@core/components/icon'
 import { Controller, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { useMutation, useQueryClient } from 'react-query'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
 import router from 'next/router'
 import toast from 'react-hot-toast'
 import { addGameRules } from 'src/servicesApi/desgin'
+import { getShopById } from 'src/servicesApi/shops'
 
 const DesignApplication = (props: any) => {
   const { open, handleClose } = props
-  const [value, setValue] = useState<string>('1')
+  const [value, setValueTab] = useState<string>('1')
   const { t } = useTranslation('translation')
+  const { data, refetch } = useQuery('shop', () => getShopById(window.localStorage.getItem('shopId')))
+  useEffect(() => {
+    refetch()
+  }, [open])
   const handleChange = (event: SyntheticEvent, newValue: string) => {
-    setValue(newValue)
+    setValueTab(newValue)
   }
-  const { control, handleSubmit, watch } = useForm()
-
+  const { control, handleSubmit, setValue } = useForm()
+  useEffect(() => {
+    setValue('client_delais', data?.client_delais)
+    setValue('one_win', data?.one_win)
+    setValue('to_get_gift', data?.to_get_gift)
+  }, [data])
   const [image, setImage] = useState<any>({
     homePage: {
       picture: null,
@@ -119,7 +128,7 @@ const DesignApplication = (props: any) => {
     if (value === '1')
       await AddGameRulesMutation.mutateAsync({
         one_win: Number(values.one_win),
-        client_details: Number(values.client_delais),
+        client_delais: Number(values.client_delais),
         to_get_gift: Number(values.to_get_gift)
       })
     else

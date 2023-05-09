@@ -69,7 +69,7 @@ const CLients = () => {
     setRowsPerPage(parseInt(event.target.value, 10))
     setPage(0)
   }
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, clients?.clients?.length - page * rowsPerPage)
+  const emptyRows = rowsPerPage - Math.min(rowsPerPage, clients?.length - page * rowsPerPage)
 
   return (
     <>
@@ -92,7 +92,7 @@ const CLients = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {clients?.clients?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row: any) => (
+                {clients?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row: any) => (
                   <TableRow key={row.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                     <TableCell>{row.name || '-'}</TableCell>
                     <TableCell>{row.produit || '-'}</TableCell>
@@ -108,7 +108,7 @@ const CLients = () => {
             <TablePagination
               rowsPerPageOptions={[4]}
               component='div'
-              count={clients?.clients?.length}
+              count={clients?.length}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}

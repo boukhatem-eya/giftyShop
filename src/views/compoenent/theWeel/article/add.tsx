@@ -11,8 +11,8 @@ import Switch from '@mui/material/Switch'
 import FormGroup from '@mui/material/FormGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import { useTranslation } from 'react-i18next'
-import { useMutation, useQueryClient } from 'react-query'
-import { addProduct, updateProduct } from 'src/servicesApi/products'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
+import { addProduct, getProductById, updateProduct } from 'src/servicesApi/products'
 
 import React, { useEffect, useState } from 'react'
 
@@ -36,8 +36,13 @@ const AddArticle = (props: props) => {
   const queryClient = useQueryClient()
   const { open, handleClose, id } = props
   const { t } = useTranslation('translation')
-
-  const { control, handleSubmit, watch } = useForm({})
+  const { refetch, data } = useQuery('product', () => getProductById(id), {
+    enabled: false
+  })
+  useEffect(() => {
+    if (id) refetch()
+  }, [id])
+  const { control, handleSubmit, watch, reset } = useForm({})
 
   const [image, setImage] = useState<{ preview: string; picture: File | null }>({
     picture: null,
@@ -74,10 +79,34 @@ const AddArticle = (props: props) => {
     }
     fetchImage()
   }, [image.preview])
+  const handleReset = () => {
+    reset({ designation: '', limitStock: '', ProductLimit: '', limitProduct: '', startDate: '', endDate: '' })
+    setImage({
+      picture: null,
+      preview: ''
+    })
+  }
+  useEffect(() => {
+    reset({
+      designation: data?.name,
+      limitStock: data?.stock,
+      ProductLimit: data?.porductbyday ? true : false,
+      limitProduct: data?.porductbyday,
+      startDate: data?.can_win_time_from,
+      endDate: data?.can_win_time_to,
+      dateLimit: data?.can_win
+    })
+    setImage({
+      picture: null,
+      preview: data?.image
+    })
+  }, [id, data])
+  console.log('data', data)
   const AddProductMutation = useMutation(addProduct, {
     onSuccess: () => {
       // Invalidates cache and refetch
       queryClient.invalidateQueries('products')
+      handleReset()
       router.push('/the-heel-game/article')
       toast.success('Product add succefully!')
       handleClose()
@@ -87,11 +116,13 @@ const AddArticle = (props: props) => {
     onSuccess: () => {
       // Invalidates cache and refetch
       queryClient.invalidateQueries('products')
+      handleReset()
       router.push('/the-heel-game/article')
       toast.success('Product updated succefully!')
       handleClose()
     }
   })
+
   const onSubmit = async (data: any) => {
     const dataToSave = {
       name: data.designation,
@@ -100,7 +131,7 @@ const AddArticle = (props: props) => {
       stock: Number(data.limitStock),
       disponible: '',
       porductbyday: Number(data.limitProduct),
-      state: '',
+      state: 'active',
       archive: false,
       can_win: data.ProductLimit,
       can_win_time_to: data.startDate,
@@ -128,7 +159,10 @@ const AddArticle = (props: props) => {
           </Typography>
           <IconButton
             aria-label='close'
-            onClick={handleClose}
+            onClick={() => {
+              handleReset()
+              handleClose()
+            }}
             sx={{ top: 10, right: 10, position: 'absolute', color: 'grey.500' }}
           >
             <Icon icon='mdi:close' />
@@ -200,7 +234,12 @@ const AddArticle = (props: props) => {
                   <>
                     {' '}
                     <FormGroup row>
-                      <FormControlLabel control={<Switch />} label='' value={value} onChange={onChange} />
+                      <FormControlLabel
+                        control={<Switch color='success' />}
+                        label=''
+                        value={value}
+                        onChange={onChange}
+                      />
                     </FormGroup>
                   </>
                 )}
@@ -236,7 +275,12 @@ const AddArticle = (props: props) => {
                   <>
                     {' '}
                     <FormGroup row>
-                      <FormControlLabel control={<Switch />} label='' value={value} onChange={onChange} />
+                      <FormControlLabel
+                        control={<Switch color='success' />}
+                        label=''
+                        value={value}
+                        onChange={onChange}
+                      />
                     </FormGroup>
                   </>
                 )}
@@ -280,7 +324,12 @@ const AddArticle = (props: props) => {
                   <>
                     {' '}
                     <FormGroup row>
-                      <FormControlLabel control={<Switch />} label='' value={value} onChange={onChange} />
+                      <FormControlLabel
+                        control={<Switch color='success' />}
+                        label=''
+                        value={value}
+                        onChange={onChange}
+                      />
                     </FormGroup>
                   </>
                 )}

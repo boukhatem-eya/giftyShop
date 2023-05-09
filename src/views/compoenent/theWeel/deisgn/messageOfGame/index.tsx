@@ -10,7 +10,7 @@ import {
   TextField,
   Typography
 } from '@mui/material'
-import React, { MouseEvent, SyntheticEvent, useState } from 'react'
+import React, { MouseEvent, SyntheticEvent, useEffect, useState } from 'react'
 
 // ** MUI Imports
 import Tab from '@mui/material/Tab'
@@ -22,24 +22,76 @@ import Icon from 'src/@core/components/icon'
 import { Controller, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { addGameRules } from 'src/servicesApi/desgin'
-import { useMutation } from 'react-query'
+import { useMutation, useQuery } from 'react-query'
 import toast from 'react-hot-toast'
+import { getShopById } from 'src/servicesApi/shops'
 
 const MessageOfGame = (props: any) => {
   const { open, handleClose } = props
-  const [value, setValue] = useState<string>('1')
+  const [value, setValueTab] = useState<string>('1')
   const { t } = useTranslation('translation')
+  const { data, refetch } = useQuery('shop', () => getShopById(window.localStorage.getItem('shopId')))
+  useEffect(() => {
+    refetch()
+  }, [open])
   const handleChange = (event: SyntheticEvent, newValue: string) => {
-    setValue(newValue)
+    setValueTab(newValue)
   }
-  const { control, handleSubmit } = useForm({})
+  const { control, handleSubmit, setValue, reset } = useForm({})
+  const handleReset = () => {
+    reset({ message_hello_fr: '' })
+    reset({ message_hello_en: '' })
+    reset({ message_hello_it: '' })
+    reset({ message_hello_ep: '' })
+    reset({ message_game_fr: '' })
+    reset({ message_game_en: '' })
+    reset({ message_game_it: '' })
+    reset({ message_game_ep: '' })
+    reset({ message_confirm_send_email_fr: '' })
+    reset({ message_confirm_send_email_en: '' })
+    reset({ message_confirm_send_email_it: '' })
+    reset({ message_confirm_send_email_ep: '' })
+    reset({ message_lost_fr: '' })
+    reset({ message_lost_en: '' })
+    reset({ message_lost_it: '' })
+    reset({ message_lost_ep: '' })
+    reset({ message_gagner_fr: '' })
+    reset({ message_gagner_en: '' })
+    reset({ message_gagner_it: '' })
+    reset({ message_gagner_ep: '' })
+  }
   const MessageOfGameMutation = useMutation(addGameRules, {
     onSuccess: () => {
       toast.success('Message updated succefully!')
+      handleReset()
       handleClose()
     }
   })
 
+  useEffect(() => {
+    if (data) {
+      setValue('message_hello_fr', data?.home_page_titre ? JSON.parse(data?.home_page_titre)?.fr : '')
+      setValue('message_hello_en', data?.home_page_titre ? JSON.parse(data?.home_page_titre)?.en : '')
+      setValue('message_hello_it', data?.home_page_titre ? JSON.parse(data?.home_page_titre)?.it : '')
+      setValue('message_hello_ep', data?.home_page_titre ? JSON.parse(data?.home_page_titre)?.ep : '')
+      setValue('message_game_fr', data?.page1_texte ? JSON.parse(data?.page1_texte)?.fr : '')
+      setValue('message_game_en', data?.page1_texte ? JSON.parse(data?.page1_texte)?.en : '')
+      setValue('message_game_it', data?.page1_texte ? JSON.parse(data?.page1_texte)?.it : '')
+      setValue('message_game_ep', data?.page1_texte ? JSON.parse(data?.page1_texte)?.ep : '')
+      setValue('message_confirm_send_email_fr', data?.page2_texte ? JSON.parse(data?.page2_texte)?.fr : '')
+      setValue('message_confirm_send_email_en', data?.page2_texte ? JSON.parse(data?.page2_texte)?.en : '')
+      setValue('message_confirm_send_email_it', data?.page2_texte ? JSON.parse(data?.page2_texte)?.it : '')
+      setValue('message_confirm_send_email_ep', data?.page2_texte ? JSON.parse(data?.page2_texte)?.ep : '')
+      setValue('message_lost_fr', data?.pop_up_perdu ? JSON.parse(data?.pop_up_perdu)?.fr : '')
+      setValue('message_lost_en', data?.pop_up_perdu ? JSON.parse(data?.pop_up_perdu)?.en : '')
+      setValue('message_lost_it', data?.pop_up_perdu ? JSON.parse(data?.pop_up_perdu)?.it : '')
+      setValue('message_lost_ep', data?.pop_up_perdu ? JSON.parse(data?.pop_up_perdu)?.ep : '')
+      setValue('message_gagner_fr', data?.pop_up_gagner ? JSON.parse(data?.pop_up_gagner)?.fr : '')
+      setValue('message_gagner_en', data?.pop_up_gagner ? JSON.parse(data?.pop_up_gagner)?.en : '')
+      setValue('message_gagner_it', data?.pop_up_gagner ? JSON.parse(data?.pop_up_gagner)?.it : '')
+      setValue('message_gagner_ep', data?.pop_up_gagner ? JSON.parse(data?.pop_up_gagner)?.ep : '')
+    }
+  }, [data])
   const onSubmit = async (values: any) => {
     await MessageOfGameMutation.mutateAsync({
       home_page_titre: JSON.stringify({
@@ -60,13 +112,13 @@ const MessageOfGame = (props: any) => {
         it: values.message_confirm_send_email_it,
         ep: values.message_confirm_send_email_ep
       }),
-      pop_up_perdu: JSON.stringify({
-        fr: values.message_hello_fr,
-        en: values.message_hello_en,
-        it: values.message_hello_it,
-        ep: values.message_hello_ep
-      }),
       pop_up_gagner: JSON.stringify({
+        fr: values.message_gagner_fr,
+        en: values.message_gagner_en,
+        it: values.message_gagner_it,
+        ep: values.message_gagner_ep
+      }),
+      pop_up_perdu: JSON.stringify({
         fr: values.message_lost_fr,
         en: values.message_lost_en,
         it: values.message_lost_it,
@@ -77,7 +129,10 @@ const MessageOfGame = (props: any) => {
   return (
     <Dialog
       maxWidth='lg'
-      onClose={handleClose}
+      onClose={() => {
+        handleReset()
+        handleClose()
+      }}
       aria-labelledby='customized-dialog-title'
       open={open}
       sx={{ width: '100%' }}
